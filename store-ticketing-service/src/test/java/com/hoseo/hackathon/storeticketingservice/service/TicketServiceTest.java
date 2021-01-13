@@ -105,6 +105,7 @@ class TicketServiceTest {
         Ticket savedTicket = ticketService.createTicket(ticket, "식당1", "admin");
         Ticket savedTicket2 = ticketService.createTicket(ticket2, "식당1", "test2");
         Ticket savedTicket3 = ticketService.createTicket(ticket3, "식당1", "test3");
+        
         //then
         Assertions.assertEquals(2, savedTicket.getWaitingNum()); //번호표가 느는지 체크
         Assertions.assertEquals(10, savedTicket.getWaitingTime()); //번호표가 느는지 체크
