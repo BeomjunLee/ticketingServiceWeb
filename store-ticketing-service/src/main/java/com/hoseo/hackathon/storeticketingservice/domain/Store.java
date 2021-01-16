@@ -20,7 +20,6 @@ public class Store {
     private String phoneNum;            //전화번호
     private String latitude;            //위도
     private String longitude;           //경도
-    private int nextEnterPhoneNum;      //다음 입장 회원 전화번호
     private int totalWaitingCount;       //전체 대기인원
     private int AvgWaitingTimeByOne;    //한 사람당 평균 대기시간
     private int totalWaitingTime;       //전체 대기시간

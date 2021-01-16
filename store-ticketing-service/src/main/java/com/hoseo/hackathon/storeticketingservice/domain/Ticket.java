@@ -30,7 +30,8 @@ public class Ticket {
     @JoinColumn(name = "store_id")
     private Store store;                //store_id
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "ticket")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     //항목 추가 메서드
@@ -52,8 +53,10 @@ public class Ticket {
         this.store = store;
         store.getTicketList().add(this);
     }
-    protected void setMember(Member member) {
+    //==연관관계 편의메서드
+    public void setMember(Member member) {
         this.member = member;
+        member.setTicket(this);
     }
 
     //==비지니스 로직==

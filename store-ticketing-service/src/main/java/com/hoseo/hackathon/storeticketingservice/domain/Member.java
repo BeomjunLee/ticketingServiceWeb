@@ -26,15 +26,11 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;                                      //권한
     
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket_id")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy =  "member")
     private Ticket ticket;                                  //ticket_id
 
-
-    //==연관관계 편의메서드
-    public void setTicket(Ticket ticket) {
+    protected void setTicket(Ticket ticket) {
         this.ticket = ticket;
-        ticket.setMember(this);
     }
 
     //비밀번호 암호화위해 setter

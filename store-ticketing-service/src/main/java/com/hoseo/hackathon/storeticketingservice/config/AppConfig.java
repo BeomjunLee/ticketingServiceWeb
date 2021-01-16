@@ -45,7 +45,7 @@ public class AppConfig {
                         .build();
 
                 Member member2 = Member.builder()
-                        .username("test")
+                        .username("test1")
                         .password("1234")
                         .role(Role.USER)
                         .build();
@@ -62,6 +62,12 @@ public class AppConfig {
                         .role(Role.USER)
                         .build();
 
+                Member member5 = Member.builder()
+                        .username("test4")
+                        .password("1234")
+                        .role(Role.USER)
+                        .build();
+
                 Store store = Store.builder()
                         .name("식당1")
                         .AvgWaitingTimeByOne(5)
@@ -72,6 +78,7 @@ public class AppConfig {
                 memberService.save(member2);
                 memberService.save(member3);
                 memberService.save(member4);
+                memberService.save(member5);
                 storeRepository.save(store);
             }
         };
