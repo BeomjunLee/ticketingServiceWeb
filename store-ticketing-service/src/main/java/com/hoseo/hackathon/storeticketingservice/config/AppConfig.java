@@ -3,6 +3,7 @@ package com.hoseo.hackathon.storeticketingservice.config;
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Role;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
+import com.hoseo.hackathon.storeticketingservice.domain.StoreTicketStatus;
 import com.hoseo.hackathon.storeticketingservice.repository.StoreRepository;
 import com.hoseo.hackathon.storeticketingservice.service.MemberService;
 import org.modelmapper.ModelMapper;
@@ -13,9 +14,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
 public class AppConfig {
+    //한글 인코딩
+    @Bean
+    public CharacterEncodingFilter characterEncodingFilter() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        return characterEncodingFilter;
+
+    }
+
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -28,59 +40,66 @@ public class AppConfig {
         return new ModelMapper();
     }
 
-    //어플리케이션 시작시 test 계정 생성
-    @Bean
-    public ApplicationRunner applicationRunner() {
-        return new ApplicationRunner() {
-            @Autowired
-            MemberService memberService;
-            @Autowired
-            StoreRepository storeRepository;
-            @Override
-            public void run(ApplicationArguments args) throws Exception {
-                Member member = Member.builder()
-                        .username("admin")
-                        .password("1234")
-                        .role(Role.ADMIN)
-                        .build();
-
-                Member member2 = Member.builder()
-                        .username("test1")
-                        .password("1234")
-                        .role(Role.USER)
-                        .build();
-
-                Member member3 = Member.builder()
-                        .username("test2")
-                        .password("1234")
-                        .role(Role.USER)
-                        .build();
-
-                Member member4 = Member.builder()
-                        .username("test3")
-                        .password("1234")
-                        .role(Role.USER)
-                        .build();
-
-                Member member5 = Member.builder()
-                        .username("test4")
-                        .password("1234")
-                        .role(Role.USER)
-                        .build();
-
-                Store store = Store.builder()
-                        .name("식당1")
-                        .AvgWaitingTimeByOne(5)
-                        .build();
-                store.setMember(member);
-
-                memberService.save(member);
-                memberService.save(member2);
-                memberService.save(member3);
-                memberService.save(member4);
-                memberService.save(member5);
-                storeRepository.save(store);
-            }
-        };
-    }
+//    //어플리케이션 시작시 test 계정 생성
+//    @Bean
+//    public ApplicationRunner applicationRunner() {
+//        return new ApplicationRunner() {
+//            @Autowired
+//            MemberService memberService;
+//            @Autowired
+//            StoreRepository storeRepository;
+//            @Override
+//            public void run(ApplicationArguments args) throws Exception {
+//                Member member = Member.builder()
+//                        .username("admin")
+//                        .password("1234")
+//                        .build();
+//
+//                Member member2 = Member.builder()
+//                        .username("test1")
+//                        .name("회원1")
+//                        .password("1234")
+//                        .role(Role.USER)
+//                        .build();
+//
+//                Member member3 = Member.builder()
+//                        .username("test2")
+//                        .password("1234")
+//                        .role(Role.USER)
+//                        .build();
+//
+//                Member member4 = Member.builder()
+//                        .username("test3")
+//                        .password("1234")
+//                        .role(Role.USER)
+//                        .build();
+//
+//                Member member5 = Member.builder()
+//                        .username("test4")
+//                        .password("1234")
+//                        .role(Role.USER)
+//                        .build();
+//                Member member6 = Member.builder()
+//                        .username("test5")
+//                        .password("1234")
+//                        .role(Role.USER)
+//                        .build();
+//
+//                Store store = Store.builder()
+//                        .name("식당1")
+//                        .storeTicketStatus(StoreTicketStatus.OPEN)
+//                        .avgWaitingTimeByOne(5)
+//                        .build();
+//                store.setMember(member);
+//
+//                memberService.createAdmin(member);
+//                memberService.createMember(member2);
+//                memberService.createMember(member3);
+//                memberService.createMember(member4);
+//                memberService.createMember(member5);
+//                memberService.createMember(member6);
+//                storeRepository.save(store);
+//            }
+//        };
+//    }
 }

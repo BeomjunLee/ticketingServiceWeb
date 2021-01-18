@@ -22,19 +22,22 @@ public class Member {
     private String phoneNum;                                //전화번호
     private String email;                                   //이메일
     private int point;                                      //포인트
-
+    @Enumerated(EnumType.STRING)
+    private MemberStatus status;                            //가입 대기(VALID, INVALID)
     @Enumerated(value = EnumType.STRING)
     private Role role;                                      //권한
-    
-    @OneToOne(fetch = FetchType.LAZY, mappedBy =  "member")
-    private Ticket ticket;                                  //ticket_id
 
-    protected void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
 
     //비밀번호 암호화위해 setter
     public void encodingPassword(String password) {
         this.password = password;
+    }
+
+    //==비지니스 로직
+    public void changeRole(Role role) { //권한 변경
+        this.role = role;
+    }
+    public void changeMemberStatus(MemberStatus status) {   //가입상태 변경
+        this.status = status;
     }
 }

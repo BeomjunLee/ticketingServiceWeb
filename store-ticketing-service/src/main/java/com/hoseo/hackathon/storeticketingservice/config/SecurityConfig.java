@@ -36,13 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final FormLoginAuthenticationProvider formLoginAuthenticationProvider;
 
     protected FormLoginFilter formLoginFilter() throws Exception {
-        FormLoginFilter formLoginFilter = new FormLoginFilter("/api/login", formLoginAuthenticationSuccessHandler, formLoginAuthenticationFailureHandler);
+        FormLoginFilter formLoginFilter = new FormLoginFilter("/api/tokens", formLoginAuthenticationSuccessHandler, formLoginAuthenticationFailureHandler);
         formLoginFilter.setAuthenticationManager(super.authenticationManagerBean());
         return formLoginFilter;
     }
 
     protected JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/api/login"), "/api/**");//허용 url
+        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList
+                ("/api/tokens", "/api/members/new", "/api/members/admin/new"),
+                "/api/**");//허용 url, 비허용 url
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(matcher, jwtAuthenticationFailureHandler, headerTokenExtractor);
         jwtAuthenticationFilter.setAuthenticationManager(super.authenticationManagerBean());
         return jwtAuthenticationFilter;

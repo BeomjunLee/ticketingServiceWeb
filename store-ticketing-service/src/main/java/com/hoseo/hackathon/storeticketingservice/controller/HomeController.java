@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/api", produces = MediaTypes.HAL_JSON_VALUE)
+@RequestMapping(value = "/api/main", produces = MediaTypes.HAL_JSON_VALUE)
 public class HomeController {
 }

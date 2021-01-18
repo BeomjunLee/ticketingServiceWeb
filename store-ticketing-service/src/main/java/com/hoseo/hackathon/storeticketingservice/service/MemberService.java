@@ -1,6 +1,9 @@
 package com.hoseo.hackathon.storeticketingservice.service;
 
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
+import com.hoseo.hackathon.storeticketingservice.domain.MemberStatus;
+import com.hoseo.hackathon.storeticketingservice.domain.Role;
+import com.hoseo.hackathon.storeticketingservice.exception.DuplicateUsernameException;
 import com.hoseo.hackathon.storeticketingservice.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +26,9 @@ public class MemberService{
 
     private final PasswordEncoder passwordEncoder;
 
-    //로그인체크
+    /**
+     * 로그인체크
+     */
     public Member loginCheck(String username, String password) {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username + "에 해당되는 유저를 찾을수 없습니다"));
@@ -32,36 +37,70 @@ public class MemberService{
         } else return member;
     }
 
-    //회원가입
+    /**
+     * [회원] 회원가입
+     */
     @Transactional //조회가 아니므로 Transactional
-    public Member save(Member member) {
+    public Member createMember(Member member) {
+        validateDuplicateMember(member.getUsername()); //중복회원검증
+        member.changeRole(Role.USER);   //권한부여
+        member.changeMemberStatus(MemberStatus.VALID);  //일반 회원은 바로 가입
         //비밀번호 encoding
         member.encodingPassword(passwordEncoder.encode(member.getPassword()));
         return memberRepository.save(member);
     }
 
-    //중복 회원 검증
+    /**
+     * [관리자] 회원가입
+     */
+    @Transactional //조회가 아니므로 Transactional
+    public Member createAdmin(Member member) {
+        validateDuplicateMember(member.getUsername()); //중복회원검증
+        member.changeRole(Role.STORE_ADMIN); //권한부여
+        member.changeMemberStatus(MemberStatus.INVALID); //가게 관리자는 가입 대기상태
+        //비밀번호 encoding
+        member.encodingPassword(passwordEncoder.encode(member.getPassword()));
+        return memberRepository.save(member);
+    }
 
-    public void validateDuplicateMember(String name, Errors errors) {
-        Long findMembers = memberRepository.countByUsername(name);
+    /**
+     * 중복 회원 검증
+     */
+    private void validateDuplicateMember(String username) {
+        Long findMembers = memberRepository.countByUsername(username);
         if (findMembers > 0) {
-            errors.rejectValue("name", "아이디 중복", "아이디가 중복되었습니다");
+            throw new DuplicateUsernameException("아이디가 중복되었습니다");
         }
         //두 유저가 동시에 가입할 경우를 대비해서 DB 에도 유니크 제약조건을 걸어줘야함
     }
 
+    /**
+     * 회원 수정
+     */
     @Transactional
     public Member update(Member member) {
         return memberRepository.save(member);
     }
 
-    //회원정보
-    public Optional<Member> findOne(Long id) {
-        return memberRepository.findById(id);  //값이 없을때 null
+    /**
+     * 회원 정보 보기
+     */
+    public Member findOne(Long id) {
+        return memberRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("해당되는 유저를 찾을수 없습니다"));
     }
 
-    //회원 전체 조회
+    /**
+     * 회원 전체 조회
+     */
     public Page<Member> findAll(Pageable pageable) {
         return memberRepository.findAll(pageable);
     }
+
+    /**
+     * 포인트 기부하기
+     */
+
+    /**
+     * [사이트 관리자] 가게 관리자 가입 승인
+     */
 }

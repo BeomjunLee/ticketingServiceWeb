@@ -24,9 +24,8 @@ public class Ticket {
 
     @Enumerated(EnumType.STRING)
     private TicketStatus status;        //티켓 유효 상태(valid, invalid, cancel)
-    private String notice;                //가게 알림창
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;                //store_id
 
@@ -35,28 +34,22 @@ public class Ticket {
     private Member member;
 
     //항목 추가 메서드
-    public void changeTicket(int peopleCount, int waitingNum, int waitingTime, LocalDateTime createdDate, TicketStatus status, String notice) {
+    public void changeTicket(int peopleCount, int waitingNum, int waitingTime, LocalDateTime createdDate, TicketStatus status) {
         this.peopleCount = peopleCount;
         this.waitingNum = waitingNum;
         this.waitingTime = waitingTime;
         this.createdDate = createdDate;
         this.status = status;
-        this.notice = notice;
     }
     
-    //==연관 관계 편의 메서드
 
-    public void setStore(Store store) {
-        if (this.store != null) {
-            store.getTicketList().remove(this);
-        }
-        this.store = store;
-        store.getTicketList().add(this);
-    }
     //==연관관계 편의메서드
     public void setMember(Member member) {
         this.member = member;
-        member.setTicket(this);
+    }
+    //==연관관계 편의메서드
+    public void setStore(Store store) {
+        this.store = store;
     }
 
     //==비지니스 로직==
