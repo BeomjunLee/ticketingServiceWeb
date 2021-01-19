@@ -1,5 +1,6 @@
 package com.hoseo.hackathon.storeticketingservice.domain;
 
+import com.hoseo.hackathon.storeticketingservice.domain.status.TicketStatus;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,13 +1,11 @@
 package com.hoseo.hackathon.storeticketingservice.domain.dto;
 
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
-import com.hoseo.hackathon.storeticketingservice.domain.Role;
+import com.hoseo.hackathon.storeticketingservice.domain.status.Role;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor

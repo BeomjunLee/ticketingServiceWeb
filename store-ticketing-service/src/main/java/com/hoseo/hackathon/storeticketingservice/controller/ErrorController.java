@@ -12,6 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.NoSuchElementException;
+
 @Slf4j
 @ControllerAdvice
 public class ErrorController {
@@ -85,6 +87,20 @@ public class ErrorController {
      */
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity notFoundStore(UsernameNotFoundException e) {
+        log.error(e.getMessage());
+        Response response = Response.builder()
+                .result("fail")
+                .status(404)
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    /**
+     * id값으로 찾기 실패
+     */
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity notFoundById(NoSuchElementException e) {
         log.error(e.getMessage());
         Response response = Response.builder()
                 .result("fail")

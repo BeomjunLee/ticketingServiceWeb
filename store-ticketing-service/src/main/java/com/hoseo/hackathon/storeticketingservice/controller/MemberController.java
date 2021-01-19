@@ -3,20 +3,15 @@ package com.hoseo.hackathon.storeticketingservice.controller;
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.Ticket;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.MemberDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.MyTicketDto;
 import com.hoseo.hackathon.storeticketingservice.domain.form.MemberForm;
-import com.hoseo.hackathon.storeticketingservice.domain.form.StoreForm;
-import com.hoseo.hackathon.storeticketingservice.domain.resource.MemberResource;
+import com.hoseo.hackathon.storeticketingservice.domain.form.StoreAdminForm;
 import com.hoseo.hackathon.storeticketingservice.domain.resource.MyTicketResource;
 import com.hoseo.hackathon.storeticketingservice.domain.response.Response;
 import com.hoseo.hackathon.storeticketingservice.service.MemberService;
 import com.hoseo.hackathon.storeticketingservice.service.StoreService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -37,19 +33,11 @@ public class MemberController {
     private final MemberService memberService;
     private final StoreService storeService;
 
-    @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity findMembers(Pageable pageable, PagedResourcesAssembler<MemberDto> assembler){
-        Page<Member> findMembers = memberService.findAll(pageable);
-        //Page<Member>를 Page<MemberDTO>로
-        Page<MemberDto> members = findMembers.map(member -> new MemberDto(member));
 
-        var memberResource = assembler.toModel(members, e -> new MemberResource(e));
-        return ResponseEntity.ok(memberResource);
-    }
     /**
      * [회원] 가입
      */
+    @ApiOperation(value = "일반 회원 가입[누구나]", notes = "회원을 서비스에 가입시킵니다")
     @PostMapping("/new")
     public ResponseEntity signUpMember(@Valid @RequestBody MemberForm memberForm) {
         Member member = Member.builder()
@@ -58,6 +46,7 @@ public class MemberController {
                 .name(memberForm.getName())
                 .phoneNum(memberForm.getPhoneNum())
                 .email(memberForm.getEmail())
+                .createdDate(LocalDateTime.now())
                 .build();
         memberService.createMember(member);
         Response response = Response.builder()
@@ -72,21 +61,25 @@ public class MemberController {
     /**
      * [관리자] 가입
      */
+    @ApiOperation(value = "가게 관리자 회원 가입[누구나]", notes = "가게 사장님을 서비스에 가입시킵니다")
     @PostMapping("/admin/new")
-    public ResponseEntity signUpAdmin(@Valid @RequestBody MemberForm memberForm, @Valid @RequestBody StoreForm storeForm) {
-        Member member = Member.builder()
-                .username(memberForm.getUsername())
-                .password(memberForm.getPassword())
-                .name(memberForm.getName())
-                .phoneNum(memberForm.getPhoneNum())
-                .email(memberForm.getEmail())
+    public ResponseEntity signUpAdmin(@Valid @RequestBody StoreAdminForm storeAdminForm) {
+        Member member = Member.builder()//회원
+                .username(storeAdminForm.getMemberUsername())
+                .password(storeAdminForm.getMemberPassword())
+                .name(storeAdminForm.getMemberName())
+                .phoneNum(storeAdminForm.getMemberPhoneNum())
+                .email(storeAdminForm.getMemberEmail())
+                .createdDate(LocalDateTime.now())
                 .build();
-        Store store = Store.builder()
-                .name(storeForm.getName())
-                .phoneNum(storeForm.getPhoneNum())
-                .latitude(storeForm.getLatitude())
-                .longitude(storeForm.getLongitude())
-                .companyNumber(storeForm.getCompanyNumber())
+        Store store = Store.builder()//가게
+                .name(storeAdminForm.getStoreName())
+                .phoneNum(storeAdminForm.getStorePhoneNum())
+                .address(storeAdminForm.getStoreAddress())
+                //TODO 주소를 위도, 경도로 바꿔야됨
+                .latitude(storeAdminForm.getStoreLatitude())
+                .longitude(storeAdminForm.getStoreLongitude())
+                .companyNumber(storeAdminForm.getStoreCompanyNumber())
                 .build();
 
         memberService.createAdmin(member);
@@ -111,6 +104,7 @@ public class MemberController {
     /**
      * [회원] 번호표 보기
      */
+    @ApiOperation(value = "번호표 조회[회원]", notes = "가게 사장님을 서비스에 가입시킵니다")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/tickets")
     public ResponseEntity myTicket(Principal principal) {
@@ -133,6 +127,7 @@ public class MemberController {
     /**
      * [회원] 번호표 취소
      */
+    @ApiOperation(value = "번호표 취소[회원]", notes = "뽑은 번호표를 취소합니다")
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/tickets")
     public ResponseEntity cancelMyTicket(Principal principal) {

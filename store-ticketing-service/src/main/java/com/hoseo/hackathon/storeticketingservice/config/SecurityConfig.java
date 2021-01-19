@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -43,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList
-                ("/api/tokens", "/api/members/new", "/api/members/admin/new"),
-                "/api/**");//허용 url, 비허용 url
+                ( "/api/tokens", "/api/members/new", "/api/members/admin/new"),//허용 url
+                "/api/**"); //비허용 url
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(matcher, jwtAuthenticationFailureHandler, headerTokenExtractor);
         jwtAuthenticationFilter.setAuthenticationManager(super.authenticationManagerBean());
         return jwtAuthenticationFilter;
@@ -62,8 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(formLoginAuthenticationProvider)
                 .authenticationProvider(jwtAuthenticationProvider);
     }
-
     //시큐리티 설정
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()    // security에서 기본으로 생성하는 login페이지 사용 안 함
@@ -75,7 +76,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
-
 
 }

@@ -3,8 +3,8 @@ package com.hoseo.hackathon.storeticketingservice.service;
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.Ticket;
-import com.hoseo.hackathon.storeticketingservice.domain.TicketStatus;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.MembersAndTicketsDto;
+import com.hoseo.hackathon.storeticketingservice.domain.status.TicketStatus;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.WaitingMembersDto;
 import com.hoseo.hackathon.storeticketingservice.exception.DuplicateTicketingException;
 import com.hoseo.hackathon.storeticketingservice.exception.NotFoundTicketException;
 import com.hoseo.hackathon.storeticketingservice.repository.MemberRepository;
@@ -51,7 +51,7 @@ class StoreServiceTest {
         //given
         //when
         Pageable pageable = null;
-        Page<MembersAndTicketsDto> ticket = storeService.findHoldMembers("admin", pageable);
+        Page<WaitingMembersDto> ticket = storeService.findHoldMembers("admin", pageable);
         //then
         assertEquals(1, ticket.getTotalPages());
         assertEquals(1, ticket.getContent().get(0).getWaitingNum());   //대기번호

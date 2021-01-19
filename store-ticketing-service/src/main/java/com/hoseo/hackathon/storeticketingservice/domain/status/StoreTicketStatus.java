@@ -1,4 +1,4 @@
-package com.hoseo.hackathon.storeticketingservice.domain;
+package com.hoseo.hackathon.storeticketingservice.domain.status;
 
 import lombok.Getter;
 

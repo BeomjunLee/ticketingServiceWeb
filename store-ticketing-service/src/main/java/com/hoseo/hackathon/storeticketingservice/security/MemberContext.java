@@ -1,7 +1,7 @@
 package com.hoseo.hackathon.storeticketingservice.security;
 
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
-import com.hoseo.hackathon.storeticketingservice.domain.Role;
+import com.hoseo.hackathon.storeticketingservice.domain.status.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

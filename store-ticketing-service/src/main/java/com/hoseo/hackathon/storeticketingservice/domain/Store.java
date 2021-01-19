@@ -1,8 +1,10 @@
 package com.hoseo.hackathon.storeticketingservice.domain;
+import com.hoseo.hackathon.storeticketingservice.domain.status.ErrorStatus;
+import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
+import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
 import lombok.*;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -17,6 +19,7 @@ public class Store {
     @Column(unique = true)
     private String name;                //이름 ->중복되면 안됨
     private String phoneNum;            //전화번호
+    private String address;             //주소
     private String latitude;            //위도
     private String longitude;           //경도
     private int totalWaitingCount;       //전체 대기인원
@@ -24,10 +27,15 @@ public class Store {
     private int totalWaitingTime;       //전체 대기시간
     private String notice;              //공지사항
     private String companyNumber;       //사업자등록번호
+
     @Enumerated(EnumType.STRING)
     private StoreTicketStatus storeTicketStatus;   //가게 번호표 발급 활성화 (OPEN, CLOSE) 상태
     @Enumerated(EnumType.STRING)
     private StoreStatus storeStatus;    //가게 승인 여부 (VALID, INVALID)
+    @Enumerated(EnumType.STRING)
+    private ErrorStatus errorStatus;         //시스템 장애 여부
+
+    private LocalDateTime createdDate;        //생성일
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -59,5 +67,10 @@ public class Store {
     //가게 승인 여부 변경
     public void changeStoreStatus(StoreStatus storeStatus) {
         this.storeStatus = storeStatus;
+    }
+
+    //가게 시스템 장애 여부 변경
+    public void changeErrorStatus(ErrorStatus errorStatus) {
+        this.errorStatus = errorStatus;
     }
 }

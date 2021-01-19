@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MembersAndTicketsDto {
-    private int waitingNum;
+public class HoldingMembersDto {
     private String name;
     private String phoneNum;
     @JsonIgnore

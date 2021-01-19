@@ -1,9 +1,10 @@
 package com.hoseo.hackathon.storeticketingservice.config;
 
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
-import com.hoseo.hackathon.storeticketingservice.domain.Role;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
-import com.hoseo.hackathon.storeticketingservice.domain.StoreTicketStatus;
+import com.hoseo.hackathon.storeticketingservice.domain.status.Role;
+import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
+import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
 import com.hoseo.hackathon.storeticketingservice.repository.StoreRepository;
 import com.hoseo.hackathon.storeticketingservice.service.MemberService;
 import org.modelmapper.ModelMapper;
@@ -28,7 +29,6 @@ public class AppConfig {
 
     }
 
-
     @Bean
     PasswordEncoder passwordEncoder() {
         //여러가지 암호화 방법들을 알아서 매칭
@@ -40,7 +40,7 @@ public class AppConfig {
         return new ModelMapper();
     }
 
-//    //어플리케이션 시작시 test 계정 생성
+    //어플리케이션 시작시 test 계정 생성
 //    @Bean
 //    public ApplicationRunner applicationRunner() {
 //        return new ApplicationRunner() {
@@ -88,18 +88,25 @@ public class AppConfig {
 //                Store store = Store.builder()
 //                        .name("식당1")
 //                        .storeTicketStatus(StoreTicketStatus.OPEN)
+//                        .storeStatus(StoreStatus.VALID)
 //                        .avgWaitingTimeByOne(5)
 //                        .build();
 //                store.setMember(member);
 //
+//                Member admin = Member.builder()
+//                        .username("admin2")
+//                        .password("1234")
+//                        .role(Role.ADMIN)
+//                        .build();
 //                memberService.createAdmin(member);
 //                memberService.createMember(member2);
 //                memberService.createMember(member3);
 //                memberService.createMember(member4);
 //                memberService.createMember(member5);
 //                memberService.createMember(member6);
+//                memberService.createMember(admin);
 //                storeRepository.save(store);
 //            }
 //        };
-//    }
+//     }
 }

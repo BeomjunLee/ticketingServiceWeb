@@ -1,8 +1,8 @@
 package com.hoseo.hackathon.storeticketingservice.service;
 
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
-import com.hoseo.hackathon.storeticketingservice.domain.MemberStatus;
-import com.hoseo.hackathon.storeticketingservice.domain.Role;
+import com.hoseo.hackathon.storeticketingservice.domain.status.MemberStatus;
+import com.hoseo.hackathon.storeticketingservice.domain.status.Role;
 import com.hoseo.hackathon.storeticketingservice.exception.DuplicateUsernameException;
 import com.hoseo.hackathon.storeticketingservice.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Errors;
-
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true) //조회최적화
@@ -87,13 +84,6 @@ public class MemberService{
      */
     public Member findOne(Long id) {
         return memberRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("해당되는 유저를 찾을수 없습니다"));
-    }
-
-    /**
-     * 회원 전체 조회
-     */
-    public Page<Member> findAll(Pageable pageable) {
-        return memberRepository.findAll(pageable);
     }
 
     /**
