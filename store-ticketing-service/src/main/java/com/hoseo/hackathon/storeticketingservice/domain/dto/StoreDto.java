@@ -22,4 +22,5 @@ public class StoreDto {
     private String phoneNum;
     private String address;
     private LocalDateTime createdDate;
+    private String companyNumber;
 }

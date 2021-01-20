@@ -45,19 +45,19 @@ class StoreServiceTest {
             storeService.findMyTicket("test5");
         });
     }
-    @Test
-    @Order(9)
-    public void 관리자가_보류한_티켓_찾기() throws Exception{
-        //given
-        //when
-        Pageable pageable = null;
-        Page<WaitingMembersDto> ticket = storeService.findHoldMembers("admin", pageable);
-        //then
-        assertEquals(1, ticket.getTotalPages());
-        assertEquals(1, ticket.getContent().get(0).getWaitingNum());   //대기번호
-        assertEquals("회원1", ticket.getContent().get(0).getName());  //이름
-
-    }
+//    @Test
+//    @Order(9)
+//    public void 관리자가_보류한_티켓_찾기() throws Exception{
+//        //given
+//        //when
+//        Pageable pageable = null;
+//        Page<WaitingMembersDto> ticket = storeService.findHoldMembers("admin", pageable);
+//        //then
+//        assertEquals(1, ticket.getTotalPages());
+//        assertEquals(1, ticket.getContent().get(0).getWaitingNum());   //대기번호
+//        assertEquals("회원1", ticket.getContent().get(0).getName());  //이름
+//
+//    }
     
     @Test
     @Order(8)

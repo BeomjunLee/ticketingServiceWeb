@@ -46,6 +46,7 @@ public class AdminService {
                 .phoneNum(store.getPhoneNum())
                 .address(store.getAddress())
                 .createdDate(store.getCreatedDate())
+                .companyNumber(store.getCompanyNumber())
                 .build());
     }
 
