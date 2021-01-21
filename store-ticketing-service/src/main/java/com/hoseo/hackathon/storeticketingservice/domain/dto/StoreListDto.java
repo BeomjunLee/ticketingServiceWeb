@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StoreDto {
+public class StoreListDto {
     @JsonIgnore
     private Long store_id;
     @JsonIgnore

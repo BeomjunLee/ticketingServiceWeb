@@ -39,6 +39,7 @@ public class MemberService{
      */
     @Transactional //조회가 아니므로 Transactional
     public Member createMember(Member member) {
+        //TODO 아이디 null 체크(재가입)
         validateDuplicateMember(member.getUsername()); //중복회원검증
         member.changeRole(Role.USER);   //권한부여
         member.changeMemberStatus(MemberStatus.VALID);  //일반 회원은 바로 가입
@@ -64,7 +65,7 @@ public class MemberService{
      * 중복 회원 검증
      */
     private void validateDuplicateMember(String username) {
-        Long findMembers = memberRepository.countByUsername(username);
+        int findMembers = memberRepository.countByUsername(username);
         if (findMembers > 0) {
             throw new DuplicateUsernameException("아이디가 중복되었습니다");
         }

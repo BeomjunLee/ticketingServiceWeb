@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 
@@ -13,6 +12,6 @@ import org.springframework.hateoas.PagedModel;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdminStoreManageDto {
-    private PagedModel<EntityModel<StoreDto>> storeList;
+    private PagedModel<EntityModel<StoreListDto>> storeList;
     private int totalEnrollStoreCount;
 }

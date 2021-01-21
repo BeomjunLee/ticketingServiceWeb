@@ -32,6 +32,13 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Query("select t from Ticket t join t.member m where m.username = :username and t.status = :status")
     Optional<Ticket> findTicketJoinMemberByUsernameAndStatus(@Param("username") String username, @Param("status") TicketStatus status);
 
+    //회원_id로 조인해서 티켓 id찾기
+    @Query("select t.id from Ticket t join t.member m where m.id = :member_id")
+    Optional<Long> findTicketIdJoinMemberId(@Param("member_id") Long member_id);
+
+    //현재 서비스 이용자수(번호표를 가지고 있는 인원)
+    int countByStatus(TicketStatus status);
+
     //취소한 사람의 뒤의 티켓을 - 1
     @Transactional
     @Modifying

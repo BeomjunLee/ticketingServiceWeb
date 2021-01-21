@@ -47,6 +47,7 @@ public class MemberController {
                 .phoneNum(memberForm.getPhoneNum())
                 .email(memberForm.getEmail())
                 .createdDate(LocalDateTime.now())
+                .deletedDate(null)  //탈퇴일은 가입시 null(재가입시 null 로 바꿔야돼서)
                 .build();
         memberService.createMember(member);
         Response response = Response.builder()

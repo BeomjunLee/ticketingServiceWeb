@@ -19,23 +19,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.security.Principal;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/admin", produces = MediaTypes.HAL_JSON_VALUE)
 public class AdminController {
     private final AdminService adminService;
+    /**
+     * 헤더
+     */
 
     /**
-     * 가게 관리
+     * 관리할 가게 리스트 보기
      * 응답 : 가게이름, 전화번호, 주소, 등록일, 등록된 가게 수
      * link : 가게 번호표 관리, 가게수정, 가게관리자 정보보기, 이름으로 검색, 주소로 검색
      */
     @ApiOperation(value = "가게리스트 관리[사이트 관리자]", notes = "가게리스트를 조회하고 관리합니다")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/stores")
-    public ResponseEntity findStores(Pageable pageable, PagedResourcesAssembler<StoreDto> assembler) {
+    public ResponseEntity findStores(Pageable pageable, PagedResourcesAssembler<StoreListDto> assembler) {
         int totalEnrollStoreCount = adminService.totalEnrollStoreCount();
         AdminStoreManageDto dto = AdminStoreManageDto.builder()
                 .storeList(assembler.toModel(adminService.findStores(StoreStatus.VALID, pageable), e -> new AdminStoreListResource(e)))
@@ -91,6 +92,37 @@ public class AdminController {
 
     /**
      * 가게관리자 정보보기
+     */
+
+//===================================회원==============================================
+
+    /**
+     * 관리할 회원 리스트 보기
+     * res : 총 회원수, 현재 서비스 이용자 수, 아이디, 이름, 전화번호, 이메일, 가입일, 포인트
+     * 링크 : 가입일순으로보기, 이름순으로보기, 검색, 회원탈퇴, 회원수정, 번호표 취소
+     */
+    @ApiOperation(value = "회원 관리[사이트 관리자]", notes = "사이트 관리자가 회원 목록을 조회하며 회원을 관리합니다")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/members")
+    public void manageMembers(Pageable pageable, PagedResourcesAssembler<MemberListDto> assembler) {
+        //회원 리스트
+        AdminMemberManageDto dto = AdminMemberManageDto.builder()
+                .totalMemberCount(adminService.totalMemberCount())
+                .currentUsingServiceCount(adminService.currentUsingServiceCount())
+                .memberList(assembler.toModel(adminService.findMembers(pageable)))
+                .build();
+    }
+
+    /**
+     * 회원 탈퇴
+     */
+
+    /**
+     * 회원 수정
+     */
+
+    /**
+     * 번호표 취소
      */
 
 

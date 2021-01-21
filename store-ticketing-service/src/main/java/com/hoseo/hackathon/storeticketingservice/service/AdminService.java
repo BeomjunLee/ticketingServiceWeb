@@ -4,8 +4,9 @@ import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.Ticket;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.HoldingMembersDto;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.MemberListDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.WaitingMembersDto;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreDto;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreListDto;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
 import com.hoseo.hackathon.storeticketingservice.domain.status.TicketStatus;
@@ -37,9 +38,9 @@ public class AdminService {
     /**
      * 가게 리스트 보기
      */
-    public Page<StoreDto> findStores(StoreStatus storeStatus, Pageable pageable) {
+    public Page<StoreListDto> findStores(StoreStatus storeStatus, Pageable pageable) {
         Page<Store> stores = storeRepository.findAllByStoreStatus(storeStatus, pageable);
-        return stores.map(store -> StoreDto.builder()
+        return stores.map(store -> StoreListDto.builder()
                 .store_id(store.getId())
                 .member_id(store.getMember().getId())
                 .name(store.getName())
@@ -268,17 +269,36 @@ public class AdminService {
 
 
 //==========================================================회원 관리===============================================================
+
     /**
      * 회원 리스트 보기
      */
+    public Page<MemberListDto> findMembers(Pageable pageable) {
+        return memberRepository.findAllByUsernameIsNotNull(pageable).map(member -> MemberListDto.builder()
+                    .ticket_id(ticketRepository.findTicketIdJoinMemberId(member.getId())
+                            .orElseThrow(() -> new NotFoundTicketException("체크할 티켓을 찾을수 없습니다")))
+                    .member_id(member.getId())
+                    .username(member.getUsername())
+                    .name(member.getName())
+                    .phoneNum(member.getPhoneNum())
+                    .email(member.getEmail())
+                    .createdDate(member.getCreatedDate())
+                    .build());
+    }
 
     /**
-     * 신규 가게 가입자(가입 승인) 알림
+     * 전체 회원 수
      */
+    public int totalMemberCount() {
+        return memberRepository.countByUsernameIsNotNull();
+    }
 
     /**
-     * 서비스 장애 알림
+     * 현재 서비스 이용자 수(번호표 뽑은)
      */
+    public int currentUsingServiceCount() {
+        return ticketRepository.countByStatus(TicketStatus.VALID);
+    }
 
     /**
      * 회원 정보 보기

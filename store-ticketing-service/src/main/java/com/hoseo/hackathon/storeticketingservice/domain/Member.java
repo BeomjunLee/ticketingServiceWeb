@@ -39,6 +39,7 @@ public class Member {
     private Role role;                                      //권한
 
     private LocalDateTime createdDate;                      //가입일
+    private LocalDateTime deletedDate;                      //탈퇴일
 
 
     //비밀번호 암호화위해 setter
