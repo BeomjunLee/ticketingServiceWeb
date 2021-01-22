@@ -13,6 +13,8 @@ public class AdminMemberListResource extends EntityModel<MemberListDto> {
         super(dto, links);
         add(linkTo(AdminController.class).slash("members").slash(dto.getMember_id()).withRel("회원 탈퇴"));
         add(linkTo(AdminController.class).slash("members").slash(dto.getMember_id()).withRel("회원 수정"));
-        add(linkTo(AdminController.class).slash("members").slash(dto.getTicket_id()).slash(dto.getMember_id()).withRel("가게 관리자 정보보기"));
+        if(dto.getTicket_id() != null) {
+            add(linkTo(AdminController.class).slash("members/tickets").slash(dto.getMember_id()).withRel("티켓 취소"));
+        }
     }
 }

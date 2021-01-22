@@ -104,13 +104,15 @@ public class AdminController {
     @ApiOperation(value = "회원 관리[사이트 관리자]", notes = "사이트 관리자가 회원 목록을 조회하며 회원을 관리합니다")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/members")
-    public void manageMembers(Pageable pageable, PagedResourcesAssembler<MemberListDto> assembler) {
+    public ResponseEntity manageMembers(Pageable pageable, PagedResourcesAssembler<MemberListDto> assembler) {
         //회원 리스트
         AdminMemberManageDto dto = AdminMemberManageDto.builder()
                 .totalMemberCount(adminService.totalMemberCount())
                 .currentUsingServiceCount(adminService.currentUsingServiceCount())
-                .memberList(assembler.toModel(adminService.findMembers(pageable)))
+                .memberList(assembler.toModel(adminService.findMembers(pageable), e -> new AdminMemberListResource(e)))
                 .build();
+        AdminMemberManageResource resource = new AdminMemberManageResource(dto);
+        return ResponseEntity.ok(dto);
     }
 
     /**
