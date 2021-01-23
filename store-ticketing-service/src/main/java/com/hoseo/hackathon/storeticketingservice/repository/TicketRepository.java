@@ -17,7 +17,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     //티켓 상태별 카운트
     int countByStore_IdAndStatus(Long store_id, TicketStatus Status);
 
-    Optional<Ticket> findByMember_Id(Long id);
+    Optional<Ticket> findByIdAndStore_Id(Long ticket_id, Long store_id);
 
     //[관리자] 보류, 체크, 취소한 회원들 찾기
     Page<Ticket> findAllByStore_IdAndStatus(Long store_id, TicketStatus status, Pageable pageable);

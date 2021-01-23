@@ -18,11 +18,11 @@ import javax.validation.constraints.NotNull;
 @ApiModel(description = "가게 관리자 회원가입 폼")
 public class StoreAdminForm {
     @NotBlank(message = "아이디를 입력해주세요")
-    @ApiModelProperty(position = 1, value = "아이디", example = "user")
+    @ApiModelProperty(position = 1, value = "아이디", example = "storeadmin")
     private String memberUsername;                                //아이디
 
     @NotBlank(message = "비밀번호를 입력해주세요")
-    @ApiModelProperty(position = 2, value = "비밀번호", example = "qwe1234")
+    @ApiModelProperty(position = 2, value = "비밀번호", example = "1234")
     private String memberPassword;                                //비밀번호
 
     @NotBlank(message = "이름을 입력해주세요")
@@ -51,11 +51,11 @@ public class StoreAdminForm {
     @ApiModelProperty(position = 8, value = "가게 주소", example = "경기도 ㅇㅇ시 ㅇㅇ대로 101-101")
     private String storeAddress;
 
-    @NotBlank(message = "위도를 입력해주세요")
+//    @NotBlank(message = "위도를 입력해주세요")
     @ApiModelProperty(hidden = true)
     private String storeLatitude;            //위도
 
-    @NotBlank(message = "경도를 입력해주세요")
+//    @NotBlank(message = "경도를 입력해주세요")
     @ApiModelProperty(hidden = true)
     private String storeLongitude;           //경도
 

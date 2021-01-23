@@ -1,5 +1,6 @@
 package com.hoseo.hackathon.storeticketingservice.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
 import lombok.*;
 import org.springframework.hateoas.EntityModel;
@@ -17,4 +18,7 @@ public class StoreManageDto {
     private String notice;                  //공지사항
     private int avgWaitingTimeByOne;        //한사람당 평균 대기시간
 //    private int holdMemberCount;            //보류회원수
+
+    @JsonIgnore
+    private Long store_id;
 }

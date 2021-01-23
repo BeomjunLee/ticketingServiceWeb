@@ -21,11 +21,11 @@ public class MemberForm {
     private String username;                                //아이디
 
     @NotBlank(message = "비밀번호를 입력해주세요")
-    @ApiModelProperty(position = 2, value = "비밀번호", example = "qwe1234")
+    @ApiModelProperty(position = 2, value = "비밀번호", example = "1234")
     private String password;                                //비밀번호
 
     @NotBlank(message = "이름을 입력해주세요")
-    @ApiModelProperty(position = 3, value = "이름", example = "홍길동")
+    @ApiModelProperty(position = 3, value = "이름", example = "동길홍")
     private String name;                                    //이름
 
     @NotBlank(message = "전화번호를 입력해주세요")

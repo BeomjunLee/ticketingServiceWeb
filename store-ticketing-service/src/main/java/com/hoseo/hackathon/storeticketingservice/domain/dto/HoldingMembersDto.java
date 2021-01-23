@@ -15,4 +15,6 @@ public class HoldingMembersDto {
     private String phoneNum;
     @JsonIgnore
     private Long ticket_id;
+    @JsonIgnore
+    private Long store_id;
 }

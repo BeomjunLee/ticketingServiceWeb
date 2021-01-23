@@ -7,3 +7,8 @@ Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlXyI6WyJST0xFX
 GET http://localhost:8080/api/admin/stores
 Content-Type: application/json
 Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlXyI6WyJST0xFX0FETUlOIl0sImlzcyI6ImxlZWJlb21qdW4iLCJleHAiOjE2MTEwODY2NTcsInVzZXJuYW1lIjoiYWRtaW4yIn0.m_dhJgXhpueTSSW9mhzDjKRRkZpTQo50tPJJwEG_jx8
+
+###
+PUT http://localhost:8080/api/admin/stores/2/wait/1
+Content-Type: application/json
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlXyI6WyJST0xFX0FETUlOIl0sImlzcyI6ImxlZWJlb21qdW4iLCJleHAiOjE2MTEzMjgzNjYsInVzZXJuYW1lIjoiYWRtaW4ifQ.LvD3OC3rn-U8uhis-WoqsyD0u3tS7vdToc1JbjTrc3g

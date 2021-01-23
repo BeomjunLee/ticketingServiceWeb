@@ -1,4 +1,4 @@
-package com.hoseo.hackathon.storeticketingservice.domain.resource;
+package com.hoseo.hackathon.storeticketingservice.domain.resource.admin;
 
 import com.hoseo.hackathon.storeticketingservice.controller.AdminController;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.MemberListDto;

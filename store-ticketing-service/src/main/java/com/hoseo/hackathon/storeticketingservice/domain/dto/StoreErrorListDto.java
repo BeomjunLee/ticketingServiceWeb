@@ -6,16 +6,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class WaitingMembersDto {
-    private int waitingNum;
-    private String name;
-    private String phoneNum;
-    @JsonIgnore
-    private Long ticket_id;
+public class StoreErrorListDto {
     @JsonIgnore
     private Long store_id;
+    @JsonIgnore
+    private Long member_id;
+
+    private String name;
+    private String phoneNum;
+    private String address;
+    private int totalWaitingCount;
 }

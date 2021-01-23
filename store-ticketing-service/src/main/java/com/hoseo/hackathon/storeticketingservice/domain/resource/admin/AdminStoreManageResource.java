@@ -1,4 +1,4 @@
-package com.hoseo.hackathon.storeticketingservice.domain.resource;
+package com.hoseo.hackathon.storeticketingservice.domain.resource.admin;
 
 import com.hoseo.hackathon.storeticketingservice.controller.StoreController;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.AdminStoreManageDto;
@@ -11,7 +11,7 @@ public class AdminStoreManageResource extends EntityModel<AdminStoreManageDto> {
     public AdminStoreManageResource(AdminStoreManageDto dto, Link... links) {
         super(dto, links);
         add(linkTo(StoreController.class).slash("stores").withSelfRel());
-        add(linkTo(StoreController.class).slash("stores").withRel("검색"));
+        add(linkTo(StoreController.class).slash("stores--").withRel("검색"));
         //TODO 검색 링크추가
     }
 }

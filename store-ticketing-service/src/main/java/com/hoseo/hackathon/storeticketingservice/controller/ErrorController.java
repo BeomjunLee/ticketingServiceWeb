@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -25,20 +26,22 @@ public class ErrorController {
     public ResponseEntity validate(MethodArgumentNotValidException e) {
         log.error(e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
-        StringBuilder builder = new StringBuilder();
-        for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            builder.append("[error필드: ");
-            builder.append(fieldError.getField());
-            builder.append(", error메세지: ");
-            builder.append(fieldError.getDefaultMessage());
-            builder.append(", 입력 값: ");
-            builder.append(fieldError.getRejectedValue());
-            builder.append("] ");
-        }
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+//        StringBuilder builder = new StringBuilder();
+//        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+//            builder.append("[error필드: ");
+//            builder.append(fieldError.getField());
+//            builder.append(", error메세지: ");
+//            builder.append(fieldError.getDefaultMessage());
+//            builder.append(", 입력 값: ");
+//            builder.append(fieldError.getRejectedValue());
+//            builder.append("] ");
+//        }
         Response response = Response.builder()
                 .result("fail")
                 .status(400)
-                .message(builder.toString())
+//                .message(builder.toString())
+                .message(fieldErrors.get(0).getDefaultMessage())    //첫번째 에러만
                 .build();
         return ResponseEntity.badRequest().body(response);
     }
@@ -129,6 +132,20 @@ public class ErrorController {
      */
     @ExceptionHandler(DuplicateUsernameException.class)
     public ResponseEntity duplicatedUsername(DuplicateUsernameException e) {
+        log.error(e.getMessage());
+        Response response = Response.builder()
+                .result("fail")
+                .status(400)
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    /**
+     * 가게명 중복 에러
+     */
+    @ExceptionHandler(DuplicateStoreNameException.class)
+    public ResponseEntity duplicatedStoreName(DuplicateStoreNameException e) {
         log.error(e.getMessage());
         Response response = Response.builder()
                 .result("fail")

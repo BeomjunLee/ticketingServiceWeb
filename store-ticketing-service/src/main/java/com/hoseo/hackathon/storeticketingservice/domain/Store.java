@@ -33,7 +33,7 @@ public class Store {
     @Enumerated(EnumType.STRING)
     private StoreStatus storeStatus;    //가게 승인 여부 (VALID, INVALID)
     @Enumerated(EnumType.STRING)
-    private ErrorStatus errorStatus;         //시스템 장애 여부
+    private ErrorStatus errorStatus;         //시스템 장애 여부 (ERROR, GOOD)
 
     private LocalDateTime createdDate;        //생성일
 
@@ -47,6 +47,12 @@ public class Store {
     }
 
     //==비지니스로직==
+    //가게 수정
+    public void changeStore(String phoneNum, String address) {
+        this.phoneNum = phoneNum;
+        this.address = address;
+    }
+    
     //번호표 뽑을때 Store 변경점
     public void changeStoreByTicketing(int totalWaitingCount) {
         this.totalWaitingCount = totalWaitingCount + 1;     //전체 대기인원수 설정
@@ -72,5 +78,20 @@ public class Store {
     //가게 시스템 장애 여부 변경
     public void changeErrorStatus(ErrorStatus errorStatus) {
         this.errorStatus = errorStatus;
+    }
+    
+    //승인 날짜 설정
+    public void changeCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    //공지사항 변경
+    public void changeNotice(String notice) {
+        this.notice = notice;
+    }
+
+    //한사람당 대기시간 변경
+    public void changeAvgWaitingTimeByOne(int avgWaitingTimeByOne) {
+        this.avgWaitingTimeByOne = avgWaitingTimeByOne;
     }
 }

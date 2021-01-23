@@ -5,6 +5,7 @@ import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.status.Role;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
+import com.hoseo.hackathon.storeticketingservice.repository.MemberRepository;
 import com.hoseo.hackathon.storeticketingservice.repository.StoreRepository;
 import com.hoseo.hackathon.storeticketingservice.service.MemberService;
 import org.modelmapper.ModelMapper;
@@ -40,7 +41,7 @@ public class AppConfig {
         return new ModelMapper();
     }
 
-    //어플리케이션 시작시 test 계정 생성
+//   // 어플리케이션 시작시 test 계정 생성
 //    @Bean
 //    public ApplicationRunner applicationRunner() {
 //        return new ApplicationRunner() {
@@ -48,11 +49,15 @@ public class AppConfig {
 //            MemberService memberService;
 //            @Autowired
 //            StoreRepository storeRepository;
+//
+//            @Autowired
+//            MemberRepository memberRepository;
 //            @Override
 //            public void run(ApplicationArguments args) throws Exception {
 //                Member member = Member.builder()
-//                        .username("admin")
+//                        .username("admin2")
 //                        .password("1234")
+//                        .role(Role.ADMIN)
 //                        .build();
 //
 //                Member member2 = Member.builder()
@@ -98,6 +103,7 @@ public class AppConfig {
 //                        .password("1234")
 //                        .role(Role.ADMIN)
 //                        .build();
+//                memberRepository.save(member);
 //                memberService.createAdmin(member);
 //                memberService.createMember(member2);
 //                memberService.createMember(member3);

@@ -3,13 +3,8 @@ package com.hoseo.hackathon.storeticketingservice.service;
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.Ticket;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.HoldingMembersDto;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.MemberListDto;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.WaitingMembersDto;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreListDto;
-import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
-import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
-import com.hoseo.hackathon.storeticketingservice.domain.status.TicketStatus;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.*;
+import com.hoseo.hackathon.storeticketingservice.domain.status.*;
 import com.hoseo.hackathon.storeticketingservice.exception.IsAlreadyCompleteException;
 import com.hoseo.hackathon.storeticketingservice.exception.NotAuthorizedStoreException;
 import com.hoseo.hackathon.storeticketingservice.exception.NotFoundStoreException;
@@ -20,9 +15,14 @@ import com.hoseo.hackathon.storeticketingservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -36,7 +36,7 @@ public class AdminService {
 //===============================================가게 관리=============================================
 
     /**
-     * 가게 리스트 보기
+     * 상태별 가게 목록 보기
      */
     public Page<StoreListDto> findStores(StoreStatus storeStatus, Pageable pageable) {
         Page<Store> stores = storeRepository.findAllByStoreStatus(storeStatus, pageable);
@@ -79,7 +79,7 @@ public class AdminService {
 
                    //================가게 번호표 관리 기능================
     /**
-     * [관리자] 번호표 발급 활성화
+     *  번호표 발급 활성화
      */
     @Transactional
     public void openTicket(Long store_id) {
@@ -92,7 +92,7 @@ public class AdminService {
     }
 
     /**
-     * [관리자] 번호표 발급 비활성화
+     *  번호표 발급 비활성화
      */
     @Transactional
     public void closeTicket(Long store_id) {
@@ -151,7 +151,7 @@ public class AdminService {
     }
 
     /**
-     * [관리자] 번호표 넘기기(체크)
+     *  번호표 넘기기(체크)
      */
     @Transactional
     public Ticket checkTicket(Long store_id, Long ticket_id) {
@@ -175,7 +175,7 @@ public class AdminService {
 
 
     /**
-     * [관리자] 번호표 보류하기
+     * 번호표 보류하기
      */
     @Transactional
     public Ticket holdTicket(Long store_id, Long ticket_id) {
@@ -198,11 +198,11 @@ public class AdminService {
     }
 
     /**
-     * [관리자]보류한 번호표 체크
+     * 보류한 번호표 체크
      */
     @Transactional
-    public Ticket holdCheckTicket(Long ticket_id) {
-        Ticket ticket = ticketRepository.findById(ticket_id).orElseThrow(() -> new NotFoundTicketException("체크할 티켓을 찾을수 없습니다"));
+    public Ticket holdCheckTicket(Long store_id, Long ticket_id) {
+        Ticket ticket = ticketRepository.findByIdAndStore_Id(ticket_id, store_id).orElseThrow(() -> new NotFoundTicketException("체크할 티켓을 찾을수 없습니다"));
         if (ticket.getStatus().equals(TicketStatus.INVALID)) {
             throw new IsAlreadyCompleteException("이미 체크처리 되었습니다");
         }
@@ -212,11 +212,12 @@ public class AdminService {
     }
 
     /**
-     * [관리자] 보류한 번호표 취소
+     *  보류한 번호표 취소
      */
     @Transactional
-    public Ticket holdCancelTicket(Long ticket_id) {
-        Ticket ticket = ticketRepository.findById(ticket_id).orElseThrow(() -> new NotFoundTicketException("체크할 티켓을 찾을수 없습니다"));
+    public Ticket holdCancelTicket(Long store_id, Long ticket_id) {
+
+        Ticket ticket = ticketRepository.findByIdAndStore_Id(ticket_id, store_id).orElseThrow(() -> new NotFoundTicketException("체크할 티켓을 찾을수 없습니다"));
         if (ticket.getStatus().equals(TicketStatus.CANCEL)) {
             throw new IsAlreadyCompleteException("이미 취소처리 되었습니다");
         }
@@ -226,7 +227,7 @@ public class AdminService {
     }
 
     /**
-     * [관리자] 보류한 번호표들 보기
+     * 보류한 회원들 + 번호표 보기
      */
     public Page<HoldingMembersDto> findHoldMembers(Long store_id, Pageable pageable) {
         //관리자의 가게 찾기
@@ -241,11 +242,12 @@ public class AdminService {
                 .name(ticket.getMember().getName())
                 .phoneNum(ticket.getMember().getPhoneNum())
                 .ticket_id(ticket.getId())
+                .store_id(store.getId())
                 .build());
     }
 
     /**
-     * [관리자] 대기중인 회원들 보기
+     * 대기중인 회원들 + 번호표  보기
      */
     public Page<WaitingMembersDto> findWaitingMembers(Long store_id, Pageable pageable) {
         //관리자의 가게 찾기
@@ -257,11 +259,12 @@ public class AdminService {
                 .name(ticket.getMember().getName())
                 .phoneNum(ticket.getMember().getPhoneNum())
                 .ticket_id(ticket.getId())
+                .store_id(store.getId())
                 .build());
     }
 
     /**
-     * [관리자] 가게 정보 보기
+     * 가게 정보 보기
      */
     public Store findStore(Long store_id) {
         return storeRepository.findById(store_id).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
@@ -273,10 +276,9 @@ public class AdminService {
     /**
      * 회원 리스트 보기
      */
-    public Page<MemberListDto> findMembers(Pageable pageable) {
-        return memberRepository.findAllByUsernameIsNotNull(pageable).map(member -> MemberListDto.builder()
-                    .ticket_id(ticketRepository.findTicketIdJoinMemberId(member.getId())
-                            .orElseThrow(() -> new NotFoundTicketException("체크할 티켓을 찾을수 없습니다")))
+    public Page<MemberListDto> findMembers(Pageable pageable, MemberStatus status) {
+        return memberRepository.findAllByUsernameIsNotNullAndStatus(pageable, status).map(member -> MemberListDto.builder()
+                    .ticket_id(ticketRepository.findTicketIdJoinMemberId(member.getId()).orElse(null))
                     .member_id(member.getId())
                     .username(member.getUsername())
                     .name(member.getName())
@@ -303,10 +305,32 @@ public class AdminService {
     /**
      * 회원 정보 보기
      */
+    public Member findMember(Long member_id) {
+        return memberRepository.findById(member_id).orElseThrow(() -> new UsernameNotFoundException("해당되는 회원을 찾을수 없습니다"));
+    }
+
 
     /**
-     * 회원 티켓 취소
+     * 회원 탈퇴(username 은 null, 회원 상태는 DELETE)
+     * (가게 관리자인경우 가게 이름은 null, 가게 상태도 DELETE)
      */
+
+
+
+    /**
+     * 탈퇴후 7일지난 회원 영구삭제
+     */
+    public void deleteMemberWeekPast() {
+        List<Member> memberList = memberRepository.findAllByStatus(MemberStatus.DELETE);
+        if(memberList == null) throw new NoSuchElementException("삭제할 회원이 없습니다");
+        memberList.stream().forEach(member ->{
+            Period period = Period.between(member.getDeletedDate().toLocalDate(), LocalDateTime.now().toLocalDate());
+                if (period.getDays() >= 7) {
+                    memberRepository.delete(member);
+                }
+        });
+    }
+
 
 
 //==================================================헤더=========================================================
@@ -319,13 +343,29 @@ public class AdminService {
      */
 
 //============================================가입 승인====================================================
-    /**
-     * 가입 대기 리스트보기
-     */
 
     /**
      * 가게 관리자 가입 승인 (시간넣어야됨)
      */
+    @Transactional
+    public void permitStoreAdmin(Long member_id, Long store_id) {
+        Member member = memberRepository.findById(member_id).orElseThrow(() -> new UsernameNotFoundException("해당되는 유저를 찾을수 없습니다"));
+        Store store = storeRepository.findById(store_id).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
+        member.changeMemberStatus(MemberStatus.VALID);
+        store.changeStoreStatus(StoreStatus.VALID);
+        store.changeCreatedDate(LocalDateTime.now());
+    }
+
+    /**
+     * 가게 관리자 가입 승인 취소
+     */
+    @Transactional
+    public void rejectStoreAdmin(Long member_id, Long store_id) {
+        Member member = memberRepository.findById(member_id).orElseThrow(() -> new UsernameNotFoundException("해당되는 유저를 찾을수 없습니다"));
+        Store store = storeRepository.findById(store_id).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
+        member.changeMemberStatus(MemberStatus.INVALID);
+        store.changeStoreStatus(StoreStatus.INVALID);
+    }
 
     /**
      * 가입 대기 이름 검색
@@ -339,5 +379,49 @@ public class AdminService {
     /**
      * 시스템 장애 리스트 보기
      */
+    public Page<StoreErrorListDto> findErrorStores(Pageable pageable) {
+        Page<Store> stores = storeRepository.findAllByErrorStatus(ErrorStatus.ERROR, pageable);
+        return stores.map(store -> StoreErrorListDto.builder()
+                .store_id(store.getId())
+                .member_id(store.getMember().getId())
+                .name(store.getName())
+                .phoneNum(store.getPhoneNum())
+                .address(store.getAddress())
+                .totalWaitingCount(store.getTotalWaitingCount())
+                .build());
+    }
+
+    /**
+     * 시스템 장애 손님수많은 순서대로 보기
+     */
+    public Page<StoreErrorListDto> findErrorStoresByTotalWaitingCount(Pageable pageable) {
+        Page<Store> stores = storeRepository.findAllByErrorStatusOrderByTotalWaitingCountDesc(ErrorStatus.ERROR, pageable);
+        return stores.map(store -> StoreErrorListDto.builder()
+                .store_id(store.getId())
+                .member_id(store.getMember().getId())
+                .name(store.getName())
+                .phoneNum(store.getPhoneNum())
+                .address(store.getAddress())
+                .totalWaitingCount(store.getTotalWaitingCount())
+                .build());
+    }
+
+    /**
+     * 시스템 장애 신청
+     */
+    @Transactional
+    public void sendErrorSystem(Long store_id) {
+        Store store = storeRepository.findById(store_id).orElseThrow(() -> new NotFoundStoreException("관리자의 이름으로 등록된 가게를 찾을수 없습니다"));
+        store.changeErrorStatus(ErrorStatus.ERROR);
+    }
+
+    /**
+     * 시스템 에러 해결 완료
+     */
+    @Transactional
+    public void completeErrorSystem(Long store_id) {
+        Store store = storeRepository.findById(store_id).orElseThrow(() -> new NotFoundStoreException("관리자의 이름으로 등록된 가게를 찾을수 없습니다"));
+        store.changeErrorStatus(ErrorStatus.GOOD);
+    }
 
 }

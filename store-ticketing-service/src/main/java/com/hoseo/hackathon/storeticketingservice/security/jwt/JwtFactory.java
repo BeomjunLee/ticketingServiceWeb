@@ -20,7 +20,7 @@ public class JwtFactory {
 
     public String generateToken(String username, Collection<? extends GrantedAuthority> authorities) {
         String token = null;
-        Long expiredTime = 1000 * 30L * 60L; //30분
+        Long expiredTime = 1000 * 60L * 60L; //60분
         Date ext = new Date();
         ext.setTime(ext.getTime() + expiredTime);
         System.out.println(ext);

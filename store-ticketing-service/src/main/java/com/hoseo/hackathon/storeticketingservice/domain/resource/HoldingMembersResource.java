@@ -10,8 +10,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class HoldingMembersResource extends EntityModel<HoldingMembersDto> {
     public HoldingMembersResource(HoldingMembersDto dto, Link... links){
         super(dto, links);
-        add(linkTo(StoreController.class).slash("tickets").slash(dto.getTicket_id()).slash("holding").withRel("취소"));
-        add(linkTo(StoreController.class).slash("tickets").slash(dto.getTicket_id()).slash("holding").withRel("체크"));
+        add(linkTo(StoreController.class).slash("tickets").slash(dto.getTicket_id()).slash("hold").withRel("취소"));
+        add(linkTo(StoreController.class).slash("tickets").slash(dto.getTicket_id()).slash("hold").withRel("체크"));
     }
 
 }

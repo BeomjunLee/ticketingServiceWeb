@@ -34,13 +34,19 @@ public class Member {
     
     
     @Enumerated(EnumType.STRING)
-    private MemberStatus status;                            //가입 대기(VALID, INVALID)
+    private MemberStatus status;                            //가입 대기(VALID, INVALID) 탈퇴 (DELETE)
     @Enumerated(value = EnumType.STRING)
     private Role role;                                      //권한
 
     private LocalDateTime createdDate;                      //가입일
     private LocalDateTime deletedDate;                      //탈퇴일
 
+    //회원 수정
+    public void changeMember(String name, String phoneNum, String email) {
+        this.name = name;
+        this.phoneNum = phoneNum;
+        this.email = email;
+    }
 
     //비밀번호 암호화위해 setter
     public void encodingPassword(String password) {

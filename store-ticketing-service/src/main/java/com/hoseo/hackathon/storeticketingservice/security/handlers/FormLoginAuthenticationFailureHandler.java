@@ -26,7 +26,7 @@ public class FormLoginAuthenticationFailureHandler implements AuthenticationFail
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         Logger log = LoggerFactory.getLogger("로그인 오류");
         log.error(exception.getMessage());
-        LoginDto loginDto = writeDTO(exception.getMessage(), "no token");
+        LoginDto loginDto = writeDTO(exception.getMessage(), null);
 
         //JSON형태로 response
         response.setStatus(HttpStatus.FORBIDDEN.value());
