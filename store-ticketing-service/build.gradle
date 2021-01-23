@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.1'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
+    id 'com.github.node-gradle.node' version '2.2.3'
 }
 
 group = 'com.hoseo.hackathon'
@@ -16,6 +17,44 @@ configurations {
 
 repositories {
     mavenCentral()
+}
+
+node{
+    version = '14.15.4'
+
+    download = true
+
+    workDir = file("${project.projectDir}/src/main/frontend/nodejs")
+
+    npmWorkDir = file("${project.projectDir}/src/main/frontend/npm")
+
+    nodeModulesDir = file("${project.projectDir}/src/main/frontend")
+}
+
+task npmInstallDependencies(type:NpmTask){
+    dependsOn 'npmSetup'
+    execOverrides{
+        it.ignoreExitValue = true
+        it.workingDir = 'src/main/frontend'
+    }
+}
+
+task npmBuild(type: NpmTask){
+    dependsOn 'npmInstallDependencies'
+    execOverrides{
+        it.workingDir = 'src/main/frontend'
+    }
+    args = ['run', 'build']
+}
+
+task copyFrontendToBuild(type: Copy){
+    dependsOn 'npmBuild'
+    from "$projectDir/src/main/frontend/build/"
+    into "$buildDir/resources/main/static"
+}
+
+processResources{
+    dependsOn 'copyFrontendToBuild'
 }
 
 dependencies {
@@ -43,45 +82,6 @@ dependencies {
 
     //swagger랑 hateoas랑 충돌나서 해결
     compile group: 'org.springframework.plugin', name: 'spring-plugin-core', version: '1.2.0.RELEASE'
-}
-
-def webappDir = "$projectDir/src/main/frontend"
-
-sourceSets {
-    main {
-        resources {
-            srcDirs = ["$webappDir/build", "$projectDir/src/main/resources"]
-        }
-    }
-}
-
-processResources {
-    dependsOn "buildReact"
-}
-
-task buildReact(type: Exec) {
-    dependsOn "installReact"
-    workingDir "$webappDir"
-    inputs.dir "$webappDir"
-    group = BasePlugin.BUILD_GROUP
-    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "run-script", "build"
-    } else {
-        commandLine "npm", "run-script", "build"
-    }
-}
-
-task installReact(type: Exec) {
-    workingDir "$webappDir"
-    inputs.dir "$webappDir"
-    group = BasePlugin.BUILD_GROUP
-    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "audit", "fix"
-        commandLine 'npm.cmd', 'install'
-    } else {
-        commandLine "npm", "audit", "fix"
-        commandLine 'npm', 'install'
-    }
 }
 
 test {

@@ -23,7 +23,6 @@ public class MemberService{
 
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -45,7 +44,8 @@ public class MemberService{
                 .orElseThrow(() -> new UsernameNotFoundException(username + "에 해당되는 유저를 찾을수 없습니다"));
         if (!passwordEncoder.matches(currentPassword, member.getPassword())) {
             throw new BadCredentialsException("비밀번호가 일치 하지않습니다");
-        }else member.encodingPassword(passwordEncoder.encode(newPassword));
+        }
+        member.encodingPassword(passwordEncoder.encode(newPassword));
     }
 
     /**
