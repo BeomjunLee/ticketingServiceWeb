@@ -40,7 +40,7 @@ public class MemberController {
     /**
      * test
      */
-    @PostMapping("/test")
+    @GetMapping("/test")
     public ResponseEntity member() {
         Response response = Response.builder()
                 .result("success")

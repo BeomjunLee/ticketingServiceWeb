@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList
-                ( "/api/tokens", "/api/members/new", "/api/members/admin/new"),//허용 url
+                ( "/api/members/test", "/api/tokens", "/api/members/new", "/api/members/admin/new"),//허용 url
                 "/api/**"); //비허용 url
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(matcher, jwtAuthenticationFailureHandler, headerTokenExtractor);
         jwtAuthenticationFilter.setAuthenticationManager(super.authenticationManagerBean());
