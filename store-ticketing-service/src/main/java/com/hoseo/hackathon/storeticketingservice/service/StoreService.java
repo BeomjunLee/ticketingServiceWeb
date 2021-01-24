@@ -147,7 +147,6 @@ public class StoreService {
             throw new IsAlreadyCompleteException("이미 체크처리 되었습니다");
         }
 
-
         int totalWaitingCount = ticketRepository.countByStore_IdAndStatus(store.getId(), TicketStatus.VALID);
 
         ticketRepository.updateTicketsMinus1(TicketStatus.VALID, ticket.getWaitingNum(), store.getAvgWaitingTimeByOne(), store.getId()); //보류한 번호표보다 뒤에있는 사람들에게 - 1
@@ -214,6 +213,22 @@ public class StoreService {
     }
 
     /**
+     * 가게 공지사항 수정
+     */
+    public void updateStoreNotice(String username, String notice) {
+        Store store = storeRepository.findStoreJoinMemberByUsername(username).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
+        store.changeNotice(notice);
+    }
+
+    /**
+     * 가게 한사람당 평균 대기시간 수정
+     */
+    public void updateAvgTime(String username, int avgTime) {
+        Store store = storeRepository.findStoreJoinMemberByUsername(username).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
+        store.changeAvgWaitingTimeByOne(avgTime);
+    }
+
+    /**
      * [관리자] 시스템 장애 신청
      */
     public void sendErrorSystem(String username) {
@@ -229,7 +244,6 @@ public class StoreService {
     public Ticket findMyTicket(String username) {
         Ticket ticket = ticketRepository.findTicketJoinMemberByUsernameAndStatus(username, TicketStatus.VALID).orElseThrow(() -> new NotFoundTicketException("티켓을 찾을수 없습니다"));
         return ticket;
-
     }
 
     /**

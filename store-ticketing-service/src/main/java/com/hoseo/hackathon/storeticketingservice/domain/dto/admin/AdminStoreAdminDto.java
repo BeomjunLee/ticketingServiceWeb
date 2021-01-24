@@ -1,4 +1,4 @@
-package com.hoseo.hackathon.storeticketingservice.domain.dto;
+package com.hoseo.hackathon.storeticketingservice.domain.dto.admin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hoseo.hackathon.storeticketingservice.domain.status.Role;

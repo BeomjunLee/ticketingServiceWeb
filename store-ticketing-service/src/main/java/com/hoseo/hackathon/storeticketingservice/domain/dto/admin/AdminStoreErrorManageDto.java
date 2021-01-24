@@ -1,4 +1,4 @@
-package com.hoseo.hackathon.storeticketingservice.domain.dto;
+package com.hoseo.hackathon.storeticketingservice.domain.dto.admin;
 
 import com.hoseo.hackathon.storeticketingservice.domain.resource.admin.AdminStoreErrorResource;
 import lombok.Builder;

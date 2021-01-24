@@ -3,7 +3,14 @@ package com.hoseo.hackathon.storeticketingservice.controller;
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.*;
-import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeAvgTimeForm;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminMemberDto;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminMemberManageDto;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminStoreAdminDto;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminStoreManageDto;
+import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateMemberForm;
+import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateStoreAdminForm;
+import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
+import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.resource.*;
 import com.hoseo.hackathon.storeticketingservice.domain.resource.admin.*;
 import com.hoseo.hackathon.storeticketingservice.domain.response.Response;
@@ -206,9 +213,8 @@ public class AdminController {
     @ApiOperation(value = "가게 공지사항 수정[사이트 관리자]", notes = "가게의 공지사항을 수정할수 있습니다")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/stores/{store_id}/notice")
-    public ResponseEntity updateNotice(@PathVariable("store_id")Long store_id, @RequestBody @Valid StoreNoticeAvgTimeForm form) {
-        Store store = adminService.findStore(store_id);
-        store.changeNotice(form.getNotice());
+    public ResponseEntity updateNotice(@PathVariable("store_id")Long store_id, @RequestBody @Valid StoreNoticeForm form) {
+        adminService.updateStoreNotice(store_id, form.getNotice());
 
         Response response = Response.builder()
                 .result("success")
@@ -224,28 +230,40 @@ public class AdminController {
     @ApiOperation(value = "가게 한 사람당 대기시간 수정[사이트 관리자]", notes = "가게의 한 사람당 대기시간을 설정할 수 있습니다")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/stores/{store_id}/time")
-    public ResponseEntity updateAvgWaitingTime(@PathVariable("store_id")Long store_id, @RequestBody @Valid StoreNoticeAvgTimeForm form) {
-        Store store = adminService.findStore(store_id);
-        store.changeAvgWaitingTimeByOne(form.getAvgWaitingTimeByOne());
+    public ResponseEntity updateAvgWaitingTime(@PathVariable("store_id")Long store_id, @RequestBody @Valid AvgTimeForm form) {
+        adminService.updateAvgTime(store_id, form.getAvgWaitingTimeByOne());
 
         Response response = Response.builder()
                 .result("success")
                 .status(200)
-                .message("대기시간 변경 성공")
+                .message("한사람당 대기시간 변경 성공")
                 .build();
         return ResponseEntity.ok(response);
     }
 
     /**
-     * 가게 수정
+     * 가게 관리자 수정
      */
+    @ApiOperation(value = "가게 관리자 수정[사이트 관리자]", notes = "가게 관리자의 정보를 수정합니다")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/stores/{store_id}/members/{member_id}")
+    public ResponseEntity updateStoreAdmin(@PathVariable("store_id")Long store_id, @PathVariable("member_id")Long member_id,
+                                           @RequestBody @Valid AdminUpdateStoreAdminForm form) {
+        adminService.updateStoreAdmin(store_id, member_id, form);
+        Response response = Response.builder()
+                .result("success")
+                .status(200)
+                .message("가게 관리자 수정 성공")
+                .build();
+        return ResponseEntity.ok(response);
+    }
 
     /**
      * 가게, 관리자 정보보기
      */
     @ApiOperation(value = "가게 관리자 정보보기[사이트 관리자]", notes = "가게, 관리자의 정보를 봅니다")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/stores/{store_id}/members/{member_id}")
+    @GetMapping("/stores/{store_id}/members/{member_id}")
     public ResponseEntity findStoreAdmin(@PathVariable("store_id")Long store_id, @PathVariable("member_id")Long member_id) {
         Member member = adminService.findStoreAdmin(member_id);
         Store store = adminService.findStore(store_id);
@@ -287,9 +305,62 @@ public class AdminController {
     /**
      * 회원 탈퇴
      */
+    @ApiOperation(value = "회원 탈퇴[사이트 관리자]", notes = "사이트 관리자가 회원을 탈퇴시킵니다")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/members/{member_id}")
+    public ResponseEntity deleteMember(@PathVariable("member_id")Long member_id) {
+        adminService.deleteMember(member_id);
+        Response response = Response.builder()
+                .result("success")
+                .status(200)
+                .message("회원 탈퇴 성공")
+                .build();
+        return ResponseEntity.ok(response);
+    }
 
     /**
+     * 회원 정보 보기
+     */
+    @ApiOperation(value = "회원 수정 정보보기[사이트 관리자]", notes = "사이트 관리자가 회원 수정하전 정보를 불러옵니다")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/members/{member_id}")
+    public ResponseEntity updateMember(@PathVariable("member_id")Long member_id) {
+        Member member = adminService.findMember(member_id);
+        AdminMemberDto dto = AdminMemberDto.builder()
+                .member_id(member.getId())
+                .username(member.getUsername())
+                .name(member.getName())
+                .phoneNum(member.getPhoneNum())
+                .email(member.getEmail())
+                .point(member.getPoint())
+                .createdDate(member.getCreatedDate())
+                .build();
+
+
+        return ResponseEntity.ok(dto);
+    }
+
+    
+    /**
      * 회원 수정
+     */
+    @ApiOperation(value = "회원 수정[사이트 관리자]", notes = "사이트 관리자가 회원을 수정합니다")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/members/{member_id}")
+    public ResponseEntity updateMember(@PathVariable("member_id")Long member_id, @RequestBody @Valid AdminUpdateMemberForm form) {
+        adminService.updateMember(member_id, form);
+
+        Response response = Response.builder()
+                .result("success")
+                .status(200)
+                .message("회원 수정 성공")
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+
+    /**
+     * 비밀번호 수정
      */
 
     /**

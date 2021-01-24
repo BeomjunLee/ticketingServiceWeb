@@ -1,7 +1,7 @@
 package com.hoseo.hackathon.storeticketingservice.domain.resource.admin;
 
 import com.hoseo.hackathon.storeticketingservice.controller.StoreController;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.AdminStoreManageDto;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminStoreManageDto;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 

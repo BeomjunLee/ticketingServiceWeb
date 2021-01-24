@@ -169,7 +169,7 @@ public class MemberController {
                                        @RequestBody @Valid UpdateStoreAdminForm storeForm) {
         Member member = memberService.findByUsername(principal.getName());
         if (member.getRole().equals(Role.USER)){    //회원
-            member.changeMember(memberForm.getName(), memberForm.getPhoneNum(), memberForm.getEmail());
+            memberService.updateMember(principal.getName(), memberForm);
             Response response = Response.builder()
                     .result("success")
                     .status(200)
@@ -178,9 +178,7 @@ public class MemberController {
             return ResponseEntity.ok(response);
 
         }else if (member.getRole().equals(Role.STORE_ADMIN)) {  //가게 관리자
-            Store store = storeService.findStore(member.getUsername());
-            member.changeMember(memberForm.getName(), member.getPhoneNum(), member.getEmail());
-            store.changeStore(storeForm.getStore_phoneNum(), storeForm.getStore_address());
+            memberService.updateStoreAdmin(principal.getName(), storeForm);
             Response response = Response.builder()
                     .result("success")
                     .status(200)

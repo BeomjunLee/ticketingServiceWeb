@@ -12,6 +12,6 @@ public class AdminStoreListResource extends EntityModel<StoreListDto> {
         super(dto, links);
         add(linkTo(AdminController.class).slash("stores").slash(dto.getStore_id()).slash("authorization").slash(dto.getMember_id()).withRel("가게 승인 취소"));
         add(linkTo(AdminController.class).slash("stores").slash(dto.getStore_id()).withRel("가게 번호표 관리"));
-        add(linkTo(AdminController.class).slash("stores").slash(dto.getStore_id()).slash("members").slash(dto.getMember_id()).withRel("가게, 관리자 정보보기"));
+        add(linkTo(AdminController.class).slash("stores").slash(dto.getStore_id()).slash("members").slash(dto.getMember_id()).withRel("가게 관리자 정보보기"));
     }
 }

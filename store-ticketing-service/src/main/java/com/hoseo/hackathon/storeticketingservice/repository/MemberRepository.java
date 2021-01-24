@@ -15,14 +15,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByUsername(String username);
 
     //모든 회원들 조회
-    Page<Member> findAllByUsernameIsNotNullAndStatus(Pageable pageable, MemberStatus status);
+    Page<Member> findAllByStatus(Pageable pageable, MemberStatus status);
 
     //전체 회원수
-    int countByUsernameIsNotNull();
+    int countByStatus(MemberStatus status);
     
     //아이디 중복검색
     int countByUsername(String username);
-    
+
     //탈퇴한 회원들 검색
     List<Member> findAllByStatus(MemberStatus status);
 

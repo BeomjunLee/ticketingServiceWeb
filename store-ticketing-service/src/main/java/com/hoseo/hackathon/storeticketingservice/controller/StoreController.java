@@ -1,10 +1,11 @@
 package com.hoseo.hackathon.storeticketingservice.controller;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.Ticket;
-import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeAvgTimeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.HoldingMembersDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.WaitingMembersDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreManageDto;
+import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
+import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.TicketForm;
 import com.hoseo.hackathon.storeticketingservice.domain.resource.HoldingMembersResource;
 import com.hoseo.hackathon.storeticketingservice.domain.resource.WaitingMembersAndStoreManageResource;
@@ -236,9 +237,8 @@ public class StoreController {
     @ApiOperation(value = "가게 공지사항 수정[가게 관리자]", notes = "가게의 공지사항을 수정할수 있습니다")
     @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
     @PutMapping("/notice")
-    public ResponseEntity updateNotice(Principal principal, @RequestBody @Valid StoreNoticeAvgTimeForm form) {
-        Store store = storeService.findStore(principal.getName());
-        store.changeNotice(form.getNotice());
+    public ResponseEntity updateNotice(Principal principal, @RequestBody @Valid StoreNoticeForm form) {
+        storeService.updateStoreNotice(principal.getName(), form.getNotice());
 
         Response response = Response.builder()
                 .result("success")
@@ -254,9 +254,8 @@ public class StoreController {
     @ApiOperation(value = "가게 한 사람당 대기시간 수정[가게 관리자]", notes = "가게의 한 사람당 대기시간을 설정할 수 있습니다")
     @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
     @PutMapping("/time")
-    public ResponseEntity updateAvgWaitingTime(Principal principal, @RequestBody @Valid StoreNoticeAvgTimeForm form) {
-        Store store = storeService.findStore(principal.getName());
-        store.changeAvgWaitingTimeByOne(form.getAvgWaitingTimeByOne());
+    public ResponseEntity updateAvgWaitingTime(Principal principal, @RequestBody @Valid AvgTimeForm form) {
+        storeService.updateAvgTime(principal.getName(), form.getAvgWaitingTimeByOne());
 
         Response response = Response.builder()
                 .result("success")
@@ -265,6 +264,11 @@ public class StoreController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * 가게 수정
+     */
+
 //===========================================가게 찾기 메뉴========================================
 
     /**

@@ -1,5 +1,6 @@
-package com.hoseo.hackathon.storeticketingservice.domain.dto;
+package com.hoseo.hackathon.storeticketingservice.domain.dto.admin;
 
+import com.hoseo.hackathon.storeticketingservice.domain.dto.MemberListDto;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.hateoas.EntityModel;

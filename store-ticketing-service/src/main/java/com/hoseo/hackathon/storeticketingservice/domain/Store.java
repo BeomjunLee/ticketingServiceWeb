@@ -46,11 +46,19 @@ public class Store {
         this.member = member;
     }
 
-    //==비지니스로직==
+    //=========================비지니스로직=====================
     //가게 수정
     public void changeStore(String phoneNum, String address) {
         this.phoneNum = phoneNum;
         this.address = address;
+    }
+
+    //가게 수정(관리자용)
+    public void changeStoreByAdmin(String name, String phoneNum, String address, String companyNumber) {
+        this.name = name;
+        this.phoneNum = phoneNum;
+        this.address = address;
+        this.companyNumber = companyNumber;
     }
     
     //번호표 뽑을때 Store 변경점

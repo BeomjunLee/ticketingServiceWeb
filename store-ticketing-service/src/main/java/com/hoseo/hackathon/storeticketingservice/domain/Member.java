@@ -48,6 +48,15 @@ public class Member {
         this.email = email;
     }
 
+    //회원 수정(관리자용)
+    public void changeMemberByAdmin(String username, String name, String phoneNum, String email, int point) {
+        this.username = username;
+        this.name = name;
+        this.phoneNum = phoneNum;
+        this.email = email;
+        this.point = point;
+    }
+
     //비밀번호 암호화위해 setter
     public void encodingPassword(String password) {
         this.password = password;

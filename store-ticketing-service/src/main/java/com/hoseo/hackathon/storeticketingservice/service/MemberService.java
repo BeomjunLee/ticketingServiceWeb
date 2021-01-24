@@ -2,9 +2,12 @@ package com.hoseo.hackathon.storeticketingservice.service;
 
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
+import com.hoseo.hackathon.storeticketingservice.domain.form.UpdateMemberForm;
+import com.hoseo.hackathon.storeticketingservice.domain.form.UpdateStoreAdminForm;
 import com.hoseo.hackathon.storeticketingservice.domain.status.*;
 import com.hoseo.hackathon.storeticketingservice.exception.DuplicateStoreNameException;
 import com.hoseo.hackathon.storeticketingservice.exception.DuplicateUsernameException;
+import com.hoseo.hackathon.storeticketingservice.exception.NotFoundStoreException;
 import com.hoseo.hackathon.storeticketingservice.repository.MemberRepository;
 import com.hoseo.hackathon.storeticketingservice.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +42,7 @@ public class MemberService{
     /**
      * 비밀번호 변경
      */
+    @Transactional
     public void changePassword(String username, String currentPassword, String newPassword) {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username + "에 해당되는 유저를 찾을수 없습니다"));
@@ -46,6 +50,25 @@ public class MemberService{
             throw new BadCredentialsException("비밀번호가 일치 하지않습니다");
         }
         member.encodingPassword(passwordEncoder.encode(newPassword));
+    }
+
+    /**
+     * 회원 수정(일반)
+     */
+    @Transactional
+    public void updateMember(String username, UpdateMemberForm memberForm) {
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("해당되는 유저를 찾을수 없습니다"));
+        member.changeMember(memberForm.getName(), memberForm.getPhoneNum(), memberForm.getEmail());
+    }
+    
+    /**
+     * 회원 수정(가게 관리자)
+     */
+    @Transactional
+    public void updateStoreAdmin(String username, UpdateStoreAdminForm storeForm) {
+        Store store = storeRepository.findStoreJoinMemberByUsername(username).orElseThrow(() -> new NotFoundStoreException("해당되는 가게를 찾을수 없습니다"));
+        store.changeStore(storeForm.getStore_phoneNum(), storeForm.getStore_address());
+
     }
 
     /**
@@ -103,7 +126,7 @@ public class MemberService{
     /**
      * 중복 회원 검증
      */
-    private void validateDuplicateMember(String username) {
+    public void validateDuplicateMember(String username) {
         int findMembers = memberRepository.countByUsername(username);
         if (findMembers > 0) {
             throw new DuplicateUsernameException("아이디가 중복되었습니다");
@@ -113,7 +136,7 @@ public class MemberService{
     /**
      * 중복 가게명 검증
      */
-    private void validateDuplicateStore(String name) {
+    public void validateDuplicateStore(String name) {
         int findStores = storeRepository.countByName(name);
         if (findStores > 0) {
             throw new DuplicateStoreNameException("가게명이 중복되었습니다");
