@@ -53,9 +53,8 @@ public class MemberController {
     /**
      * [회원] 가입
      */
-    @ApiOperation(value = "일반 회원 가입[누구나]", notes = "회원을 서비스에 가입시킵니다")
     @PostMapping("/new")
-    public ResponseEntity signUpMember(@Valid @RequestBody MemberForm memberForm) {
+    public String signUpMember(@Valid MemberForm memberForm) {
         Member member = Member.builder()
                 .username(memberForm.getUsername())
                 .password(memberForm.getPassword())
@@ -66,21 +65,15 @@ public class MemberController {
                 .deletedDate(null)  //탈퇴일은 가입시 null(재가입시 null 로 바꿔야돼서)
                 .build();
         memberService.createMember(member);
-        Response response = Response.builder()
-                .result("success")
-                .status(201)
-                .message("회원가입 성공")
-                .build();
-        URI createUri = linkTo(MemberController.class).slash("new").toUri();
-        return ResponseEntity.created(createUri).body(response);
+
+        return "";
     }
 
     /**
      * [관리자] 가입
      */
-    @ApiOperation(value = "가게 관리자 회원 가입[누구나]", notes = "가게 사장님을 서비스에 가입시킵니다")
     @PostMapping("/admin/new")
-    public ResponseEntity signUpAdmin(@Valid @RequestBody StoreAdminForm storeAdminForm) {
+    public String signUpAdmin(@Valid StoreAdminForm storeAdminForm) {
         Member member = Member.builder()//회원
                 .username(storeAdminForm.getMemberUsername())
                 .password(storeAdminForm.getMemberPassword())
@@ -107,7 +100,7 @@ public class MemberController {
                 .message("관리자 가입 성공")
                 .build();
         URI createUri = linkTo(MemberController.class).slash("admin/new").toUri();
-        return ResponseEntity.created(createUri).body(response);
+        return "";
     }
 
     /**
