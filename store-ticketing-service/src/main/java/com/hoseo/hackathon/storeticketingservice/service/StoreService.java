@@ -27,7 +27,7 @@ public class StoreService {
     private final MemberRepository memberRepository;
     private final TicketRepository ticketRepository;
     private final StoreRepository storeRepository;
-
+    
     /**
      * [회원] 번호표 뽑기
      */
@@ -289,7 +289,7 @@ public class StoreService {
      * [관리자] 가게 정보 보기
      */
     @Transactional(readOnly = true)
-    public Store findStore(String username) {
+    public Store findValidStore(String username) {
         Store store = storeRepository.findStoreJoinMemberByUsername(username).orElseThrow(() -> new NotFoundStoreException("관리자의 이름으로 등록된 가게를 찾을수 없습니다"));
 
         if(store.getStoreStatus().equals(StoreStatus.INVALID) || store.getStoreStatus().equals(StoreStatus.DELETE)){//승인되지 않은 가게 체크
@@ -300,10 +300,19 @@ public class StoreService {
     }
 
     /**
+     * [관리자] 가게 정보 보기
+     */
+    @Transactional(readOnly = true)
+    public Store findStore(String username) {
+        Store store = storeRepository.findStoreJoinMemberByUsername(username).orElseThrow(() -> new NotFoundStoreException("관리자의 이름으로 등록된 가게를 찾을수 없습니다"));
+        return store;
+    }
+
+    /**
      * 가게 id값으로 검색
      */
     @Transactional(readOnly = true)
-    public Store findStoreById(Long id) {
+    public Store findValidStoreById(Long id) {
         Store store = storeRepository.findById(id).orElseThrow(() -> new NotFoundStoreException("가게를 찾을수 없습니다"));
         if(store.getStoreStatus().equals(StoreStatus.INVALID) || store.getStoreStatus().equals(StoreStatus.DELETE)){//승인되지 않은 가게 체크
             throw new NotAuthorizedStoreException("승인 되지 않은 가게입니다");

@@ -124,6 +124,7 @@ public class ErrorController {
                 .status(403)
                 .message(e.getMessage())
                 .build();
+
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 

@@ -315,12 +315,22 @@ public class AdminService {
     }
 
     /**
-     * 가게 정보 보기
+     * 가게 정보 보기(승인되지않은가게도)
      */
     public Store findStore(Long store_id) {
         return storeRepository.findById(store_id).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
     }
 
+//    /**
+//     * 가게 정보 보기(승인된 가게만)
+//     */
+//    public Store findValidStore(Long store_id) {
+//        Store store = storeRepository.findById(store_id).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
+//        if(store.getStoreStatus().equals(StoreStatus.INVALID) || store.getStoreStatus().equals(StoreStatus.DELETE)){//승인되지 않은 가게 체크
+//            throw new NotAuthorizedStoreException("승인 되지 않은 가게입니다");
+//        }
+//        return store;
+//    }
 
 //==========================================================회원 관리===============================================================
 

@@ -1,4 +1,4 @@
-package com.hoseo.hackathon.storeticketingservice.controller;
+package com.hoseo.hackathon.storeticketingservice.api;
 
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
@@ -11,7 +11,7 @@ import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateMemberFo
 import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateStoreAdminForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
-import com.hoseo.hackathon.storeticketingservice.domain.resource.HoldingMembersResource;
+import com.hoseo.hackathon.storeticketingservice.domain.resource.*;
 import com.hoseo.hackathon.storeticketingservice.domain.resource.admin.*;
 import com.hoseo.hackathon.storeticketingservice.domain.response.Response;
 import com.hoseo.hackathon.storeticketingservice.domain.status.MemberStatus;
@@ -26,15 +26,14 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/admin")
-public class AdminController {
+@RequestMapping(value = "/api/admin", produces = MediaTypes.HAL_JSON_VALUE)
+public class ApiAdminController {
     private final AdminService adminService;
 
 //========================================가게 관리============================================

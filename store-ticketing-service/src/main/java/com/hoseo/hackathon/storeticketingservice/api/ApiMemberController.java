@@ -1,4 +1,4 @@
-package com.hoseo.hackathon.storeticketingservice.controller;
+package com.hoseo.hackathon.storeticketingservice.api;
 
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
@@ -20,7 +20,6 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,10 +29,10 @@ import java.time.LocalDateTime;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/members")
-public class MemberController {
+@RequestMapping(value = "/api/members", produces = MediaTypes.HAL_JSON_VALUE)
+public class ApiMemberController {
 
     private final MemberService memberService;
     private final StoreService storeService;
@@ -71,7 +70,7 @@ public class MemberController {
                 .status(201)
                 .message("회원가입 성공")
                 .build();
-        URI createUri = linkTo(MemberController.class).slash("new").toUri();
+        URI createUri = linkTo(ApiMemberController.class).slash("new").toUri();
         return ResponseEntity.created(createUri).body(response);
     }
 
@@ -106,7 +105,7 @@ public class MemberController {
                 .status(201)
                 .message("관리자 가입 성공")
                 .build();
-        URI createUri = linkTo(MemberController.class).slash("admin/new").toUri();
+        URI createUri = linkTo(ApiMemberController.class).slash("admin/new").toUri();
         return ResponseEntity.created(createUri).body(response);
     }
 

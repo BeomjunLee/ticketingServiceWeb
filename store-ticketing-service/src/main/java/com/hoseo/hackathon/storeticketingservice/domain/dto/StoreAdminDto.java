@@ -2,6 +2,7 @@ package com.hoseo.hackathon.storeticketingservice.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hoseo.hackathon.storeticketingservice.domain.status.Role;
+import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -27,4 +28,5 @@ public class StoreAdminDto {
     private String store_phoneNum;
     private String store_address;
     private String store_companyNumber;
+    private String store_status;
 }

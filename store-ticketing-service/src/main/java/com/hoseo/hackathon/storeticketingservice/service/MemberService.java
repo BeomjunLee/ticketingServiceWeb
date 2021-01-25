@@ -66,7 +66,9 @@ public class MemberService{
      */
     @Transactional
     public void updateStoreAdmin(String username, UpdateStoreAdminForm storeForm) {
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("해당되는 유저를 찾을수 없습니다"));
         Store store = storeRepository.findStoreJoinMemberByUsername(username).orElseThrow(() -> new NotFoundStoreException("해당되는 가게를 찾을수 없습니다"));
+        member.changeMember(storeForm.getMember_name(), storeForm.getMember_phoneNum(), storeForm.getMember_email());
         store.changeStore(storeForm.getStore_phoneNum(), storeForm.getStore_address());
 
     }

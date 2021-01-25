@@ -1,10 +1,9 @@
-package com.hoseo.hackathon.storeticketingservice.controller;
-
+package com.hoseo.hackathon.storeticketingservice.api;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.Ticket;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.HoldingMembersDto;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreManageDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.WaitingMembersDto;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreManageDto;
 import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.TicketForm;
@@ -22,16 +21,17 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
 
-@Controller
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
+@RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/stores")
-public class StoreController {
+@RequestMapping(value = "/api/stores", produces = MediaTypes.HAL_JSON_VALUE)
+public class ApiStoreController {
 
     private final StoreService storeService;
 

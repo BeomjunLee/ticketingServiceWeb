@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UpdateStoreAdminForm {
     @NotBlank(message = "회원 이름을 입력해주세요")
     @ApiModelProperty(position = 1, value = "이름", example = "동길홍")
