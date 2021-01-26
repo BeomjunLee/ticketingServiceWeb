@@ -2,7 +2,6 @@ package com.hoseo.hackathon.storeticketingservice.security.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.LoginDto;
-import com.hoseo.hackathon.storeticketingservice.security.jwt.JwtFactory;
 import com.hoseo.hackathon.storeticketingservice.security.tokens.PostAuthorizationToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,21 +19,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FormLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final JwtFactory jwtFactory;
+//    private final JwtFactory jwtFactory;
 
     private final ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
             PostAuthorizationToken token = (PostAuthorizationToken) authentication; //PostAuthorizationToken으로 넘어온 인증 결과값에서
-            String generateToken = jwtFactory.generateToken((String)token.getPrincipal(), token.getAuthorities());   //MemberContext안에 있는 인증 결과 값 정보를 사용해 JWT 토큰 생성
-            LoginDto loginDto = writeDTO(generateToken);//DTO에도 토큰 값 넣어주기
-
-            //JSON형태로 response
-            response.setStatus(HttpStatus.OK.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding("UTF-8");
-            objectMapper.writeValue(response.getWriter(), loginDto);
+            
     }
 
     /**

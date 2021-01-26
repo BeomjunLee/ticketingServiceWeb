@@ -30,11 +30,6 @@ public class AppConfig {
 
     }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        //여러가지 암호화 방법들을 알아서 매칭
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
 
     @Bean
     public ModelMapper modelMapper(){

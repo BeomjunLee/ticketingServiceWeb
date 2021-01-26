@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 
 @Getter
 public enum Role {
-    USER("ROLE_USER"), STORE_ADMIN("ROLE_STORE_ADMIN"), ADMIN("ROLE_ADMIN");
+    USER("ROLE_USER"), STORE_ADMIN("ROLE_STORE_ADMIN"), ADMIN("ROLE_ADMIN"), DELETE("ROLE_DELETE");
 
     private String role;
 

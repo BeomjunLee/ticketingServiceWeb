@@ -6,11 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,8 +25,8 @@ public class ErrorController {
     /**
      * Valid 에러
      */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity validate(MethodArgumentNotValidException e) {
+    @ExceptionHandler(BindException.class)
+    public String validate(BindException e, Model model) {
         log.error(e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -37,13 +40,7 @@ public class ErrorController {
 //            builder.append(fieldError.getRejectedValue());
 //            builder.append("] ");
 //        }
-        Response response = Response.builder()
-                .result("fail")
-                .status(400)
-//                .message(builder.toString())
-                .message(fieldErrors.get(0).getDefaultMessage())    //첫번째 에러만
-                .build();
-        return ResponseEntity.badRequest().body(response);
+        return "/joinMember";
     }
 
     /**

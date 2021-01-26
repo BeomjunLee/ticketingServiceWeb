@@ -80,7 +80,7 @@ public class MemberService{
     public Member createMember(Member member) {
         validateDuplicateMember(member.getUsername()); //중복회원검증
         member.changeRole(Role.USER);   //권한부여
-        member.changeMemberStatus(MemberStatus.VALID);  //일반 회원은 바로 가입
+        member.changeEnabled(true);  //일반 회원은 바로 가입
         //비밀번호 encoding
         member.encodingPassword(passwordEncoder.encode(member.getPassword()));
         return memberRepository.save(member);
@@ -95,7 +95,7 @@ public class MemberService{
         validateDuplicateStore(store.getName());       //중복 가게명 검증
 
         member.changeRole(Role.STORE_ADMIN); //권한부여
-        member.changeMemberStatus(MemberStatus.INVALID); //가게 관리자는 가입 대기상태
+        member.changeEnabled(false); //가게 관리자는 가입 대기상태
         //비밀번호 encoding
         member.encodingPassword(passwordEncoder.encode(member.getPassword()));
 
@@ -119,7 +119,6 @@ public class MemberService{
     public void createAdmin(Member member) {
         validateDuplicateMember(member.getUsername()); //중복회원검증
         member.changeRole(Role.ADMIN); //권한부여
-        member.changeMemberStatus(MemberStatus.ADMIN); //가게 관리자는 가입 대기상태
         //비밀번호 encoding
         member.encodingPassword(passwordEncoder.encode(member.getPassword()));
         memberRepository.save(member);

@@ -38,11 +38,14 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
      */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        ObjectMapper objectMapper = new ObjectMapper();
+//        ObjectMapper objectMapper = new ObjectMapper();
         //요청 정보를 받은 DTO
-        LoginForm loginFormDto = objectMapper.readValue(request.getReader(), LoginForm.class);
+//        LoginForm loginFormDto = objectMapper.readValue(request.getReader(), LoginForm.class);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        LoginForm loginForm = new LoginForm(username, password);
 
-        PreAuthorizationToken token = new PreAuthorizationToken(loginFormDto);  //PreAuthorization안에 LoginDTO값을 세팅하고
+        PreAuthorizationToken token = new PreAuthorizationToken(loginForm);  //PreAuthorization안에 LoginDTO값을 세팅하고
 
         return super.getAuthenticationManager().authenticate(token);    
         //AuthenticationManager로 FormLoginAuthenticationProvider에서 오버라이드해서 사용한 authenticate메서드를 통해 인증 진행

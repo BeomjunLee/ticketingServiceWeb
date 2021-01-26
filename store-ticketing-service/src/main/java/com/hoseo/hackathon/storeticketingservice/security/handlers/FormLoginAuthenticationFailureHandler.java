@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,13 +27,12 @@ public class FormLoginAuthenticationFailureHandler implements AuthenticationFail
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         Logger log = LoggerFactory.getLogger("로그인 오류");
         log.error(exception.getMessage());
-        LoginDto loginDto = writeDTO(exception.getMessage(), null);
 
-        //JSON형태로 response
-        response.setStatus(HttpStatus.FORBIDDEN.value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding("UTF-8");
-        objectMapper.writeValue(response.getWriter(), loginDto);
+        request.setAttribute("msg", exception.getMessage());
+
+        // 로그인 페이지로 다시 포워딩
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/login");
+        dispatcher.forward(request, response);
     }
 
     private LoginDto writeDTO(String message, String token) {

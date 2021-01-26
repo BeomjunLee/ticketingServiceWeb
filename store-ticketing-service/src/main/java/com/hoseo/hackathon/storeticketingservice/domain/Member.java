@@ -1,8 +1,6 @@
 package com.hoseo.hackathon.storeticketingservice.domain;
-import com.hoseo.hackathon.storeticketingservice.domain.status.MemberStatus;
 import com.hoseo.hackathon.storeticketingservice.domain.status.Role;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import jdk.jfr.BooleanFlag;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,7 +14,6 @@ import java.time.LocalDateTime;
 public class Member {
     @Id @GeneratedValue
     @Column(name = "member_id")
-    @ApiModelProperty(hidden = true)
     private Long id;
     
     @Column(unique = true)
@@ -31,12 +28,11 @@ public class Member {
     private String email;                                   //이메일
 
     private int point;                                      //포인트
-    
-    
-    @Enumerated(EnumType.STRING)
-    private MemberStatus status;                            //가입 대기(VALID, INVALID) 탈퇴 (DELETE)
+
+    private Boolean status;                                 //인증 상태
+
     @Enumerated(value = EnumType.STRING)
-    private Role role;                                      //권한
+    private Role role;                                      //권한(일반회원, 가게 관리자, 사이트 관리자, 탈퇴회원)
 
     private LocalDateTime createdDate;                      //가입일
     private LocalDateTime deletedDate;                      //탈퇴일
@@ -66,7 +62,9 @@ public class Member {
     public void changeRole(Role role) { //권한 변경
         this.role = role;
     }
-    public void changeMemberStatus(MemberStatus status) {   //가입상태 변경
+
+    //인증 상태
+    public void changeEnabled(Boolean status) {
         this.status = status;
     }
 }

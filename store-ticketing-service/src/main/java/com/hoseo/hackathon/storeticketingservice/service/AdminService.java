@@ -337,8 +337,8 @@ public class AdminService {
     /**
      * 회원 리스트 보기
      */
-    public Page<MemberListDto> findMembers(Pageable pageable, MemberStatus status) {
-        return memberRepository.findAllByStatus(pageable, status).map(member -> MemberListDto.builder()
+    public Page<MemberListDto> findMembers(Pageable pageable) {
+        return memberRepository.findAllByStatus(pageable, true).map(member -> MemberListDto.builder()
                     .ticket_id(ticketRepository.findTicketIdJoinMemberId(member.getId()).orElse(null))
                     .member_id(member.getId())
                     .username(member.getUsername())
@@ -353,7 +353,7 @@ public class AdminService {
      * 전체 회원 수
      */
     public int totalMemberCount() {
-        return memberRepository.countByStatus(MemberStatus.VALID);
+        return memberRepository.countByStatus(true);
     }
 
     /**
@@ -402,10 +402,10 @@ public class AdminService {
     public void deleteMember(Long member_id) {
         Member member = memberRepository.findById(member_id).orElseThrow(() -> new UsernameNotFoundException("해당되는 회원을 찾을수 없습니다"));
         if (member.getRole().equals(Role.USER)) {
-            member.changeMemberStatus(MemberStatus.DELETE);
+            member.changeRole(Role.DELETE);
         } else if (member.getRole().equals(Role.STORE_ADMIN)) {
             Store store = storeRepository.findByMember_Id(member_id).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
-            member.changeMemberStatus(MemberStatus.DELETE);
+            member.changeRole(Role.DELETE);
             store.changeStoreStatus(StoreStatus.DELETE);
         }
     }
@@ -415,11 +415,12 @@ public class AdminService {
      */
     @Transactional
     public void deleteMemberWeekPast() {
-        List<Member> memberList = memberRepository.findAllByStatus(MemberStatus.DELETE);
+        List<Member> memberList = memberRepository.findAllByRole(Role.DELETE);
         if(memberList == null) throw new NoSuchElementException("삭제할 회원이 없습니다");
         memberList.stream().forEach(member ->{
             Period period = Period.between(member.getDeletedDate().toLocalDate(), LocalDateTime.now().toLocalDate());
                 if (period.getDays() >= 7) {
+                    storeRepository.delete(storeRepository.findByMember_Id(member.getId()).get());
                     memberRepository.delete(member);
                 }
         });
@@ -445,7 +446,7 @@ public class AdminService {
     public void permitStoreAdmin(Long member_id, Long store_id) {
         Member member = memberRepository.findById(member_id).orElseThrow(() -> new UsernameNotFoundException("해당되는 유저를 찾을수 없습니다"));
         Store store = storeRepository.findById(store_id).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
-        member.changeMemberStatus(MemberStatus.VALID);
+        member.changeEnabled(true);
         store.changeStoreStatus(StoreStatus.VALID);
         store.changeCreatedDate(LocalDateTime.now());
     }
@@ -457,7 +458,7 @@ public class AdminService {
     public void rejectStoreAdmin(Long member_id, Long store_id) {
         Member member = memberRepository.findById(member_id).orElseThrow(() -> new UsernameNotFoundException("해당되는 유저를 찾을수 없습니다"));
         Store store = storeRepository.findById(store_id).orElseThrow(() -> new NotFoundStoreException("등록된 가게를 찾을수 없습니다"));
-        member.changeMemberStatus(MemberStatus.INVALID);
+        member.changeEnabled(false);
         store.changeStoreStatus(StoreStatus.INVALID);
     }
 

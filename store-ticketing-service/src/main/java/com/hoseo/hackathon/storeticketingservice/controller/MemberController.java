@@ -7,20 +7,20 @@ import com.hoseo.hackathon.storeticketingservice.domain.dto.MemberDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.MyTicketDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreAdminDto;
 import com.hoseo.hackathon.storeticketingservice.domain.form.*;
-import com.hoseo.hackathon.storeticketingservice.domain.resource.MemberResource;
-import com.hoseo.hackathon.storeticketingservice.domain.resource.MyTicketResource;
-import com.hoseo.hackathon.storeticketingservice.domain.resource.StoreAdminResource;
+
 import com.hoseo.hackathon.storeticketingservice.domain.response.Response;
 import com.hoseo.hackathon.storeticketingservice.domain.status.Role;
 import com.hoseo.hackathon.storeticketingservice.service.MemberService;
 import com.hoseo.hackathon.storeticketingservice.service.StoreService;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,33 +28,27 @@ import java.net.URI;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/members")
 public class MemberController {
 
     private final MemberService memberService;
     private final StoreService storeService;
+
     /**
-     * test
+     * [회원] 가입 폼으로
      */
-    @GetMapping("/test")
-    public ResponseEntity member() {
-        Response response = Response.builder()
-                .result("success")
-                .status(201)
-                .message("테스트 성공")
-                .build();
-        return ResponseEntity.ok(response);
+    @GetMapping("/joinMember")
+    public String signUpMemberForm() {
+        return "/joinMember";
     }
 
     /**
      * [회원] 가입
      */
-    @PostMapping("/new")
-    public String signUpMember(@Valid MemberForm memberForm) {
+    @PostMapping("/joinMemberOk")
+    public String signUpMember(@Valid MemberForm memberForm, Model model) {
         Member member = Member.builder()
                 .username(memberForm.getUsername())
                 .password(memberForm.getPassword())
@@ -65,15 +59,15 @@ public class MemberController {
                 .deletedDate(null)  //탈퇴일은 가입시 null(재가입시 null 로 바꿔야돼서)
                 .build();
         memberService.createMember(member);
-
-        return "";
+        model.addAttribute("message", "회원가입 성공");
+        return "/main";
     }
 
     /**
      * [관리자] 가입
      */
-    @PostMapping("/admin/new")
-    public String signUpAdmin(@Valid StoreAdminForm storeAdminForm) {
+    @PostMapping("/joinStoreAdmin")
+    public String signUpAdmin(@Valid StoreAdminForm storeAdminForm, Model model) {
         Member member = Member.builder()//회원
                 .username(storeAdminForm.getMemberUsername())
                 .password(storeAdminForm.getMemberPassword())
@@ -94,125 +88,89 @@ public class MemberController {
                 .build();
 
         memberService.createStoreAdmin(member, store);
-        Response response = Response.builder()
-                .result("success")
-                .status(201)
-                .message("관리자 가입 성공")
-                .build();
-        URI createUri = linkTo(MemberController.class).slash("admin/new").toUri();
+
+        model.addAttribute("message", "회원가입 성공");
         return "";
     }
 
     /**
      * [회원] 정보보기
      */
-    @ApiOperation(value = "회원 정보 조회[회원, 가게관리자]", notes = "회원정보를 조회합니다")
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_STORE_ADMIN')")
-    @GetMapping("/me")
-    public ResponseEntity myInfo(Principal principal) {
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
+    @GetMapping("/memberInfo")
+    public String myInfo(Principal principal, Model model) {
         Member member = memberService.findByUsername(principal.getName());
         if (member.getRole().equals(Role.USER)){    //회원
-            MemberDto dto = MemberDto.builder()
-                    .username(member.getUsername())
-                    .name(member.getName())
-                    .phoneNum(member.getPhoneNum())
-                    .email(member.getEmail())
-                    .point(member.getPoint())
-                    .build();
-            MemberResource resource = new MemberResource(dto);
-            return ResponseEntity.ok(resource);
+
+            model.addAttribute("member", member);   //회원이면 member객체
 
             }else if (member.getRole().equals(Role.STORE_ADMIN)) {  //가게 관리자
             Store store = storeService.findStore(member.getUsername());
-            StoreAdminDto dto = StoreAdminDto.builder()
-                    .member_id(member.getId())
-                    .member_username(member.getUsername())
-                    .member_name(member.getName())
-                    .member_phoneNum(member.getPhoneNum())
-                    .member_email(member.getEmail())
 
-
-                    .store_id(store.getId())
-                    .store_name(store.getName())
-                    .store_address(store.getAddress())
-                    .store_phoneNum(store.getPhoneNum())
-                    .store_companyNumber(store.getCompanyNumber())
-                    .store_status(store.getStoreStatus().getStatus())
-                    .build();
-            StoreAdminResource resource = new StoreAdminResource(dto);
-            return ResponseEntity.ok(resource);
+            model.addAttribute("member", member);   //가게 관리자면 member, store 객체 보냄
+            model.addAttribute("store", store);
         }
+        return "/memberInfo";
+    }
 
-        Response response = Response.builder()
-                .result("fail")
-                .status(404)
-                .message("회원 조회 오류")
-                .build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    /**
+     * [회원] 수정 폼으로
+     */
+    @GetMapping("/updateMember")
+    public String updateMemberForm() {
+        return "/updateMember";
     }
 
 
     /**
      * [회원] 정보 수정
      */
-    @ApiOperation(value = "회원 정보 수정[회원, 가게관리자]", notes = "회원정보를 수정합니다")
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_STORE_ADMIN')")
-    @PutMapping("/me")
-    public ResponseEntity updateMyInfo(Principal principal,
-                                       @RequestBody @Valid UpdateMemberForm memberForm,
-                                       @RequestBody @Valid UpdateStoreAdminForm storeForm) {
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
+    @PostMapping("/updateMemberOk")
+    public String updateMyInfo(Principal principal, Model model,
+                                        @Valid UpdateMemberForm memberForm,
+                                        @Valid UpdateStoreAdminForm storeForm) {
         Member member = memberService.findByUsername(principal.getName());
         if (member.getRole().equals(Role.USER)){    //회원
             memberService.updateMember(principal.getName(), memberForm);
-            Response response = Response.builder()
-                    .result("success")
-                    .status(200)
-                    .message("회원 수정 완료")
-                    .build();
-            return ResponseEntity.ok(response);
+            model.addAttribute("message", "수정 성공");
+            return "";
 
         }else if (member.getRole().equals(Role.STORE_ADMIN)) {  //가게 관리자
             memberService.updateStoreAdmin(principal.getName(), storeForm);
-            Response response = Response.builder()
-                    .result("success")
-                    .status(200)
-                    .message("회원 수정 완료")
-                    .build();
-            return ResponseEntity.ok(response);
+            model.addAttribute("message", "수정 성공");
+            return "";
         }
 
-        Response response = Response.builder()
-                .result("fail")
-                .status(404)
-                .message("회원 수정 오류")
-                .build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        model.addAttribute("message", "수정 실패");
+        return "";
+    }
+    /**
+     * 비밀번호 변경 폼으로
+     */
+    @GetMapping("/updatePassword")
+    public String updatePasswordForm() {
+        return "/updatePassword";
     }
 
     /**
      * 비밀번호 변경
      */
-    @ApiOperation(value = "비밀번호 수정[회원, 가게관리자]", notes = "비밀번호를 수정합니다")
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_STORE_ADMIN')")
-    @PutMapping("/me/password")
-    public ResponseEntity changePassword(Principal principal, @RequestBody @Valid UpdatePasswordForm form) {
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
+    @PostMapping("/updatePasswordOk")
+    public String changePassword(Principal principal, @RequestBody @Valid UpdatePasswordForm form, Model model) {
         memberService.changePassword(principal.getName(), form.getCurrentPassword(), form.getNewPassword());
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("비밀번호 변경 완료")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "수정 실패");
+        return "";
     }
 
 
     /**
      * [회원] 번호표 보기
      */
-    @ApiOperation(value = "번호표 조회[회원]", notes = "회원이 번호표를 조회합니다")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/tickets")
-    public ResponseEntity myTicket(Principal principal) {
+    public String myTicket(Principal principal) {
         Ticket ticket = storeService.findMyTicket(principal.getName());
         Store store = storeService.findValidStoreById(ticket.getStore().getId());
         
@@ -225,14 +183,12 @@ public class MemberController {
                 .waitingNum(ticket.getWaitingNum())
                 .waitingTime(ticket.getWaitingTime())
                 .build();
-        MyTicketResource resource = new MyTicketResource(dto);
-        return ResponseEntity.ok(resource);
+        return "";
     }
 
     /**
      * [회원] 번호표 취소
      */
-    @ApiOperation(value = "번호표 취소[회원]", notes = "회원이 뽑은 번호표를 취소합니다")
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/tickets")
     public ResponseEntity cancelMyTicket(Principal principal) {
