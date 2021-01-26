@@ -1,5 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
+<!DOCTYPE>
+<HTML xmlns:th="http://www.thymeleaf.org">
 <HEAD>
     <TITLE> New Document </TITLE>
     <meta charset="utf-8">
@@ -11,35 +11,7 @@
 <body>
 <div>
     <div id="fullpage">
-        <header class="wrap">
-            <h1>
-                <a href="index.html" target="" title="">
-                    <img src="images/logo.png" alt="logo">
-                </a>
-            </h1>
-
-            <ul class="menu01">
-                <li><a href="#" target="" title="">" ABOUT US "</a></li>
-                <li><a href="#" target="" title="">" 기부 사용 방법 "</a></li>
-                <li><a href="#" target="" title="">" 가게찾기 "</a></li>
-                <li><a href="#" target="" title="">" 나누다 "</a></li>
-            </ul>
-
-            <div class="topMenu">
-                <ul class="menu02">
-                    <li><a href="#" target="" title=""><span>" 마이페이지 "</span></a>
-                        <ul class="dept01" style="display:none;">
-                            <li class="nop"><a href="#" target="" title="">회원정보</a></li>
-                            <li class="nop"><a href="#" target="" title="">번호표</a></li>
-                            <li class="nop"><a href="#" target="" title="">관리자메뉴</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="login.html" target="" title=""><span>" 로그인 "</span></a></li>
-                </ul>
-            </div>
-
-            <div class="area-dept01"></div>
-        </header>
+        <th:block th:insert="/header"></th:block><!-- 헤더 -->
 
         <div class='quick'><ul></ul></div>
         <div class="fullsection full1" pageNum="1">
