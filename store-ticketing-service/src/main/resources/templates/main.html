@@ -1,10 +1,143 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<!DOCTYPE>
+<HTML>
+<HEAD>
+    <TITLE> New Document </TITLE>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="front/css/style.css">
+    <script src="front/js/jquery-1.12.3.js"></script>
+    <script src="front/js/common.js"></script>
+</HEAD>
+
 <body>
-    안녕하세요
+<div>
+    <div id="fullpage">
+        <header class="wrap">
+            <h1>
+                <a href="index.html" target="" title="">
+                    <img src="front/img/logo.png" alt="logo">
+                </a>
+            </h1>
+
+            <ul class="menu01">
+                <li><a href="#" target="" title="">" ABOUT US "</a></li>
+                <li><a href="#" target="" title="">" 기부 사용 방법 "</a></li>
+                <li><a href="#" target="" title="">" 가게찾기 "</a></li>
+                <li><a href="#" target="" title="">" 나누다 "</a></li>
+            </ul>
+
+            <div class="topMenu">
+                <ul class="menu02">
+                    <li><a href="#" target="" title=""><span>" 마이페이지 "</span></a>
+                        <ul class="dept01" style="display:none;">
+                            <li class="nop"><a href="#" target="" title="">회원정보</a></li>
+                            <li class="nop"><a href="#" target="" title="">번호표</a></li>
+                            <li class="nop"><a href="#" target="" title="">관리자메뉴</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="login.html" target="" title=""><span>" 로그인 "</span></a></li>
+                </ul>
+            </div>
+
+            <div class="area-dept01"></div>
+        </header>
+
+        <div class='quick'><ul></ul></div>
+        <div class="fullsection full1" pageNum="1">
+            <div class="wrap">
+                <div class="content01">
+                    <p class="cont01_text1">
+                        나누면</br>
+                        행복이</br>
+                        두배가 된다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="fullsection full2" pageNum="2">
+            <div class="wrap">
+                <div class="content02">
+                    <p class="cont01_text2">
+                        가장 쉽고 빠른</br>
+                        나만의 원픽</br>
+                        음식점 예약
+
+                        <span class="cont01_text22">
+								나의 위치를 기반으로 내주변 맛집을</br>
+                            쉽게 찾고, 클릭 한번으로 간편하게</br>
+                            예약할 수 있습니다.
+							</span>
+
+                        <span class="cont01_text22">
+								예약된 음식점에서 부여된</br>
+                            대기순번을 기다리고 방문할 시</br>
+                            적립되는 포인트는 기부금으로</br>
+                            사용되어집니다.
+							</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="fullsection full3" pageNum="3">
+            <div class="wrap">
+                <div>
+                    <p class="cont01_text3">
+                        '당신'과</br>
+                        함께</br>
+                        밥을 먹습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="fullsection full4" pageNum="4">
+            <div class="wrap">
+                <div>
+                    <p class="cont01_text3">
+                        당신의</br>
+                        '한끼'</br>
+                        따뜻해야합니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="fullsection full5" pageNum="5">
+            <div class="wrap">
+                <div>
+                    <p class="cont01_text5">
+                        빠른 예약</br>
+                        바른 나눔
+
+                        <span class="cont01_text22 padd_t_10 font_fff">
+								나의 위치를 기반으로 내주변 맛집을</br>
+                            쉽게 찾고, 클릭 한번으로 간편하게</br>
+                            예약할 수 있습니다.
+							</span>
+
+                        <span class="cont01_text22 font_fff">
+								당신의 따뜻한 마음을 함께 나눠주세요.
+							</span>
+                    </p>
+                </div>
+
+                <div class="btn_area padd_t_10">
+                    <button type="button" id="btnReservation">
+                        <span>예약하기</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script>
+    $(document).ready(function(){ fullset(); quickClick(); }); 	function fullset(){ var pageindex = $("#fullpage > .fullsection").size(); for(var i=1;i<=pageindex;i++){ $("#fullpage > .quick > ul").append("<li></li>"); } $("#fullpage .quick ul :first-child").addClass("on"); $(window).bind("mousewheel", function(event){ var page = $(".quick ul li.on");  if($("body").find("#fullpage:animated").length >= 1) return false; if(event.originalEvent.wheelDelta >= 0) { var before=page.index(); if(page.index() >= 0) page.prev().addClass("on").siblings(".on").removeClass("on"); var pagelength=0; for(var i=1; i<(before); i++) { pagelength += $(".full"+i).height(); } if(page.index() > 0){ page=page.index()-1; $("#fullpage").animate({"top": -pagelength + "px"},1000, "swing"); }else{ alert("첫번째페이지 입니다."); } }else{ var nextPage=parseInt(page.index()+1); var lastPageNum=parseInt($(".quick ul li").size());  if(page.index() <= $(".quick ul li").size()-1){ page.next().addClass("on").siblings(".on").removeClass("on"); } if(nextPage < lastPageNum){ var pagelength=0; for(var i = 1; i<(nextPage+1); i++){ pagelength += $(".full"+i).height(); } $("#fullpage").animate({"top": -pagelength + "px"},1000, "swing"); } else{ alert("마지막 페이지 입니다!"); }; } }); $(window).resize(function(){ var resizeindex = $(".quick ul li.on").index()+1; var pagelength=0; for(var i = 1; i<resizeindex; i++){ pagelength += $(".full"+i).height(); } $("#fullpage").animate({"top": -pagelength + "px"},0); }); } function quickClick(){ $(".quick li").click(function(){ var gnbindex = $(this).index()+1; var length=0; for(var i=1; i<(gnbindex); i++) { length+=$(".full"+i).height(); } if($("body").find("#fullpage:animated").length >= 1) return false; $(this).addClass("on").siblings("li").removeClass("on"); $("#fullpage").animate({"top": -length + "px"},800, "swing"); return false; }); }
+
+</script>
 </body>
-</html>
+</HTML>
