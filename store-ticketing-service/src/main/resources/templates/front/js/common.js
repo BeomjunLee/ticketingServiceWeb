@@ -11,6 +11,6 @@ $(document).ready(function(){
 
 //owner_join.html //주소
 //"검색" 단추를 누르면 팝업 레이어가 열리도록 설정한다
-/*$(function() { $("#postcodify_search_button").postcodifyPopUp(); });
-$("#search_button").postcodifyPopUp();*/
+$(function() { $("#postcodify_search_button").postcodifyPopUp(); });
+$("#search_button").postcodifyPopUp();
 

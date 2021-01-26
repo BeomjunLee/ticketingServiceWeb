@@ -30,8 +30,8 @@ h1{float:left;}
 .area-dept01:after{content:""; display:block; clear:both;}
 
 section{}
-.content01 {background:url(../img/main_img01.jpg)50% 450px no-repeat;}
-.content02 {background:url(../img/main_img01.jpg)50% 600px no-repeat;}
+.content01 {background:url(../images/main_img01.jpg)50% 450px no-repeat;}
+.content02 {background:url(../images/main_img01.jpg)50% 600px no-repeat;}
 
 .cont01_text1 {padding:6% 0 50% 0; color:#ff9a8d; font-size:60px; font-weight:bold;}
 .cont01_text2 {padding:6% 0 30% 0; color:#ff9a8d; font-size:60px; font-weight:bold;}
