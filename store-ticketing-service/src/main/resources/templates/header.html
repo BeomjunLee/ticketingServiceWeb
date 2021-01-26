@@ -1,8 +1,8 @@
 
-<header class="wrap">
+<header class="wrap" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <h1>
         <a href="index.html" target="" title="">
-            <img src="" alt="logo">
+            <img src="img/logo.png" alt="logo">
         </a>
     </h1>
 
@@ -22,7 +22,8 @@
                     <li class="nop"><a href="#" target="" title="">관리자메뉴</a></li>
                 </ul>
             </li>
-            <li><a href="login.html" target="" title=""><span>" 로그인 "</span></a></li>
+            <li><a th:href="@{/login}" target="" title="" sec:authorize="!isAuthenticated()"><span>" 로그인 "</span></a></li>
+            <li><a th:href="@{/logout}" target="" title="" sec:authorize="isAuthenticated()"><span>" 로그아웃 "</span></a></li>
         </ul>
     </div>
 
