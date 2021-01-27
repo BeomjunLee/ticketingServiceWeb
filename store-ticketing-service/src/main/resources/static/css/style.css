@@ -58,16 +58,22 @@ section{}
 .join {display:inline-block; }
 
 /* join.html */
-#wrapper {
-    position: relative;
-    height: 100%;
-    margin-top:60px;
-}
+.h1_join {padding-top:5%;}
+#wrapper { position: relative; height: 100%; margin-top:60px; clear:both; }
 #content {
     position: absolute;
     left: 50%;
     transform: translate(-50%);
     width: 460px;
+}
+#cont_join {width:27%; margin:0 auto; padding-top:1%;}
+#btnJoin_user {
+    width:45%; padding:5% 0; color:#ff9a8d; background:#fff;
+    border:2px solid #fff; font-size:20px; font-weight:bold;
+}
+#btnJoin_store {
+    width:45%; padding:5% 0; float:right; background:#ff9a8d;
+    border:2px solid #fff; color:#fff; font-size:20px; font-weight:bold;
 }
 
 /* 입력폼 */
@@ -104,7 +110,7 @@ input {
 }
 .box.int_pass {
     padding-right: 40px;
-    opacity: 0.5;
+    opacity: 0.5; margin-top:5%;
 }
 .box.int_pass_check {
     padding-right: 40px;
@@ -241,12 +247,8 @@ ul, li{margin:0;padding:0;list-style:none}
 
 /* login */
 .login_wrap {width:100%; margin:0 auto; background:#ff9a8d;}
-#wrapper {clear:both;}
-
 .login_h1 {width:100%; text-align:center; margin:12% 0 2% 0;}
 .login_h1 img {height:150px;}
 #key {height:0px;}
-
-.box.int_pass {margin-top:5%;}
 
 
