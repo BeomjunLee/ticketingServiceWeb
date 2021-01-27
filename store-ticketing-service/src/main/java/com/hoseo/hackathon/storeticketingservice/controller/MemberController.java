@@ -59,7 +59,7 @@ public class MemberController {
                 .deletedDate(null)  //탈퇴일은 가입시 null(재가입시 null 로 바꿔야돼서)
                 .build();
         memberService.createMember(member);
-        model.addAttribute("message", "회원가입 성공");
+        model.addAttribute("message", "가입에 성공하였습니다");
         return "/main";
     }
 
@@ -89,7 +89,7 @@ public class MemberController {
 
         memberService.createStoreAdmin(member, store);
 
-        model.addAttribute("message", "회원가입 성공");
+        model.addAttribute("message", "가입에 성공하였습니다");
         return "";
     }
 
@@ -101,14 +101,33 @@ public class MemberController {
     public String myInfo(Principal principal, Model model) {
         Member member = memberService.findByUsername(principal.getName());
         if (member.getRole().equals(Role.USER)){    //회원
-
-            model.addAttribute("member", member);   //회원이면 member객체
+            MemberDto dto = MemberDto.builder()
+                    .username(member.getUsername())
+                    .name(member.getName())
+                    .phoneNum(member.getPhoneNum())
+                    .email(member.getEmail())
+                    .point(member.getPoint())
+                    .build();
+            model.addAttribute("member", dto);   //회원이면 member객체
 
             }else if (member.getRole().equals(Role.STORE_ADMIN)) {  //가게 관리자
             Store store = storeService.findStore(member.getUsername());
+            StoreAdminDto dto = StoreAdminDto.builder()
+                    .member_id(member.getId())
+                    .member_username(member.getUsername())
+                    .member_name(member.getName())
+                    .member_phoneNum(member.getPhoneNum())
+                    .member_email(member.getEmail())
 
-            model.addAttribute("member", member);   //가게 관리자면 member, store 객체 보냄
-            model.addAttribute("store", store);
+                    .store_id(store.getId())
+                    .store_name(store.getName())
+                    .store_address(store.getAddress())
+                    .store_phoneNum(store.getPhoneNum())
+                    .store_companyNumber(store.getCompanyNumber())
+                    .store_status(store.getStoreStatus().getStatus())
+                    .build();
+
+            model.addAttribute("storeAdmin", dto);   //가게 관리자면 member + store => storeAdmin객체 보냄
         }
         return "/memberInfo";
     }
@@ -133,16 +152,16 @@ public class MemberController {
         Member member = memberService.findByUsername(principal.getName());
         if (member.getRole().equals(Role.USER)){    //회원
             memberService.updateMember(principal.getName(), memberForm);
-            model.addAttribute("message", "수정 성공");
+            model.addAttribute("message", "수정되었습니다");
             return "";
 
         }else if (member.getRole().equals(Role.STORE_ADMIN)) {  //가게 관리자
             memberService.updateStoreAdmin(principal.getName(), storeForm);
-            model.addAttribute("message", "수정 성공");
+            model.addAttribute("message", "수정되었습니다");
             return "";
         }
 
-        model.addAttribute("message", "수정 실패");
+        model.addAttribute("message", "수정 실패하였습니다");
         return "";
     }
     /**
@@ -160,7 +179,7 @@ public class MemberController {
     @PostMapping("/updatePasswordOk")
     public String changePassword(Principal principal, @RequestBody @Valid UpdatePasswordForm form, Model model) {
         memberService.changePassword(principal.getName(), form.getCurrentPassword(), form.getNewPassword());
-        model.addAttribute("message", "수정 실패");
+        model.addAttribute("message", "비밀번호가 변경되었습니다");
         return "";
     }
 
@@ -168,9 +187,9 @@ public class MemberController {
     /**
      * [회원] 번호표 보기
      */
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/tickets")
-    public String myTicket(Principal principal) {
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/myTickets")
+    public String myTicket(Principal principal, Model model) {
         Ticket ticket = storeService.findMyTicket(principal.getName());
         Store store = storeService.findValidStoreById(ticket.getStore().getId());
         
@@ -183,22 +202,20 @@ public class MemberController {
                 .waitingNum(ticket.getWaitingNum())
                 .waitingTime(ticket.getWaitingTime())
                 .build();
+        model.addAttribute("ticket", dto);
         return "";
     }
 
     /**
      * [회원] 번호표 취소
      */
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping("/tickets")
-    public ResponseEntity cancelMyTicket(Principal principal) {
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/tickets")
+    public String cancelMyTicket(Principal principal, Model model) {
         storeService.cancelTicket(principal.getName());
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("번호표 취소 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        
+        model.addAttribute("message", "번호표가 취소되었습니다");
+        return "";
     }
 
     /**

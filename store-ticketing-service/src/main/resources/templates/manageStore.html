@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    전체 대기 인원 : <a th:text="${manageStore.getTotalWaitingCount()}"></a>
+    전체 대기 시간 : <a th:text="${manageStore.getTotalWaitingTime()}"></a>
+</div>
+<hr>
+<div th:each="member : ${manageStore.getWaitingMembers()}">
+    이름 : <a th:text="${member.getName()}"></a>
+    전화번호 : <a th:text="${member.getPhoneNum()}"></a>
+    대기 번호 : <a th:text="${member.getWaitingNum()}"></a><br>
+</div>
+
+
+<nav style="text-align: center;">
+    <ul class="pagination">
+        <li>
+            <a th:href="@{/manageStore(page=0)}" aria-label="First">
+                <span aria-hidden="true">First</span>
+            </a>
+        </li>
+        <li th:if="${manageStore.getWaitingMembers().hasPrevious()}">
+            <a th:href="@{/manageStore(page=${manageStore.getWaitingMembers().getNumber() - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+        </li>
+        <li th:if="${manageStore.getWaitingMembers().hasNext()}">
+            <a th:href="@{/manageStore(page=${manageStore.getWaitingMembers().getNumber() + 1})}" aria-label="Next">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/manageStore(page=${manageStore.getWaitingMembers().getTotalPages() - 1})}" aria-label="Last">
+                <span aria-hidden="true">Last</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

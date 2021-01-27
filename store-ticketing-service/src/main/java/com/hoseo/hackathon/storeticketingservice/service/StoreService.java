@@ -13,6 +13,7 @@ import com.hoseo.hackathon.storeticketingservice.repository.StoreRepository;
 import com.hoseo.hackathon.storeticketingservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -277,6 +278,7 @@ public class StoreService {
             throw new NotAuthorizedStoreException("승인 되지 않은 가게입니다");
         }
         Page<Ticket> tickets = ticketRepository.findAllByStore_IdAndStatus(store.getId(), TicketStatus.VALID, pageable);
+
         return tickets.map(ticket -> WaitingMembersDto.builder()
                 .waitingNum(ticket.getWaitingNum())
                 .name(ticket.getMember().getName())

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,7 +59,32 @@ class MemberServiceTest {
                 .password("1234")
                 .build();
         Member savedMember = memberService.createMember(member);
-        assertEquals(member, memberRepository.findById(savedMember.getId()).get());
+
+        Member member2 = Member.builder()
+                .username("test2")
+                .password("1234")
+                .build();
+        memberService.createMember(member2);
+
+        Member member3 = Member.builder()
+                .username("test3")
+                .password("1234")
+                .build();
+        memberService.createMember(member3);
+
+        Member member4 = Member.builder()
+                .username("test4")
+                .password("1234")
+                .build();
+        memberService.createMember(member4);
+
+        Member member5 = Member.builder()
+                .username("test4")
+                .password("1234")
+                .build();
+        memberService.createMember(member4);
+
+//        assertEquals(member, memberRepository.findById(savedMember.getId()).get());
     }
 
     @Test
