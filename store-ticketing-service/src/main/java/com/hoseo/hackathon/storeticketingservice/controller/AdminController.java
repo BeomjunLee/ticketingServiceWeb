@@ -1,42 +1,42 @@
-package com.hoseo.hackathon.storeticketingservice.controller;
-
-import com.hoseo.hackathon.storeticketingservice.domain.Member;
-import com.hoseo.hackathon.storeticketingservice.domain.Store;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.*;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminMemberDto;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminMemberManageDto;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminStoreAdminDto;
-import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminStoreManageDto;
-import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateMemberForm;
-import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateStoreAdminForm;
-import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
-import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
-import com.hoseo.hackathon.storeticketingservice.domain.response.Response;
-import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
-import com.hoseo.hackathon.storeticketingservice.service.AdminService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-
-@Controller
-@RequiredArgsConstructor
-@RequestMapping(value = "/admin")
-public class AdminController {
-    private final AdminService adminService;
-
-//========================================가게 관리============================================
-    /**
-     * 관리할 가게 리스트 보기
-     * 응답 : 가게이름, 전화번호, 주소, 등록일, 등록된 가게 수
-     * link : 가게 번호표 관리, 가게수정, 가게관리자 정보보기, 이름으로 검색, 주소로 검색
-     */
+//package com.hoseo.hackathon.storeticketingservice.controller;
+//
+//import com.hoseo.hackathon.storeticketingservice.domain.Member;
+//import com.hoseo.hackathon.storeticketingservice.domain.Store;
+//import com.hoseo.hackathon.storeticketingservice.domain.dto.*;
+//import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminMemberDto;
+//import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminMemberManageDto;
+//import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminStoreAdminDto;
+//import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminStoreManageDto;
+//import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateMemberForm;
+//import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateStoreAdminForm;
+//import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
+//import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
+//import com.hoseo.hackathon.storeticketingservice.domain.response.Response;
+//import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
+//import com.hoseo.hackathon.storeticketingservice.service.AdminService;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.data.domain.Pageable;
+//import org.springframework.data.web.PagedResourcesAssembler;
+//
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.web.bind.annotation.*;
+//
+//import javax.validation.Valid;
+//
+//@Controller
+//@RequiredArgsConstructor
+//@RequestMapping(value = "/admin")
+//public class AdminController {
+//    private final AdminService adminService;
+//
+////========================================가게 관리============================================
+//    /**
+//     * 관리할 가게 리스트 보기
+//     * 응답 : 가게이름, 전화번호, 주소, 등록일, 등록된 가게 수
+//     * link : 가게 번호표 관리, 가게수정, 가게관리자 정보보기, 이름으로 검색, 주소로 검색
+//     */
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
 //    @GetMapping("/stores")
 //    public String findStores(Pageable pageable, PagedResourcesAssembler<StoreListDto> assembler) {
@@ -113,6 +113,7 @@ public class AdminController {
 //                .status(200)
 //                .message("번호표 취소 성공")
 //                .build();
+//
 //        return ResponseEntity.ok(response);
 //    }
 //
@@ -130,6 +131,7 @@ public class AdminController {
 //                .build();
 //        return ResponseEntity.ok(response);
 //    }
+//
 //
 //    /**
 //     * 보류된 번호표 취소
@@ -465,6 +467,6 @@ public class AdminController {
 //    public String errorSystemListByWaiting(PagedResourcesAssembler<StoreErrorListDto> assembler, Pageable pageable) {
 //        return "";
 //    }
-
-
-}
+//
+//
+//}

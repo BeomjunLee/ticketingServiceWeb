@@ -76,7 +76,7 @@ public class StoreController {
                 //TODO 보류회원 결정나면 작업
                 .build();
         model.addAttribute("manageStore", dto);
-        return "manageStore";
+        return "/manageStore";
     }
 
     /**
@@ -85,9 +85,9 @@ public class StoreController {
      * link : 보류 ticket별 취소, 체크,
      */
     @PreAuthorize("hasAuthority('STORE_ADMIN')")
-    @GetMapping("/tickets/hold")
-    public String manageHoldMembers(Principal principal, Pageable pageable, Model model) {
-
+    @GetMapping("/holdTicket")
+    public String manageHoldMembers(@RequestParam(value = "page", defaultValue = "0") int page, Principal principal, Model model) {
+        Pageable pageable = PageRequest.of(page, 5);
         //보류회원정보
         Page<HoldingMembersDto> holdMembers = storeService.findHoldMembers(principal.getName(), pageable);
         model.addAttribute("holdMembers", holdMembers);
@@ -98,153 +98,111 @@ public class StoreController {
     /**
      * [관리자]체크하기
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @PostMapping("/tickets/{ticket_id}")
-    public ResponseEntity checkTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/checkTicket/{ticket_id}")
+    public String checkTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.checkTicket(principal.getName(), ticket_id);
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("번호표 체크 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "체크되었습니다");
+        return "/manageStore";
     }
 
     /**
      * [관리자]취소하기
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @DeleteMapping("/tickets/{ticket_id}")
-    public ResponseEntity cancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/cancelTicket/{ticket_id}")
+    public String cancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.cancelTicketByAdmin(principal.getName(), ticket_id);
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("번호표 취소 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "취소되었습니다");
+        return "/manageStore";
     }
 
     /**
      * [관리자]보류하기
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @PutMapping("/tickets/{ticket_id}")
-    public ResponseEntity holdTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/holdTicket/{ticket_id}")
+    public String holdTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdTicket(principal.getName(), ticket_id);
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("번호표 보류 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "보류되었습니다");
+        return "/manageStore";
     }
 
     /**
      * [관리자] 보류회원 체크하기
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @PostMapping("/tickets/{ticket_id}/hold")
-    public ResponseEntity holdCheckTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/checkHoldTicket/{ticket_id}")
+    public String holdCheckTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdCheckTicket(principal.getName(), ticket_id);
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("보류 번호표 체크 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "체크되었습니다");
+        return "/manageStore";
     }
 
     /**
      * [관리자] 보류회원 취소하기
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @DeleteMapping("/tickets/{ticket_id}/hold")
-    public ResponseEntity holdCancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/cancelHoldTicket/{ticket_id}")
+    public String holdCancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdCancelTicket(principal.getName(), ticket_id);
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("보류 번호표 취소 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "취소되었습니다");
+        return "/manageStore";
     }
 
     /**
      * 가게 번호표 활성화
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @PostMapping("/status")
-    public ResponseEntity openTicket(Principal principal) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/openStore")
+    public String openTicket(Principal principal, Model model) {
         storeService.openTicket(principal.getName());
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("가게 번호표 활성화 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "번호표가 활성화되었습니다");
+        return "/manageStore";
     }
 
     /**
      * 가게 번호표 비활성화
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @PutMapping("/status")
-    public ResponseEntity closeTicket(Principal principal) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/closeStore")
+    public String closeTicket(Principal principal, Model model) {
         storeService.closeTicket(principal.getName());
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("가게 번호표 비활성화 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "번호표가 활성화되었습니다");
+        return "/manageStore";
     }
 
     /**
      * 오류 신청
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @PostMapping("/errors")
-    public ResponseEntity sendErrorSystem(Principal principal) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/applyError")
+    public String sendErrorSystem(Principal principal, Model model) {
         storeService.sendErrorSystem(principal.getName());
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("오류접수 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "오류가 접수되었습니다");
+        return "/manageStore";
     }
 
     /**
      * 공지사항 수정
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @PutMapping("/notice")
-    public ResponseEntity updateNotice(Principal principal, @RequestBody @Valid StoreNoticeForm form) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/updateNotice")
+    public String updateNotice(Principal principal, @RequestBody @Valid StoreNoticeForm form, Model model) {
         storeService.updateStoreNotice(principal.getName(), form.getNotice());
-
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("공지사항 변경 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "수정되었습니다");
+        return "/manageStore";
     }
 
     /**
      * 한사람당 대기시간 수정
      */
-    @PreAuthorize("hasRole('ROLE_STORE_ADMIN')")
-    @PutMapping("/time")
-    public ResponseEntity updateAvgWaitingTime(Principal principal, @RequestBody @Valid AvgTimeForm form) {
+    @PreAuthorize("hasAuthority('STORE_ADMIN')")
+    @GetMapping("/updateTime")
+    public String updateAvgWaitingTime(Principal principal, @RequestBody @Valid AvgTimeForm form, Model model) {
         storeService.updateAvgTime(principal.getName(), form.getAvgWaitingTimeByOne());
-
-        Response response = Response.builder()
-                .result("success")
-                .status(200)
-                .message("대기시간 변경 성공")
-                .build();
-        return ResponseEntity.ok(response);
+        model.addAttribute("message", "수정되었습니다");
+        return "/manageStore";
     }
 
     //카카오맵 api 와 DB연동 테스트
