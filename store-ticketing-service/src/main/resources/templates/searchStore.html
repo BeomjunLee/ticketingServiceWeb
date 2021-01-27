@@ -268,7 +268,11 @@
         }
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        map.setBounds(bounds);
+        // 불러온 가게 DB의 개수가 0개 일때 재설정 하면 카카오맵이 사라짐
+        if(stores.length > 0)
+        {
+            map.setBounds(bounds);
+        }
 
     }
 
