@@ -33,8 +33,7 @@ public class StoreController {
 
 //===========================================번호표 뽑기========================================
     /**
-     * [회원]가게 번호표 뽑기
-     * req : 인원수
+     * [회원]매장 번호표 뽑기
      */
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/{store_id}/createTicket")
@@ -49,11 +48,9 @@ public class StoreController {
         return "";
     }
 
-    //===========================================가게 번호표 관리 메뉴========================================
+    //===========================================매장 번호표 관리 메뉴========================================
     /**
-     * [관리자] 대기중인 회원 리스트 관리 + 현재 가게 정보 관리
-     * 응답 : 대기중인 회원정보, 가게 현재 상태, 총 대기인원, 총 대기시간, 공지사항, 한사람당 대기시간,
-     * link : self, 대기 보류 취소 체크, 가게 번호표 활성화, 가게 번호표 비활성화, 공지사항 수정, 한사람당 대기시간 수정
+     * [관리자] 대기중인 회원 리스트 관리 + 현재 매장 정보 관리
      */
     @PreAuthorize("hasAuthority('STORE_ADMIN')")
     @GetMapping("/manageStore")
@@ -77,8 +74,6 @@ public class StoreController {
 
     /**
      * [관리자] 보류된 회원 리스트 관리
-     * 응답 ; 이름, 전화번호
-     * link : 보류 ticket별 취소, 체크,
      */
     @PreAuthorize("hasAuthority('STORE_ADMIN')")
     @GetMapping("/holdTickets")
@@ -147,7 +142,7 @@ public class StoreController {
     }
 
     /**
-     * 가게 번호표 활성화
+     * 매장 번호표 활성화
      */
     @PreAuthorize("hasAuthority('STORE_ADMIN')")
     @GetMapping("/openStore")
@@ -158,7 +153,7 @@ public class StoreController {
     }
 
     /**
-     * 가게 번호표 비활성화
+     * 매장 번호표 비활성화
      */
     @PreAuthorize("hasAuthority('STORE_ADMIN')")
     @GetMapping("/closeStore")
@@ -215,29 +210,29 @@ public class StoreController {
 
         //model.addAttribute("id_num", storeList.size());
 
-        log.info("가게 데이터 개수 : " + String.valueOf(storeList.size()));
+        log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
         model.addAttribute("stores", storeList);
 
         return "searchStore";
     }
 
     /**
-     * 가게 수정
+     * 매장 수정
      */
 
 //===========================================가게 찾기 메뉴========================================
 
     /**
-     * 가게 보기
+     * 매장 보기
      */
 
 
     /**
-     * 가게 상세보기
+     * 매장 상세보기
      */
 
     /**
-     * 가게이름으로 검색
+     * 매장이름으로 검색
      */
 
 }

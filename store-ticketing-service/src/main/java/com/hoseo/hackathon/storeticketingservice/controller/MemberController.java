@@ -37,6 +37,14 @@ public class MemberController {
     private final StoreService storeService;
 
     /**
+     * 회원가입 버튼 클릭
+     */
+    @GetMapping("/join")
+    public String signUp() {
+        return "/join";
+    }
+
+    /**
      * [회원] 가입 폼으로
      */
     @GetMapping("/joinMember")

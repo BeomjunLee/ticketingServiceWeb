@@ -46,24 +46,24 @@ class StoreServiceTest {
     @BeforeEach
     public void createStore() {
         Member storeAdmin = Member.builder()
-                .username("storeadmin")
+                .username("storeadmin66")
                 .password("1234")
                 .build();
         Store store = Store.builder()
-                .name("식당")
+                .name("식당66")
                 .member(storeAdmin)
                 .build();
         memberService.createStoreAdmin(storeAdmin, store);//가게 관리자 + 가게 생성
-
-        Member member = Member.builder()
-                .username("test")
-                .password("1234")
-                .build();
-        memberService.createMember(member);     //일반 회원 생성
+//
+//        Member member = Member.builder()
+//                .username("user2")
+//                .password("1234")
+//                .build();
+//        memberService.createMember(member);     //일반 회원 생성
 
         adminService.permitStoreAdmin(storeAdmin.getId(), store.getId());   //사이트 관리자가 가입 승인
-        storeService.openTicket(storeAdmin.getUsername()); //번호표 발급 허용
-        storeService.updateAvgTime(storeAdmin.getUsername(), 5);//대기시간 명당 5분 설정
+//        storeService.openTicket(storeAdmin.getUsername()); //번호표 발급 허용
+//        storeService.updateAvgTime(storeAdmin.getUsername(), 5);//대기시간 명당 5분 설정
     }
     
     @Test

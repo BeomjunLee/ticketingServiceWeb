@@ -95,7 +95,7 @@ public class MemberService{
         validateDuplicateStore(store.getName());       //중복 가게명 검증
 
         member.changeRole(Role.STORE_ADMIN); //권한부여
-        member.changeEnabled(false); //가게 관리자는 가입 대기상태
+        member.changeEnabled(false); //매장 관리자는 가입 대기상태
         //비밀번호 encoding
         member.encodingPassword(passwordEncoder.encode(member.getPassword()));
 
@@ -135,12 +135,12 @@ public class MemberService{
         //두 유저가 동시에 가입할 경우를 대비해서 DB 에도 유니크 제약조건을 걸어줘야함
     }
     /**
-     * 중복 가게명 검증
+     * 중복 매장명 검증
      */
     public void validateDuplicateStore(String name) {
         int findStores = storeRepository.countByName(name);
         if (findStores > 0) {
-            throw new DuplicateStoreNameException("가게명이 중복되었습니다");
+            throw new DuplicateStoreNameException("매장명이 중복되었습니다");
         }
         //두 유저가 동시에 가입할 경우를 대비해서 DB 에도 유니크 제약조건을 걸어줘야함
     }

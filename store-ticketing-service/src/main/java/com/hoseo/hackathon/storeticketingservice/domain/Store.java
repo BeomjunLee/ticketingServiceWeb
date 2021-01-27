@@ -29,9 +29,9 @@ public class Store {
     private String companyNumber;       //사업자등록번호
 
     @Enumerated(EnumType.STRING)
-    private StoreTicketStatus storeTicketStatus;   //가게 번호표 발급 활성화 (OPEN, CLOSE) 상태
+    private StoreTicketStatus storeTicketStatus;   //매장 번호표 발급 활성화 (OPEN, CLOSE) 상태
     @Enumerated(EnumType.STRING)
-    private StoreStatus storeStatus;    //가게 승인 여부 (VALID, INVALID)
+    private StoreStatus storeStatus;    //매장 승인 여부 (VALID, INVALID)
     @Enumerated(EnumType.STRING)
     private ErrorStatus errorStatus;         //시스템 장애 여부 (ERROR, GOOD)
 
@@ -47,13 +47,13 @@ public class Store {
     }
 
     //=========================비지니스로직=====================
-    //가게 수정
+    //매장 수정
     public void changeStore(String phoneNum, String address) {
         this.phoneNum = phoneNum;
         this.address = address;
     }
 
-    //가게 수정(관리자용)
+    //매장 수정(관리자용)
     public void changeStoreByAdmin(String name, String phoneNum, String address, String companyNumber) {
         this.name = name;
         this.phoneNum = phoneNum;
@@ -78,12 +78,12 @@ public class Store {
         this.storeTicketStatus = storeTicketStatus;
     }
 
-    //가게 승인 여부 변경
+    //매장 승인 여부 변경
     public void changeStoreStatus(StoreStatus storeStatus) {
         this.storeStatus = storeStatus;
     }
 
-    //가게 시스템 장애 여부 변경
+    //매장 시스템 장애 여부 변경
     public void changeErrorStatus(ErrorStatus errorStatus) {
         this.errorStatus = errorStatus;
     }

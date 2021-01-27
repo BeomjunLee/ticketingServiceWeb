@@ -8,23 +8,20 @@ import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminMemberMan
 import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminStoreAdminDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminStoreManageDto;
 import com.hoseo.hackathon.storeticketingservice.domain.form.*;
-import com.hoseo.hackathon.storeticketingservice.domain.response.Response;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
 import com.hoseo.hackathon.storeticketingservice.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,31 +29,28 @@ import java.security.Principal;
 public class AdminController {
     private final AdminService adminService;
 
-//========================================가게 관리============================================
+//========================================매장 관리============================================
     /**
-     * 관리할 가게 리스트 보기
-     * 응답 : 가게이름, 전화번호, 주소, 등록일, 등록된 가게 수
-     * link : 가게 번호표 관리, 가게수정, 가게관리자 정보보기, 이름으로 검색, 주소로 검색
+     * 관리할 매장 리스트 보기
      */
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/stores")
-    public String findStores(@RequestParam(value = "page", defaultValue = "0") int page, Model model){
+    @GetMapping("/stores/search")
+    public String findStoresByName(@RequestParam(value = "page", defaultValue = "0") int page, Model model, @RequestParam(value = "q", defaultValue = "") String q){
         int totalEnrollStoreCount = adminService.totalEnrollStoreCount();
 
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 1);
         AdminStoreManageDto dto = AdminStoreManageDto.builder()
-                .storeList(adminService.findStores(StoreStatus.VALID, pageable))
-                .totalEnrollStoreCount(totalEnrollStoreCount)
+                .storeList(adminService.findStoresByName(StoreStatus.VALID, q, pageable))
+                .totalStoreCount(totalEnrollStoreCount)
                 .build();
 
-        model.addAttribute("storeList", dto);
-        return "/admin/stores";
+        model.addAttribute("stores", dto);
+        model.addAttribute("query", q);
+        return "/stores";
     }
 
     /**
      * 대기중인 번호표 리스트 관리
-     * 응답 : 대기중인 회원정보,  가게 현재 상태, 총 대기인원, 총 대기시간, 공지사항, 한사람당 대기시간,
-     * link : self, 대기 보류 취소 체크,  가게 번호표 활성화, 가게 번호표 비활성화, 공지사항 수정, 한사람당 대기시간 수정
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/manageStore/{store_id}")
@@ -80,8 +74,6 @@ public class AdminController {
     }
     /**
      * 보류된 번호표 리스트 관리
-     * 응답 ; 이름, 전화번호
-     * link : 보류 ticket별 취소, 체크,
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/holdTickets/{store_id}")
@@ -195,7 +187,7 @@ public class AdminController {
     }
 
     /**
-     * 가게 관리자 수정
+     * 매장 관리자 수정
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/stores/{store_id}/updateMember/{member_id}")
@@ -207,7 +199,7 @@ public class AdminController {
     }
 
     /**
-     * 가게, 관리자 정보보기
+     * 매장, 관리자 정보보기
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/stores/{store_id}/storeAdminInfo/{member_id}")
@@ -229,12 +221,13 @@ public class AdminController {
         model.addAttribute("storeAdmin", dto);
         return "";
     }
+
+
+
 //==================================================회원 관리==============================================
 
     /**
      * 관리할 회원 리스트 보기
-     * res : 총 회원수, 현재 서비스 이용자 수, 아이디, 이름, 전화번호, 이메일, 가입일, 포인트
-     * 링크 : 가입일순으로보기, 이름순으로보기, 검색, 회원탈퇴, 회원수정, 번호표 취소
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/members")
@@ -343,18 +336,19 @@ public class AdminController {
 
 //===========================================가입 승인===================================================
     /**
-     * 가입 승인 가게 목록
-     * 링크 : 가게 관리자 정보, 가입 승인, 이름으로 검색, 주소로 검색
+     * 가입 승인 매장 목록
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/waitStore")
-    public String findStoresWaitingToJoin(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
+    public String findStoresWaitingToJoin(@RequestParam(value = "page", defaultValue = "0") int page, Model model,
+                                          @RequestParam(value = "q", defaultValue = "") String q) {
+
         Pageable pageable = PageRequest.of(page, 10);
 
-        int totalEnrollStoreCount = adminService.totalEnrollStoreCount();
+        int totalEnrollStoreCount = adminService.totalInvalidStoreCount();
         AdminStoreManageDto dto = AdminStoreManageDto.builder()
-                .storeList(adminService.findStores(StoreStatus.INVALID, pageable))
-                .totalEnrollStoreCount(totalEnrollStoreCount)
+                .storeList(adminService.findStoresByName(StoreStatus.INVALID, q, pageable))
+                .totalStoreCount(totalEnrollStoreCount)
                 .build();
         model.addAttribute("storeList", dto);
         return "";
