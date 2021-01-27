@@ -11,36 +11,6 @@
 <body>
 <div>
     <div id="fullpage">
-        <!--<header class="wrap" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-            <h1>
-                <a href="index.html" target="" title="">
-                    <img src="../static/img/logo.png" alt="logo">
-                </a>
-            </h1>
-
-            <ul class="menu01">
-                <li><a href="#" target="" title="">" ABOUT US "</a></li>
-                <li><a href="#" target="" title="">" 기부 사용 방법 "</a></li>
-                <li><a href="#" target="" title="">" 가게찾기 "</a></li>
-                <li><a href="#" target="" title="">" 나누다 "</a></li>
-            </ul>
-
-            <div class="topMenu">
-                <ul class="menu02">
-                    <li><a href="#" target="" title=""><span>" 마이페이지 "</span></a>
-                        <ul class="dept01" style="display:none;">
-                            <li class="nop"><a href="#" target="" title="">회원정보</a></li>
-                            <li class="nop"><a href="#" target="" title="">번호표</a></li>
-                            <li class="nop"><a href="#" target="" title="">관리자메뉴</a></li>
-                        </ul>
-                    </li>
-                    <li><a th:href="@{/login}" target="" title="" sec:authorize="!isAuthenticated()"><span>" 로그인 "</span></a></li>
-                    <li><a th:href="@{/logout}" target="" title="" sec:authorize="isAuthenticated()"><span>" 로그아웃 "</span></a></li>
-                </ul>
-            </div>
-
-            <div class="area-dept01"></div>
-        </header>-->
         <th:block th:insert="/header"></th:block> <!--헤더 -->
 
         <div class='quick'><ul></ul></div>

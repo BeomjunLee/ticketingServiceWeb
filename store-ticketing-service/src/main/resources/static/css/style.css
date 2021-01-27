@@ -34,7 +34,7 @@ section{}
 .content02 {background:url(../img/main_img01.jpg)50% 600px no-repeat;}
 
 .cont01_text1 {padding:6% 0 50% 0; color:#ff9a8d; font-size:60px; font-weight:bold;}
-.cont01_text2 {padding:6% 0 30% 0; color:#ff9a8d; font-size:60px; font-weight:bold;}
+.cont01_text2 {padding:10% 0 30% 0; color:#ff9a8d; font-size:60px; font-weight:bold;}
 
 .cont01_text22 {font-size:16px; display:block; padding-top:3%;
     color:#ffbdb9; line-height:25px;}
@@ -51,14 +51,11 @@ section{}
     margin-top:3%;
 }
 
-
-
 /* login.html */
-#btnJoin02 a {border-bottom:1px solid black; margin:0 10px; }
-#btnJoin02 a,p {margin-top:20px;}
+#btnJoin02 a {margin-top:10%; padding:0 7%; color:#fff; border-right:1px solid #fff; text-decoration:none;}
+#btnJoin02 a:last-child {border:0;}
 .btn_area {text-align:center;}
 .join {display:inline-block; }
-
 
 /* join.html */
 #wrapper {
@@ -71,7 +68,6 @@ section{}
     left: 50%;
     transform: translate(-50%);
     width: 460px;
-    border:3px solid #fad8d1; padding:20px; border-radius:10px;
 }
 
 /* 입력폼 */
@@ -104,9 +100,11 @@ input {
 }
 .box.int_id {
     padding-right: 110px;
+    opacity: 0.5;
 }
 .box.int_pass {
     padding-right: 40px;
+    opacity: 0.5;
 }
 .box.int_pass_check {
     padding-right: 40px;
@@ -180,15 +178,13 @@ select {
 }
 
 /* 버튼 */
-.btn_area {
-    margin:30px 0 91px;
-}
-#btnJoin {
-    width:60%; padding:21px 0 17px; border:0; cursor:pointer; color:#fff;
-    background:#ff9a8d; font-size: 20px; font-weight:400;
-    margin-top:5%;
-}
+.btn_area { margin:30px 0 91px; }
 
+#btnJoin {
+    width:100%; padding:21px 0 17px; border:0; cursor:pointer; color:#fff;
+    font-size: 20px; font-weight:400;
+    margin-top:5%; background:#fff; color:#ff9a8d;
+}
 
 /* owner_join.html */
 #content_owner {
@@ -202,7 +198,6 @@ select {
     border-radius:10px; margin:0 5px;}
 
 .join_text {text-align:center; padding:18.5% 0;}
-
 
 #postcodify_search_button {
     display:inline-block;
@@ -232,16 +227,26 @@ html,body {width:100%; height:100%; margin:0px; padding:0px; overflow:hidden; fo
 
 #fullpage {position:relative; top:0px; z-index:9; width:100%; height:100%;}
 .fullsection{width:100%; height:100%; position:relative;}
-.full1{margin-bottom:-10%;}
+.full1{margin-bottom:-7.8%;}
 .full2{}
-.full3{margin:-1% 0 -1.1% 0;}
+.full3{}
 .full4{}
-.full5{margin-top:-1%; background:#ff9a8d;}
+.full5{background:#ff9a8d;}
 
 /* 스크롤 퀵버튼 */
 ul, li{margin:0;padding:0;list-style:none}
 .quick {position:fixed;right:20px;top:50%;transform:translateY(-50%); z-index:100000}
 .quick li {width:10px;height:10px;margin-bottom:10px; border-radius:15px; border:2px solid #ef7464; cursor:pointer;}
 .quick .on {background:#ef7464;}
+
+/* login */
+.login_wrap {width:100%; margin:0 auto; background:#ff9a8d;}
+#wrapper {clear:both;}
+
+.login_h1 {width:100%; text-align:center; margin:12% 0 2% 0;}
+.login_h1 img {height:150px;}
+#key {height:0px;}
+
+.box.int_pass {margin-top:5%;}
 
 
