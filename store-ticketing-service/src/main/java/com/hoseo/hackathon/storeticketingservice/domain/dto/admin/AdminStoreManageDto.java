@@ -13,5 +13,5 @@ import org.springframework.data.domain.Page;
 @NoArgsConstructor
 public class AdminStoreManageDto {
     private Page<StoreListDto> storeList;
-    private int totalEnrollStoreCount;
+    private int totalStoreCount;
 }
