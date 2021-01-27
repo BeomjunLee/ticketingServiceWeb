@@ -52,6 +52,7 @@ public class MemberController {
         return "/joinMember";
     }
 
+
     /**
      * [회원] 가입
      */
@@ -68,13 +69,21 @@ public class MemberController {
                 .build();
         memberService.createMember(member);
         model.addAttribute("message", "가입에 성공하였습니다");
-        return "/main";
+        return "redirect:/main";
+    }
+
+    /**
+     * [관리자] 가입 폼으로
+     */
+    @GetMapping("/joinStore")
+    public String signUpStoreForm() {
+        return "/joinStore";
     }
 
     /**
      * [관리자] 가입
      */
-    @PostMapping("/joinStoreAdmin")
+    @PostMapping("/joinStoreOk")
     public String signUpAdmin(@Valid StoreAdminForm storeAdminForm, Model model) {
         Member member = Member.builder()//회원
                 .username(storeAdminForm.getMemberUsername())

@@ -29,16 +29,21 @@ public class ErrorController {
     public String validate(BindException e, Model model) {
         log.error(e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-//        StringBuilder builder = new StringBuilder();
 //        for (FieldError fieldError : bindingResult.getFieldErrors()) {
-//            builder.append("[error필드: ");
-//            builder.append(fieldError.getField());
-//            builder.append(", error메세지: ");
-//            builder.append(fieldError.getDefaultMessage());
-//            builder.append(", 입력 값: ");
-//            builder.append(fieldError.getRejectedValue());
-//            builder.append("] ");
+//            if (fieldError.getField().equalsIgnoreCase("username")) {
+//                model.addAttribute("error1", fieldError.getDefaultMessage());
+//            }
+//            if (fieldError.getField().equalsIgnoreCase("password")) {
+//                model.addAttribute("error2", fieldError.getDefaultMessage());
+//            }
+//            if (fieldError.getField().equalsIgnoreCase("name")) {
+//                model.addAttribute("error3", fieldError.getDefaultMessage());
+//            }
+//            if (fieldError.getField().equalsIgnoreCase("phoneNum")) {
+//                model.addAttribute("error4", fieldError.getDefaultMessage());
+//            } if (fieldError.getField().equalsIgnoreCase("email")) {
+//                model.addAttribute("error5", fieldError.getDefaultMessage());
+//            }
 //        }
         return "/joinMember";
     }
@@ -47,14 +52,14 @@ public class ErrorController {
      * 티켓 중복 Error
      */
     @ExceptionHandler(DuplicateTicketingException.class)
-    public ResponseEntity ticketDuplicated(DuplicateTicketingException e) {
+    public String ticketDuplicated(DuplicateTicketingException e) {
         log.error(e.getMessage());
         Response response = Response.builder()
                 .result("fail")
                 .status(409)
                 .message(e.getMessage())
                 .build();
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        return "";
     }
     /**
      * 번호표 찾기 실패
@@ -129,14 +134,10 @@ public class ErrorController {
      * 아이디 중복 에러
      */
     @ExceptionHandler(DuplicateUsernameException.class)
-    public ResponseEntity duplicatedUsername(DuplicateUsernameException e) {
+    public String duplicatedUsername(DuplicateUsernameException e, Model model) {
         log.error(e.getMessage());
-        Response response = Response.builder()
-                .result("fail")
-                .status(400)
-                .message(e.getMessage())
-                .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+//        model.addAttribute("duplicatedError", e.getMessage());
+        return "/joinMember";
     }
 
     /**
