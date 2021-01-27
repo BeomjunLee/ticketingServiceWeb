@@ -7,16 +7,12 @@ import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreManageDto;
 import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.TicketForm;
-import com.hoseo.hackathon.storeticketingservice.domain.response.Response;
-import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
-import com.hoseo.hackathon.storeticketingservice.repository.StoreRepository;
 import com.hoseo.hackathon.storeticketingservice.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +25,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-//@RequestMapping("/store")
+@RequestMapping("/store")
 @Slf4j // 로깅을 위한 어노테이션
 public class StoreController {
 
@@ -41,7 +37,7 @@ public class StoreController {
      * req : 인원수
      */
     @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/{store_id}/new/tickets")
+    @GetMapping("/{store_id}/createTicket")
     public String createTicket(@PathVariable("store_id") Long store_id, @Valid TicketForm ticketForm, Principal principal, Model model) {
         Ticket ticket = Ticket.builder()
                 .peopleCount(ticketForm.getPeopleCount())
@@ -64,7 +60,7 @@ public class StoreController {
     public String manageMembersAndStore(@RequestParam(value = "page", defaultValue = "0") int page, Principal principal, Model model) {
         Store store = storeService.findValidStore(principal.getName());
 
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 7);
 
         StoreManageDto dto = StoreManageDto.builder()
                 .waitingMembers(storeService.findWaitingMembers(principal.getName(), pageable))
@@ -76,7 +72,7 @@ public class StoreController {
                 //TODO 보류회원 결정나면 작업
                 .build();
         model.addAttribute("manageStore", dto);
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -85,12 +81,12 @@ public class StoreController {
      * link : 보류 ticket별 취소, 체크,
      */
     @PreAuthorize("hasAuthority('STORE_ADMIN')")
-    @GetMapping("/holdTicket")
+    @GetMapping("/holdTickets")
     public String manageHoldMembers(@RequestParam(value = "page", defaultValue = "0") int page, Principal principal, Model model) {
         Pageable pageable = PageRequest.of(page, 5);
         //보류회원정보
-        Page<HoldingMembersDto> holdMembers = storeService.findHoldMembers(principal.getName(), pageable);
-        model.addAttribute("holdMembers", holdMembers);
+        Page<HoldingMembersDto> holdingMembers = storeService.findHoldMembers(principal.getName(), pageable);
+        model.addAttribute("holdingMembers", holdingMembers);
         return "";
     }
 
@@ -103,7 +99,7 @@ public class StoreController {
     public String checkTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.checkTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "체크되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -114,7 +110,7 @@ public class StoreController {
     public String cancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.cancelTicketByAdmin(principal.getName(), ticket_id);
         model.addAttribute("message", "취소되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -125,7 +121,7 @@ public class StoreController {
     public String holdTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "보류되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -136,7 +132,7 @@ public class StoreController {
     public String holdCheckTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdCheckTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "체크되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -147,7 +143,7 @@ public class StoreController {
     public String holdCancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdCancelTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "취소되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -158,7 +154,7 @@ public class StoreController {
     public String openTicket(Principal principal, Model model) {
         storeService.openTicket(principal.getName());
         model.addAttribute("message", "번호표가 활성화되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -169,7 +165,7 @@ public class StoreController {
     public String closeTicket(Principal principal, Model model) {
         storeService.closeTicket(principal.getName());
         model.addAttribute("message", "번호표가 활성화되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -180,7 +176,7 @@ public class StoreController {
     public String sendErrorSystem(Principal principal, Model model) {
         storeService.sendErrorSystem(principal.getName());
         model.addAttribute("message", "오류가 접수되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -191,7 +187,7 @@ public class StoreController {
     public String updateNotice(Principal principal, @RequestBody @Valid StoreNoticeForm form, Model model) {
         storeService.updateStoreNotice(principal.getName(), form.getNotice());
         model.addAttribute("message", "수정되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     /**
@@ -202,7 +198,7 @@ public class StoreController {
     public String updateAvgWaitingTime(Principal principal, @RequestBody @Valid AvgTimeForm form, Model model) {
         storeService.updateAvgTime(principal.getName(), form.getAvgWaitingTimeByOne());
         model.addAttribute("message", "수정되었습니다");
-        return "/manageStore";
+        return "/store/manageStore";
     }
 
     //카카오맵 api 와 DB연동 테스트

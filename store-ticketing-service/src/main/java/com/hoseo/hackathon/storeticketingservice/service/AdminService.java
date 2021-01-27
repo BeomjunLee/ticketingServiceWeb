@@ -16,7 +16,9 @@ import com.hoseo.hackathon.storeticketingservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ public class AdminService {
     private final MemberRepository memberRepository;
     private final TicketRepository ticketRepository;
     private final StoreRepository storeRepository;
+    private final PasswordEncoder passwordEncoder;
 
 //===============================================가게 관리=============================================
 
@@ -382,6 +385,20 @@ public class AdminService {
         }
         member.changeMemberByAdmin(form.getUsername(), form.getName(), form.getPhoneNum(), form.getEmail(), form.getPoint());
     }
+
+    /**
+     * 비밀번호 수정
+     */
+    @Transactional
+    public void changePassword(Long member_id, String currentPassword, String newPassword) {
+
+        Member member = memberRepository.findById(member_id).orElseThrow(() -> new UsernameNotFoundException("해당되는 회원을 찾을수 없습니다"));
+        if (!passwordEncoder.matches(currentPassword, member.getPassword())) {
+            throw new BadCredentialsException("비밀번호가 일치 하지않습니다");
+        }
+        member.encodingPassword(passwordEncoder.encode(newPassword));
+    }
+
     /**
      * 중복 회원 검증
      */

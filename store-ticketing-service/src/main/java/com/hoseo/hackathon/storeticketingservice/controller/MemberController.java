@@ -135,6 +135,7 @@ public class MemberController {
     /**
      * [회원] 수정 폼으로
      */
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
     @GetMapping("/updateMember")
     public String updateMemberForm() {
         return "/updateMember";
@@ -167,6 +168,7 @@ public class MemberController {
     /**
      * 비밀번호 변경 폼으로
      */
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
     @GetMapping("/updatePassword")
     public String updatePasswordForm() {
         return "/updatePassword";
@@ -210,7 +212,7 @@ public class MemberController {
      * [회원] 번호표 취소
      */
     @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/tickets")
+    @GetMapping("/cancelTicket")
     public String cancelMyTicket(Principal principal, Model model) {
         storeService.cancelTicket(principal.getName());
         
