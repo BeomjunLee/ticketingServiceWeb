@@ -8,10 +8,13 @@ import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.TicketForm;
 import com.hoseo.hackathon.storeticketingservice.domain.response.Response;
+import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
+import com.hoseo.hackathon.storeticketingservice.repository.StoreRepository;
 import com.hoseo.hackathon.storeticketingservice.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,10 +24,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 //@RequestMapping("/store")
+@Slf4j // 로깅을 위한 어노테이션
 public class StoreController {
 
     private final StoreService storeService;
@@ -239,6 +245,26 @@ public class StoreController {
                 .message("대기시간 변경 성공")
                 .build();
         return ResponseEntity.ok(response);
+    }
+
+    //카카오맵 api 와 DB연동 테스트
+    @GetMapping("/searchStore")
+    public String searchStore(Model model)
+    {
+        List<Store> storeList = new ArrayList<>();
+
+        //테스트 DB
+        storeList.add(new Store(Long.getLong("1"),"test","010-0000-0000","testAddress","36.7915156728683","127.130352628969",0,0,0,
+                "test","111111111",null,null,null,null,null));
+
+        //StoreRepository.findAll().forEach(e -> storeList.add(e));
+
+        //model.addAttribute("id_num", storeList.size());
+
+        log.info("가게 데이터 개수 : " + String.valueOf(storeList.size()));
+        model.addAttribute("stores", storeList);
+
+        return "searchStore";
     }
 
     /**
