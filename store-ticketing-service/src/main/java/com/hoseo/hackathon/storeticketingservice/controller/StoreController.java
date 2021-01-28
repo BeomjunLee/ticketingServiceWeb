@@ -198,12 +198,12 @@ public class StoreController {
 
     //카카오맵 api 와 DB연동 테스트
     @GetMapping("/searchStore")
-    public String searchStore(Model model)
+    public String searchStoreForm(Model model)
     {
         List<Store> storeList = new ArrayList<>();
 
         //테스트 DB
-        storeList.add(new Store(Long.getLong("1"),"test","010-0000-0000","testAddress","36.7915156728683","127.130352628969",0,0,0,
+        storeList.add(new Store(Long.getLong("1"),"테스트","010-1234-5678","테스트주소","36.7915156728683","127.130352628969",0,0,0,
                 "test","111111111",null,null,null,null,null));
 
         //StoreRepository.findAll().forEach(e -> storeList.add(e));
@@ -213,7 +213,7 @@ public class StoreController {
         log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
         model.addAttribute("stores", storeList);
 
-        return "searchStore";
+        return "/searchStore";
     }
 
     /**
