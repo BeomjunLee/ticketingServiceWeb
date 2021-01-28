@@ -52,6 +52,23 @@ public class MemberController {
         return "/joinMember";
     }
 
+    /**
+     * [관리자] 가입 폼으로
+     */
+    @GetMapping("/joinStore")
+    public String signUpStoreForm() {
+        return "/joinStore";
+    }
+
+    /**
+     * [회원] 수정 폼으로
+     */
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
+    @GetMapping("/updateMember")
+    public String updateMemberForm() {
+        return "/updateMember";
+    }
+
 
     /**
      * [회원] 가입
@@ -72,13 +89,6 @@ public class MemberController {
         return "redirect:/main";
     }
 
-    /**
-     * [관리자] 가입 폼으로
-     */
-    @GetMapping("/joinStore")
-    public String signUpStoreForm() {
-        return "/joinStore";
-    }
 
     /**
      * [관리자] 가입
@@ -110,10 +120,10 @@ public class MemberController {
     }
 
     /**
-     * [회원] 정보보기
+     * [회원, 관리자] 정보보기
      */
     @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
-    @GetMapping("/memberInfo")
+    @GetMapping("/myPage")
     public String myInfo(Principal principal, Model model) {
         Member member = memberService.findByUsername(principal.getName());
         if (member.getRole().equals(Role.USER)){    //회원
@@ -125,6 +135,7 @@ public class MemberController {
                     .point(member.getPoint())
                     .build();
             model.addAttribute("member", dto);   //회원이면 member객체
+            return "/memberInfo";
 
             }else if (member.getRole().equals(Role.STORE_ADMIN)) {  //가게 관리자
             Store store = storeService.findStore(member.getUsername());
@@ -142,20 +153,13 @@ public class MemberController {
                     .store_companyNumber(store.getCompanyNumber())
                     .store_status(store.getStoreStatus().getStatus())
                     .build();
-
             model.addAttribute("storeAdmin", dto);   //가게 관리자면 member + store => storeAdmin객체 보냄
+            return "";
         }
-        return "/memberInfo";
+        return "/error";
     }
 
-    /**
-     * [회원] 수정 폼으로
-     */
-    @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
-    @GetMapping("/updateMember")
-    public String updateMemberForm() {
-        return "/updateMember";
-    }
+
 
 
     /**
