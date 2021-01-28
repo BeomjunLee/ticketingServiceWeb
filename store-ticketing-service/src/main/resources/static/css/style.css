@@ -133,26 +133,12 @@ input {
     margin-top: -10px;
     cursor: pointer;
 }
-#bir_wrap {
-    display: table;
-    width: 100%;
-}
-#bir_yy {
-    display: table-cell;
-    width: 147px;
-}
-#bir_mm {
-    display: table-cell;
-    width: 147px;
-    vertical-align: middle;
-}
-#bir_dd {
-    display: table-cell;
-    width: 147px;
-}
-#bir_mm, #bir_dd {
-    padding-left: 10px;
-}
+#bir_wrap { display: table; width: 100%; }
+#bir_yy { display: table-cell; width: 147px; }
+#bir_mm { display: table-cell; width: 147px; vertical-align: middle; }
+#bir_dd { display: table-cell; width: 147px; }
+#bir_mm, #bir_dd { padding-left: 10px; }
+
 select {
     width: 100%;
     height: 29px;
@@ -258,4 +244,25 @@ ul, li{margin:0;padding:0;list-style:none}
 .user_j_text {float:right; padding:47% 3% 0;}
 .user_join_p2 {color:#fff; font-size:20px; clear:both; padding-top:10px;}
 .user_join_p2 a {color:#fff;}
+
+#wrapperJM { position: relative; height: 100%; margin-top:15%; clear:both;}
+#contentJM { position: absolute; left: 50%; transform: translate(-50%); width: 55%; }
+
+.boxJM {
+    display: block;
+    width: 100%;
+    height: 51px;
+    border-bottom: solid 2px #ff9a8d;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    background: #fff;
+    position: relative;
+    opacity: 0.5;
+}
+.boxJM.int_idJM { padding-right: 110px; color:#ff9a8d;}
+.boxJM.int_passJM { padding-right: 40px; margin:2% 0; }
+.boxJM.int_pass_checkJM { padding-right: 40px; }
+.boxJM.int_nameJM { margin:12% 0 2%; }
+.boxJM.int_mobileJM {}
+.boxJM.int_emailJM { margin-top:2%; }
 

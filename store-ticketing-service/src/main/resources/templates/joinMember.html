@@ -3,9 +3,9 @@
 <HEAD>
     <TITLE> New Document </TITLE>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <script src="../static/js/jquery-1.12.3.js"></script>
-    <script src="../static/js/common.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-1.12.3.js"></script>
+    <script src="js/common.js"></script>
 </HEAD>
 
 <body>
@@ -14,7 +14,7 @@
     <header>
         <h1>
             <a th:href="@{/main}" target="" title="">
-                <img class="login_logo_img" src="../static/img/login_logo.png" alt="logo">
+                <img class="login_logo_img" src="img/login_logo.png" alt="logo">
             </a>
         </h1>
 
@@ -30,14 +30,14 @@
 <div id="wrap_R">
     <form th:action="@{/joinMemberOk}" method="post">
         <!-- wrapper -->
-        <div id="wrapper">
+        <div id="wrapperJM">
 
             <!-- content-->
-            <div id="content">
+            <div id="contentJM">
 
                 <!-- ID -->
                 <div>
-                    <span class="box int_id">
+                    <span class="boxJM int_idJM">
                         <input type="text" id="id" class="int" maxlength="20" name="username" placeholder="아이디">
                     </span>
                     <span class="error_next_box"></span>
@@ -45,7 +45,7 @@
 
                 <!-- PW1 -->
                 <div>
-                    <span class="box int_pass">
+                    <span class="boxJM int_passJM">
                         <input type="password" id="pswd1" class="int" maxlength="20" name="password" placeholder="비밀번호">
                         <span id="alertTxt">사용불가</span>
                         <img src="m_icon_pass.png" id="pswd1_img1" class="pswdImg">
@@ -56,7 +56,7 @@
                 <!-- PW2 -->
                 <div>
                     <!-- <h3 class="join_title"><label for="pswd2">비밀번호 재확인</label></h3>-->
-                    <span class="box int_pass_check">
+                    <span class="boxJM int_pass_checkJM">
                         <input type="password" id="pswd2" class="int" maxlength="20" placeholder="비밀번호 확인">
                         <img src="m_icon_check_disable.png" id="pswd2_img1" class="pswdImg">
                     </span>
@@ -66,7 +66,7 @@
                 <!-- NAME -->
                 <div>
                     <!--<h3 class="join_title"><label for="name">이름</label></h3>-->
-                    <span class="box int_name">
+                    <span class="boxJM int_nameJM">
                         <input type="text" id="name" class="int" maxlength="20" name="name" placeholder="이름(실명 입력)">
                     </span>
                     <span class="error_next_box"></span>
@@ -75,7 +75,7 @@
                 <!-- MOBILE -->
                 <div>
                     <!--<h3 class="join_title"><label for="phoneNo">휴대전화</label></h3>-->
-                    <span class="box int_mobile">
+                    <span class="boxJM int_mobileJM">
                         <input type="tel" id="mobile" class="int" maxlength="16" placeholder="휴대전화번호 (-제외)" name="phoneNum">
                     </span>
                     <span class="error_next_box"></span>
@@ -84,7 +84,7 @@
                 <!-- EMAIL -->
                 <div>
                     <!--<h3 class="join_title"><label for="email">본인확인 이메일<span class="optional">(선택)</span></label></h3>-->
-                    <span class="box int_email">
+                    <span class="boxJM int_emailJM">
                         <input type="text" id="email" class="int" maxlength="100" placeholder="이메일 주소" name="email">
                     </span>
                     <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
