@@ -211,22 +211,20 @@ public class StoreController {
     @GetMapping("/searchStore")
     public String searchStoreForm(Model model, Principal principal)
     {
-        try {
-            if (principal.getName() != null) {
+            if(principal == null)  model.addAttribute("ticket", Ticket.builder().build());
+            else if (principal.getName() != null) {
                 Ticket ticket = storeService.findMyTicketForSearch(principal.getName());
                 if (ticket != null) {
                     model.addAttribute("ticket", ticket);
                 } else model.addAttribute("ticket", Ticket.builder().build());
             }
-        } catch (Exception e) {
 
-        }finally {
             List<Store> storeList = storeService.findValidStores();
             log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
 
             model.addAttribute("stores", storeList);
             return "/store/searchStore";
-        }
+
 
     }
 

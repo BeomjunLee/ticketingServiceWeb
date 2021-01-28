@@ -289,18 +289,13 @@
 
                                 var ticket = [[${ticket}]];
 
-                                function checkTicket() {
-                                    if (ticket.getId() == null) {
-                                        return '<button type="submit" class="btn btn-dark"> 번호표 뽑기</button> </form> </div>'
-                                    }
-                                }
                                 //html로 표시될 인포 윈도우의 내용
                                 infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + store['name'] + "<br>" + '</div>' +
                                     '<div style="padding:5px;font-size:12px;">' + store['address'] + "<br>" + '</div>' +
                                     '<div style="padding:5px;font-size:12px;">' + store['phoneNum'] + "<br>" + '</div>' +
                                     '<div> <form onsubmit="; return false;"> ' +
                                     '' +
-                                    checkTicket());
+                                    '<button type="submit" class="btn btn-dark"> 번호표 뽑기</button> </form> </div>');
 
                                 //infowindow.setContent('<div style="padding:5px;font-size:12px;">' + "위도 : " + {{longitude}} + "<br>" + "경도 : " + {{latitude}} + '</div>')
                             });
