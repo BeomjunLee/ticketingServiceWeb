@@ -13,6 +13,15 @@
 <th:block th:replace="/header"></th:block> <!--헤더 -->
 
 <section>
+<!--번호표가 없을경우 (div안에 어디가다 넣을지몰라서 일단 밖에다가 빼뒀음)-->
+    <th:block th:if="${ticket == null}">
+    발급받은 번호표가 없습니다
+    <a th:href="@{/store/searchStore}">매장 찾으러 가기</a>
+    </th:block>
+
+
+<!--    번호표가 있을경우의 코드는 나중에 프론트 다만들면 추가-->
+<!-- 번호표가 있을경우-->
     <div class="wrap_M_info">
         <div class="cont_M_info">
 

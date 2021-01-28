@@ -219,9 +219,14 @@ public class MemberController {
      * [회원] 번호표 보기
      */
     @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/myTickets")
+    @GetMapping("/myTicket")
     public String myTicket(Principal principal, Model model) {
         Ticket ticket = storeService.findMyTicket(principal.getName());
+        if (ticket == null) {
+            model.addAttribute("ticket", null); //null일때 프론트에서 번호표가 없다는 말과함께 매장 찾기 url 던져주면될 듯함
+            return "/myTicket";
+        }
+
         Store store = storeService.findValidStoreById(ticket.getStore().getId());
         
         MyTicketDto dto = MyTicketDto.builder()
@@ -234,7 +239,7 @@ public class MemberController {
                 .waitingTime(ticket.getWaitingTime())
                 .build();
         model.addAttribute("ticket", dto);
-        return "";
+        return "/myTicket";
     }
 
     /**

@@ -246,7 +246,8 @@ public class StoreService {
      */
     @Transactional(readOnly = true)
     public Ticket findMyTicket(String username) {
-        Ticket ticket = ticketRepository.findTicketJoinMemberByUsernameAndStatus(username, TicketStatus.VALID).orElseThrow(() -> new NotFoundTicketException("번호표를 찾을수 없습니다"));
+//        Ticket ticket = ticketRepository.findTicketJoinMemberByUsernameAndStatus(username, TicketStatus.VALID).orElseThrow(() -> new NotFoundTicketException("번호표를 찾을수 없습니다"));
+        Ticket ticket = ticketRepository.findTicketJoinMemberByUsernameAndStatus(username, TicketStatus.VALID).orElse(null);
         return ticket;
     }
 

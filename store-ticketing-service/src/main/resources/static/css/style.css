@@ -300,7 +300,7 @@ ul, li{margin:0;padding:0;list-style:none}
     .btn_M_info button { background:#ff9a8d; color:#fff;  padding:10px 110px; margin:0 20px 60px 0; }
     .btn_M_info button:last-child {margin:0;}
 
-/* mypage_NumTable.html */
+/* myTicket.html */
 .cont_NT { width:50%; margin:0 auto; }
 .store_intro { text-align:center; font-size:20px; background:#ff9a8d; color:#fff; }
 .intro_name { display:inline-block; opacity:0.5; font-size:12px; margin:90px 70px 30px -140px; }
