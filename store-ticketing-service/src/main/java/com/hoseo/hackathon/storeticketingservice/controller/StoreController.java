@@ -1,5 +1,6 @@
 package com.hoseo.hackathon.storeticketingservice.controller;
 
+import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.Ticket;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.HoldingMembersDto;
@@ -7,6 +8,7 @@ import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreManageDto;
 import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.TicketForm;
+import com.hoseo.hackathon.storeticketingservice.service.MemberService;
 import com.hoseo.hackathon.storeticketingservice.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -207,12 +209,25 @@ public class StoreController {
      * 매장 보기 (매장 찾기 카카오 검색 api)
      */
     @GetMapping("/searchStore")
-    public String searchStoreForm(Model model)
+    public String searchStoreForm(Model model, Principal principal)
     {
-        List<Store> storeList = storeService.findValidStores();
-        log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
-        model.addAttribute("stores", storeList);
-        return "/store/searchStore";
+        try {
+            if (principal.getName() != null) {
+                Ticket ticket = storeService.findMyTicketForSearch(principal.getName());
+                if (ticket != null) {
+                    model.addAttribute("ticket", ticket);
+                } else model.addAttribute("ticket", Ticket.builder().build());
+            }
+        } catch (Exception e) {
+
+        }finally {
+            List<Store> storeList = storeService.findValidStores();
+            log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
+
+            model.addAttribute("stores", storeList);
+            return "/store/searchStore";
+        }
+
     }
 
     /**

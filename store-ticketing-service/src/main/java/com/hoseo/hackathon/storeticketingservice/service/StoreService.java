@@ -250,6 +250,12 @@ public class StoreService {
         return ticket;
     }
 
+    @Transactional(readOnly = true)
+    public Ticket findMyTicketForSearch(String username) {
+        Ticket ticket = ticketRepository.findTicketJoinMemberByUsernameAndStatus(username, TicketStatus.VALID).orElse(null);
+        return ticket;
+    }
+
     /**
      * [관리자] 보류한 번호표들 보기
      */
