@@ -275,3 +275,7 @@ ul, li{margin:0;padding:0;list-style:none}
 }
 #btnJoinJM a { color:#fff; }
 
+/* joinMemberOK.html */
+.back_btnJMO { color:#ff9a8d; border:1px solid black;}
+.back_btnJMO img { margin:10px 5px 0; border:1px solid red;}
+
