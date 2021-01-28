@@ -263,9 +263,8 @@ ul, li{margin:0;padding:0;list-style:none}
 .boxJM.int_passJM { padding-right: 40px; margin:2% 0; }
 .boxJM.int_pass_checkJM { padding-right: 40px; }
 .boxJM.int_nameJM { margin:12% 0 2%; }
-.boxJM.int_mobileJM {}
 .boxJM.int_emailJM { margin-top:2%; }
-/* 버튼 */
+
 .btn_areaJM { margin:30px 0 91px; }
 
 #btnJoinJM {
@@ -274,4 +273,32 @@ ul, li{margin:0;padding:0;list-style:none}
     margin-top:5%; background:#ff9a8d;
 }
 #btnJoinJM a { color:#fff; }
+
+/* joinMemberOK.html */
+.back_btnJMO { color:#ff9a8d; border:1px solid black;}
+.back_btnJMO img { margin:10px 5px 0; border:1px solid red;}
+
+/* mypage_M_info.html */
+.wrap_M_info { width:75%; margin:2% auto; color:#ff9a8d; border:1px solid #faf2f0; box-shadow:0 0 30px 10px #faf2f0; }
+.cont_M_info { width:50%; margin:0 auto; }
+
+.point_M_info { text-align:center; font-size:20px; }
+    .point_M_info p { display:inline-block; margin-top:10%; font-weight:bold; }
+    .point_M_info span { margin:0 10%; font-size:40px;}
+    .point_a { color:#ff9a8d; font-weight:bold; }
+
+#wrapper_M_info { position: relative; margin-top:7%; clear:both; }
+#content_M_info { position: absolute; left: 50%; transform: translate(-50%); width: 100%; }
+    .boxJM.int_id_M_info { padding-right: 110px; color:#ff9a8d; width:55%; margin:0 auto; }
+    .boxJM.int_pass_M_info { width:55%; margin:3% 0 0 22.5%; display:inline-block; }
+        .pswdbtn_M_info { background:#ff9a8d; color:#fff; padding:1% 3%; margin-left:4%; }
+    .boxJM.int_name_M_info { width:55%; margin:3% auto; }
+    .boxJM.int_mobile_M_info { width:55%; margin:0 auto; }
+    .boxJM.int_email_M_info { width:55%; margin:3% auto; }
+
+.btn_M_info { margin:500px auto 0; width:72.3%; }
+    .btn_M_info button { background:#ff9a8d; color:#fff;  padding:10px 110px; margin:0 20px 60px 0; }
+    .btn_M_info button:last-child {margin:0;}
+
+
 
