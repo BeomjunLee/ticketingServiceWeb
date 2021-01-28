@@ -4,8 +4,6 @@
     <TITLE> New Document </TITLE>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/jquery-1.12.3.js"></script>
-    <script src="js/common.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -257,6 +255,10 @@
 
                 console.log(stores.length);
 
+                var ticket = [[${ticket}]];
+
+                console.log(ticket);
+
                 for (var i = 0; i < stores.length; i++) {
                     var store = stores[i];
 
@@ -268,7 +270,7 @@
                     if (result > -1) {
                         var placePosition = new kakao.maps.LatLng(store['latitude'], store['longitude']),
                             marker = addMarker(placePosition),
-                            itemEl = getListItem(store['id'], store['name'], store['address'], store['phoneNum'], store['latitude'], store['longitude']);
+                            itemEl = getListItem(store['id'], store['name'], store['address'], store['phoneNum'], ticket);
 
                         console.log("검색결과 가게이름 : " + name + " keyword 값 : " + keyword + " result 값 : " + result);
 
@@ -287,17 +289,16 @@
                             kakao.maps.event.addListener(marker, 'click', function () {
                                 //displayInfowindow_coord(marker);
 
-                                var ticket = [[${ticket}]];
-
                                 //html로 표시될 인포 윈도우의 내용
-                                infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + store['name'] + "<br>" + '</div>' +
+
+                                setInfowindow(infowindow,store['name'],store['address'],store['phoneNum'],ticket);
+
+                                /*infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + store['name'] + "<br>" + '</div>' +
                                     '<div style="padding:5px;font-size:12px;">' + store['address'] + "<br>" + '</div>' +
                                     '<div style="padding:5px;font-size:12px;">' + store['phoneNum'] + "<br>" + '</div>' +
-                                    '<div> <form onsubmit="; return false;"> ' +
-                                    '' +
-                                    '<button type="submit" class="btn btn-dark"> 번호표 뽑기</button> </form> </div>');
-
-                                //infowindow.setContent('<div style="padding:5px;font-size:12px;">' + "위도 : " + {{longitude}} + "<br>" + "경도 : " + {{latitude}} + '</div>')
+                                    '<div th:if = "${ticket == null}">'
+                                    + '<form onsubmit="; return false;"> <button type="submit" class="btn btn-dark">' + "번호표 뽑기" +' </button>' + '</form>' +
+                                    '</div>');*/
                             });
 
                             itemEl.onmouseover = function () {
@@ -325,6 +326,10 @@
 
                 console.log(stores.length);
 
+                var ticket = [[${ticket}]];
+
+                console.log(ticket);
+
                 for (var i = 0; i < stores.length; i++) {
                     var store = stores[i];
 
@@ -332,7 +337,7 @@
 
                     var placePosition = new kakao.maps.LatLng(store['latitude'], store['longitude']),
                         marker = addMarker(placePosition),
-                        itemEl = getListItem(store['id'], store['name'], store['address'], store['phoneNum'], store['latitude'], store['longitude']);
+                        itemEl = getListItem(store['id'], store['name'], store['address'], store['phoneNum'], ticket);
 
                     bounds.extend(placePosition);
 
@@ -350,10 +355,15 @@
                             //displayInfowindow_coord(marker);
 
                             //html로 표시될 인포 윈도우의 내용
-                            infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + store['name'] + "<br>" + '</div>' +
+
+                            setInfowindow(infowindow,store['name'],store['address'],store['phoneNum'],ticket);
+
+                            /*infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + store['name'] + "<br>" + '</div>' +
                                 '<div style="padding:5px;font-size:12px;">' + store['address'] + "<br>" + '</div>' +
                                 '<div style="padding:5px;font-size:12px;">' + store['phoneNum'] + "<br>" + '</div>' +
-                                '<div> <form onsubmit="; return false;"> <button type="submit" class="btn btn-dark"> 번호표 뽑기</button> </form> </div>');
+                                '<div th:if = "${ticket == null}">'
+                                + '<form onsubmit="; return false;"> <button type="submit" class="btn btn-dark">' + "번호표 뽑기" +' </button>' + '</form>' +
+                                '</div>');*/
 
                             //infowindow.setContent('<div style="padding:5px;font-size:12px;">' + "위도 : " + {{longitude}} + "<br>" + "경도 : " + {{latitude}} + '</div>')
                         });
@@ -400,7 +410,7 @@
             markers = [];
         }
 
-        function getListItem(index, name, address, phonenumber, latitude, longitude) {
+        function getListItem(index, name, address, phonenumber, ticket) {
             var el = document.createElement('li'),
                 itemStr = '<span class="blueMarker"> </span>' +
                     '<div class="info">' +
@@ -411,8 +421,16 @@
             itemStr += '  <span style="color:#009900;">' + phonenumber + '</span>' +
                 '</div>';
 
-            itemStr += '  <form onsubmit=" /*번호표페이지로 이동 함수*/ ; return false;">' +
-                '<button type="submit" class="btn btn-dark">' + "번호표뽑기" + '</button>' + '</form>';
+            if(ticket == null)
+            {
+                itemStr += '  <form onsubmit=" /*번호표페이지로 이동 함수*/ ; return false;">' +
+                    '<button type="submit" class="btn btn-dark">' + "번호표뽑기" + '</button>' + '</form>';
+            }
+            else
+            {
+                console.log("ticket이 null이 아닐 경우 실행");
+            }
+
             /*itemStr += '  <span class="tel">' + "위도 : " + longitude + " <br> " + "경도 : " + latitude +'</span>' +
                     '</div>';*/
 
@@ -420,6 +438,23 @@
             el.className = 'item';
 
             return el;
+        }
+
+        function setInfowindow(infowindow, name, address, phoneNum, ticket)
+        {
+            if(ticket == null)
+            {
+                infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + name + "<br>" + '</div>' +
+                    '<div style="padding:5px;font-size:12px;">' + address + "<br>" + '</div>' +
+                    '<div style="padding:5px;font-size:12px;">' + phoneNum + "<br>" + '</div>' +
+                    '<form onsubmit="; return false;"><button type="submit" class="btn btn-dark">번호표 뽑기</button></form></div>');
+            }
+            else
+            {
+                infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + name + "<br>" + '</div>' +
+                    '<div style="padding:5px;font-size:12px;">' + address + "<br>" + '</div>' +
+                    '<div style="padding:5px;font-size:12px;">' + phoneNum + "<br>" + '</div>');
+            }
         }
 
         function removeAllChildNods(el) {

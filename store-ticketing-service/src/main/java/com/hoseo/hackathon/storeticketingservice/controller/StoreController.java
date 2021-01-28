@@ -218,6 +218,8 @@ public class StoreController {
             }                                                                           //=> ticket == null일때만 번호표 뽑기
 
             List<Store> storeList = storeService.findValidStores();
+
+            //storeList.add(new Store(Long.getLong("1"),"test","010-1234-5678","testaddress","36.80664548684804","127.15159702392523",0,0,0,null,null,null,null,null,null,null));
             log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
 
             model.addAttribute("stores", storeList);
