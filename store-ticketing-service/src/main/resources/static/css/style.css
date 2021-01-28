@@ -300,5 +300,15 @@ ul, li{margin:0;padding:0;list-style:none}
     .btn_M_info button { background:#ff9a8d; color:#fff;  padding:10px 110px; margin:0 20px 60px 0; }
     .btn_M_info button:last-child {margin:0;}
 
+/* mypage_NumTable.html */
+.cont_NT { width:50%; margin:0 auto; }
+.store_intro { text-align:center; font-size:20px; background:#ff9a8d; color:#fff; }
+.intro_name { display:inline-block; opacity:0.5; font-size:12px; margin:90px 70px 30px -140px; }
+.store_info span { font-size:32px; }
+.store_info span:last-child { font-size:15px; display:block; margin:0; padding-bottom:60px; }
 
+.store_aboutUs { font-size:16px; }
+.store_info2 { font-size:12px; opacity:0.5; padding:20px 0 0px; }
 
+.padd { margin-left:-240px; padding-bottom:40px; }
+.total_num {font-size:55px; margin-left:90px; }
