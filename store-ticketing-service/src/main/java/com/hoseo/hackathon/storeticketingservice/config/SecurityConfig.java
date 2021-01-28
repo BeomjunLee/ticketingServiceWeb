@@ -32,8 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                     .disable()
                 .authorizeRequests()
-//                    .antMatchers("/login**", "/main", "/join**", "/manage**")
-                .antMatchers("/**")
+                    .antMatchers("/login**", "/main", "/join**", "/manage**", "/store/searchStore")
+//                .antMatchers("/**")
                         .permitAll()
                     .anyRequest()
                         .authenticated()
@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/img/**", "/js/**", "/css/**", "/error")
+                .antMatchers("/img/**", "**/js/**", "**/css/**", "/error")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 }

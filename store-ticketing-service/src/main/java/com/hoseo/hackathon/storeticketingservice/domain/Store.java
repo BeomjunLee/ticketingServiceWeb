@@ -1,4 +1,5 @@
 package com.hoseo.hackathon.storeticketingservice.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hoseo.hackathon.storeticketingservice.domain.status.ErrorStatus;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
@@ -39,6 +40,7 @@ public class Store {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @JsonIgnore
     private Member member;              //member_id
 
     //==연관관계 메서드==

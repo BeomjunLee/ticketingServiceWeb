@@ -3,6 +3,7 @@ package com.hoseo.hackathon.storeticketingservice.service;
 import com.hoseo.hackathon.storeticketingservice.domain.*;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.HoldingMembersDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.WaitingMembersDto;
+import com.hoseo.hackathon.storeticketingservice.domain.dto.SearchStoreListDto;
 import com.hoseo.hackathon.storeticketingservice.domain.status.ErrorStatus;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreStatus;
 import com.hoseo.hackathon.storeticketingservice.domain.status.StoreTicketStatus;
@@ -13,13 +14,15 @@ import com.hoseo.hackathon.storeticketingservice.repository.StoreRepository;
 import com.hoseo.hackathon.storeticketingservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -322,5 +325,16 @@ public class StoreService {
         return store;
     }
 
+    /**
+     * 유효한 전체 매장 찾기
+     */
+    @Transactional(readOnly = true)
+    public List<Store> findValidStores() {
+        List<Store> storeList = storeRepository.findAllByStoreStatus(StoreStatus.VALID);
+        if (storeList == null) {
+            return new ArrayList<>();
+        }
+        return storeList;
+    }
 
 }

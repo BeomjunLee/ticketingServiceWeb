@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -196,25 +195,7 @@ public class StoreController {
         return "/store/manageStore";
     }
 
-    //카카오맵 api 와 DB연동 테스트
-    @GetMapping("/searchStore")
-    public String searchStoreForm(Model model)
-    {
-        List<Store> storeList = new ArrayList<>();
 
-        //테스트 DB
-        storeList.add(new Store(Long.getLong("1"),"테스트","010-1234-5678","테스트주소","36.7915156728683","127.130352628969",0,0,0,
-                "test","111111111",null,null,null,null,null));
-
-        //StoreRepository.findAll().forEach(e -> storeList.add(e));
-
-        //model.addAttribute("id_num", storeList.size());
-
-        log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
-        model.addAttribute("stores", storeList);
-
-        return "/searchStore";
-    }
 
     /**
      * 매장 수정
@@ -223,9 +204,16 @@ public class StoreController {
 //===========================================가게 찾기 메뉴========================================
 
     /**
-     * 매장 보기
+     * 매장 보기 (매장 찾기 카카오 검색 api)
      */
-
+    @GetMapping("/searchStore")
+    public String searchStoreForm(Model model)
+    {
+        List<Store> storeList = storeService.findValidStores();
+        log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
+        model.addAttribute("stores", storeList);
+        return "/store/searchStore";
+    }
 
     /**
      * 매장 상세보기

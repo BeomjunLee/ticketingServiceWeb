@@ -15,8 +15,6 @@
     한 사람당 대기시간 : <a th:text="${manageStore.getAvgWaitingTimeByOne()} + 분">5분</a>
 </div>
 
-<th:block th:include="/store/holdTickets"></th:block> <!-- -->
-
 
 <div th:each="member : ${manageStore.getWaitingMembers()}">
     대기 번호 : <a th:text="${member.getWaitingNum()}">5</a>
@@ -27,6 +25,7 @@
     <a th:href="@{/store/checkTicket/{ticket_id}(ticket_id=${member.getTicket_id()})}">체크</a>
 
 </div>
+
 
 
 <nav style="text-align: center;">
