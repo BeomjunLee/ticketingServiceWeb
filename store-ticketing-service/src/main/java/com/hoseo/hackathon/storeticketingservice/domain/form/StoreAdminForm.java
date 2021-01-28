@@ -35,15 +35,17 @@ public class StoreAdminForm {
 
     @NotBlank(message = "가게 전화번호를 입력해주세요")
     private String storePhoneNum;            //전화번호
-    
-    
-    @NotNull(message = "주소를 입력해주세요")
-    private String storeAddress;
 
-//    @NotBlank(message = "위도를 입력해주세요")
+    @NotNull(message = "주소를 입력해주세요")
+    private String streetAddress;           //api에서 받은 도로명 주소
+
+    @NotNull(message = "주소를 입력해주세요")
+    private String detailAddress;           //api에서 받은 상세주소
+
+    @NotBlank(message = "위도를 입력해주세요")
     private String storeLatitude;            //위도
 
-//    @NotBlank(message = "경도를 입력해주세요")
+    @NotBlank(message = "경도를 입력해주세요")
     private String storeLongitude;           //경도
 
     @NotBlank(message = "사업자 등록번호를 입력해주세요")

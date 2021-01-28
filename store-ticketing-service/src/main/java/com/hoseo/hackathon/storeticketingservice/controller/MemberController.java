@@ -96,8 +96,7 @@ public class MemberController {
         Store store = Store.builder()//가게
                 .name(storeAdminForm.getStoreName())
                 .phoneNum(storeAdminForm.getStorePhoneNum())
-                .address(storeAdminForm.getStoreAddress())
-                //TODO 주소를 위도, 경도로 바꿔야됨
+                .address(storeAdminForm.getStreetAddress() + " " + storeAdminForm.getDetailAddress())   //주소 합치기
                 .latitude(storeAdminForm.getStoreLatitude())
                 .longitude(storeAdminForm.getStoreLongitude())
                 .companyNumber(storeAdminForm.getStoreCompanyNumber())

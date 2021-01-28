@@ -82,7 +82,7 @@ public class StoreController {
         //보류회원정보
         Page<HoldingMembersDto> holdingMembers = storeService.findHoldMembers(principal.getName(), pageable);
         model.addAttribute("holdingMembers", holdingMembers);
-        return "";
+        return "/store/holdTickets";
     }
 
 
@@ -94,7 +94,7 @@ public class StoreController {
     public String checkTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.checkTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "체크되었습니다");
-        return "/store/manageStore";
+        return "redirect:/store/manageStore";
     }
 
     /**
@@ -105,7 +105,7 @@ public class StoreController {
     public String cancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.cancelTicketByAdmin(principal.getName(), ticket_id);
         model.addAttribute("message", "취소되었습니다");
-        return "/store/manageStore";
+        return "redirect:/store/manageStore";
     }
 
     /**
@@ -116,7 +116,7 @@ public class StoreController {
     public String holdTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "보류되었습니다");
-        return "/store/manageStore";
+        return "redirect:/store/manageStore";
     }
 
     /**
@@ -127,7 +127,7 @@ public class StoreController {
     public String holdCheckTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdCheckTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "체크되었습니다");
-        return "/store/manageStore";
+        return "redirect:/store/manageStore";
     }
 
     /**
@@ -138,7 +138,7 @@ public class StoreController {
     public String holdCancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdCancelTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "취소되었습니다");
-        return "/store/manageStore";
+        return "redirect:/store/manageStore";
     }
 
     /**

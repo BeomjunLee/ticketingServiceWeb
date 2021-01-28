@@ -1,0 +1,11 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:each="member : ${holdingMembers}">
+    이름 : <a th:text="${member.getName()}">홍길동</a>
+    전화번호 : <a th:text="${member.getPhoneNum()}">01000000000</a>
+    <a th:href="@{/store/cancelHoldTicket/{ticket_id}(ticket_id=${member.getTicket_id()})}">취소</a>
+    <a th:href="@{/store/checkHoldTicket/{ticket_id}(ticket_id=${member.getTicket_id()})}">체크</a>
+</div>
+</body>
+</html>
