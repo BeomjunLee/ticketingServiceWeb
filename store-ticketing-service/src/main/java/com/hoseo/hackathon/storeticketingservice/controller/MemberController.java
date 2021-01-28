@@ -89,6 +89,15 @@ public class MemberController {
         return "redirect:/main";
     }
 
+    /**
+     * [관리자] 가입 폼 -> 다음 단계 폼으로 데이터 전송
+     */
+    @PostMapping("/joinStoreNext")
+    public String signUpStoreFormNext(@Valid MemberForm memberForm, Model model) {
+        model.addAttribute("memberForm", memberForm);
+        return "/joinStore_next";
+    }
+
 
     /**
      * [관리자] 가입
@@ -116,7 +125,7 @@ public class MemberController {
         memberService.createStoreAdmin(member, store);
 
         model.addAttribute("message", "가입에 성공하였습니다");
-        return "";
+        return "redirect:/main";
     }
 
     /**
@@ -174,16 +183,16 @@ public class MemberController {
         if (member.getRole().equals(Role.USER)){    //회원
             memberService.updateMember(principal.getName(), memberForm);
             model.addAttribute("message", "수정되었습니다");
-            return "";
+            return "redirect:/myPage";
 
         }else if (member.getRole().equals(Role.STORE_ADMIN)) {  //가게 관리자
             memberService.updateStoreAdmin(principal.getName(), storeForm);
             model.addAttribute("message", "수정되었습니다");
-            return "";
+            return "redirect:/myPage";
         }
 
         model.addAttribute("message", "수정 실패하였습니다");
-        return "";
+        return "redirect:/myPage";
     }
     /**
      * 비밀번호 변경 폼으로
@@ -202,7 +211,7 @@ public class MemberController {
     public String changePassword(Principal principal, @RequestBody @Valid UpdatePasswordForm form, Model model) {
         memberService.changePassword(principal.getName(), form.getCurrentPassword(), form.getNewPassword());
         model.addAttribute("message", "비밀번호가 변경되었습니다");
-        return "";
+        return "redirect:/";
     }
 
 
@@ -237,7 +246,7 @@ public class MemberController {
         storeService.cancelTicket(principal.getName());
         
         model.addAttribute("message", "번호표가 취소되었습니다");
-        return "";
+        return "redirect:/";
     }
 
     /**

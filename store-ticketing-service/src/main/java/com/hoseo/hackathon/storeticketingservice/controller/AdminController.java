@@ -20,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -33,8 +32,8 @@ public class AdminController {
     /**
      * 관리할 매장 리스트 보기
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/stores/search")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/manageStoreList")
     public String findStoresByName(@RequestParam(value = "page", defaultValue = "0") int page, Model model, @RequestParam(value = "q", defaultValue = "") String q){
         int totalEnrollStoreCount = adminService.totalEnrollStoreCount();
 
@@ -46,7 +45,7 @@ public class AdminController {
 
         model.addAttribute("stores", dto);
         model.addAttribute("query", q);
-        return "/stores";
+        return "/admin/manageStoreList";
     }
 
     /**
@@ -374,7 +373,7 @@ public class AdminController {
     public String rejectStore(@PathVariable("store_id") Long store_id, @PathVariable("member_id") Long member_id, Model model) {
         adminService.rejectStoreAdmin(member_id, store_id);
         model.addAttribute("message", "가입 승인이 취소되었습니다");
-        return "";
+        return "redirect:/admin/manageStoreList";
     }
 
 //=============================================시스템 에러=============================================

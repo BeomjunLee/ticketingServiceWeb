@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+등록된 매장 수 : <a th:text="${stores.getTotalStoreCount()}">50</a>
+
+<div th:each="store : ${stores.getStoreList()}">
+    매장명 : <a th:text="${store.getName()}">ㅇㅇ식당</a> <br>
+    전화번호 : <a th:text="${store.getPhoneNum()}">0200001111</a>
+    주소 : <a th:text="${store.getAddress()}">ㅇㅇ시ㅇㅇ대로</a>
+    승인일 : <a th:text="${#temporals.format(store.getCreatedDate(), 'yyyy-MM-dd')}">2021-10-20</a>
+    사업자등록번호 : <a th:text="${store.getCompanyNumber()}">215115141</a>
+
+<!-- 링크-->
+    <a th:href="@{/admin/stores/{store_id}/cancelJoin/{member_id}(store_id=${store.getStore_id()}, member_id=${store.getMember_id()})}">매장 승인 취소</a>
+    <a th:href="@{/admin/manageStore/{store_id}(store_id=${store.getStore_id()})}">매장 번호표 관리</a>
+    <a th:href="@{/admin/stores/{store_id}/storeAdminInfo/{member_id}(store_id=${store.getStore_id()}, member_id=${store.getMember_id()})}">매장 관리자 정보보기</a>
+
+</div>
+
+<!--페이징-->
+<div style="text-align: center;">
+        <th:block th:if="${stores.getStoreList().hasPrevious()}">
+            <a th:href="@{/admin/manageStoreList(q=${query}, page=${stores.getStoreList().getNumber() - 1})}">
+                <span>&lt;</span>
+            </a>
+        </th:block>
+        <th:block th:if="${stores.getStoreList().hasNext()}">
+            <a th:href="@{/admin/manageStoreList(q=${query}, page=${stores.getStoreList().getNumber() + 1})}">
+                <span>&gt;</span>
+            </a>
+        </th:block>
+</div>
+
+<!--   매장명으로 검색-->
+    <form th:action="@{/admin/manageStoreList}" method="get">
+        <input type="text" name="q">
+        <button type="submit">검색</button>
+    </form>
+</body>
+</html>

@@ -5,11 +5,25 @@
     <title>Title</title>
 </head>
 <body>
-    <div th:each="member : ${holdingMembers}">
+    <th:block th:each="member : ${holdingMembers}">
         이름 : <a th:text="${member.getName()}">홍길동</a>
         전화번호 : <a th:text="${member.getPhoneNum()}">01000000000</a>
         <a th:href="@{/store/cancelHoldTicket/{ticket_id}(ticket_id=${member.getTicket_id()})}">취소</a>
         <a th:href="@{/store/checkHoldTicket/{ticket_id}(ticket_id=${member.getTicket_id()})}">체크</a>
-    </div>
+    </th:block>
+
+<!--    &lt;!&ndash; 페이징 &ndash;&gt;-->
+<!--    <div>-->
+<!--        <th:block th:if="${holdingMembers.hasPrevious()}">-->
+<!--            <a th:href="@{/store/holdTickets(page=${holdingMembers.getNumber() - 1})}">-->
+<!--                <span> < </span>-->
+<!--            </a>-->
+<!--        </th:block>-->
+<!--        <th:block th:if="${holdingMembers.hasNext()}">-->
+<!--            <a th:href="@{/store/holdTickets(page=${holdingMembers.getNumber() + 1})}">-->
+<!--                <span> > </span>-->
+<!--            </a>-->
+<!--        </th:block>-->
+<!--    </div>-->
 </body>
 </html>

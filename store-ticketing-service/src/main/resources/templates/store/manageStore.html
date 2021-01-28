@@ -7,15 +7,7 @@
 <body>
 <th:block th:replace="/header"></th:block> <!--헤더 -->
 
-<div>
-    번호표 발급 상태 : <a th:text="${manageStore.getStoreTicketStatus()}">OPEN</a>
-    총 대기 인원 : <a th:text="${manageStore.getTotalWaitingCount()} + 분">5분</a>
-    총 대기 시간 : <a th:text="${manageStore.getTotalWaitingTime()} + 분">25분</a>
-    공지사항 : <a th:text="${manageStore.getNotice()}">공지사항 예시</a>
-    한 사람당 대기시간 : <a th:text="${manageStore.getAvgWaitingTimeByOne()} + 분">5분</a>
-</div>
-
-
+<!--대기 회원 목록-->
 <div th:each="member : ${manageStore.getWaitingMembers()}">
     대기 번호 : <a th:text="${member.getWaitingNum()}">5</a>
     이름 : <a th:text="${member.getName()}">홍길동</a>
@@ -25,20 +17,30 @@
     <a th:href="@{/store/checkTicket/{ticket_id}(ticket_id=${member.getTicket_id()})}">체크</a>
 
 </div>
+<!-- 페이징 -->
+    <div>
+            <th:block th:if="${manageStore.getWaitingMembers().hasPrevious()}">
+                <a th:href="@{/store/manageStore(page=${manageStore.getWaitingMembers().getNumber() - 1})}">
+                    <span> < </span>
+                </a>
+            </th:block>
+            <th:block th:if="${manageStore.getWaitingMembers().hasNext()}">
+                <a th:href="@{/store/manageStore(page=${manageStore.getWaitingMembers().getNumber() + 1})}">
+                    <span> > </span>
+                </a>
+            </th:block>
+    </div>
 
 
+<!--매장 정보-->
+<div>
+    번호표 발급 상태 : <a th:text="${manageStore.getStoreTicketStatus()}">OPEN</a>
+    총 대기 인원 : <a th:text="${manageStore.getTotalWaitingCount()} + 분">5분</a>
+    총 대기 시간 : <a th:text="${manageStore.getTotalWaitingTime()} + 분">25분</a>
+    공지사항 : <a th:text="${manageStore.getNotice()}">공지사항 예시</a>
+    한 사람당 대기시간 : <a th:text="${manageStore.getAvgWaitingTimeByOne()} + 분">5분</a>
+</div>
 
-<nav style="text-align: center;">
-        <li th:if="${manageStore.getWaitingMembers().hasPrevious()}">
-            <a th:href="@{/manageStore(page=${manageStore.getWaitingMembers().getNumber() - 1})}" aria-label="Previous">
-                <span aria-hidden="true">&lt;</span>
-            </a>
-        </li>
-        <li th:if="${manageStore.getWaitingMembers().hasNext()}">
-            <a th:href="@{/manageStore(page=${manageStore.getWaitingMembers().getNumber() + 1})}" aria-label="Next">
-                <span aria-hidden="true">&gt;</span>
-            </a>
-        </li>
-</nav>
+
 </body>
 </html>

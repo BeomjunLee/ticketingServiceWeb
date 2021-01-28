@@ -1,6 +1,4 @@
 package com.hoseo.hackathon.storeticketingservice.controller;
-
-import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.Ticket;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.HoldingMembersDto;
@@ -8,7 +6,6 @@ import com.hoseo.hackathon.storeticketingservice.domain.dto.StoreManageDto;
 import com.hoseo.hackathon.storeticketingservice.domain.form.AvgTimeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.StoreNoticeForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.TicketForm;
-import com.hoseo.hackathon.storeticketingservice.service.MemberService;
 import com.hoseo.hackathon.storeticketingservice.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -58,7 +55,7 @@ public class StoreController {
     public String manageMembersAndStore(@RequestParam(value = "page", defaultValue = "0") int page, Principal principal, Model model) {
         Store store = storeService.findValidStore(principal.getName());
 
-        Pageable pageable = PageRequest.of(page, 7);
+        Pageable pageable = PageRequest.of(page, 1);
 
         StoreManageDto dto = StoreManageDto.builder()
                 .waitingMembers(storeService.findWaitingMembers(principal.getName(), pageable))
@@ -79,7 +76,7 @@ public class StoreController {
     @PreAuthorize("hasAuthority('STORE_ADMIN')")
     @GetMapping("/holdTickets")
     public String manageHoldMembers(@RequestParam(value = "page", defaultValue = "0") int page, Principal principal, Model model) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 1);
         //보류회원정보
         Page<HoldingMembersDto> holdingMembers = storeService.findHoldMembers(principal.getName(), pageable);
         model.addAttribute("holdingMembers", holdingMembers);
@@ -211,13 +208,14 @@ public class StoreController {
     @GetMapping("/searchStore")
     public String searchStoreForm(Model model, Principal principal)
     {
-            if(principal == null)  model.addAttribute("ticket", Ticket.builder().build());
-            else if (principal.getName() != null) {
-                Ticket ticket = storeService.findMyTicketForSearch(principal.getName());
+            if(principal == null)  model.addAttribute("ticket", Ticket.builder().build());  //로그인 안했을때 -> 번호표 뽑기창 x
+
+            else if (principal != null) {
+                Ticket ticket = storeService.findMyTicketForSearch(principal.getName());    //로그인했을때 번호표를 뽑았을 경우 -> 번호표 뽑기창 x
                 if (ticket != null) {
                     model.addAttribute("ticket", ticket);
-                } else model.addAttribute("ticket", Ticket.builder().build());
-            }
+                } else model.addAttribute("ticket", null);  // 번호표를 안뽑은 경우 => 번호표 뽑기창 o
+            }                                                                           //=> ticket == null일때만 번호표 뽑기
 
             List<Store> storeList = storeService.findValidStores();
             log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
@@ -225,15 +223,6 @@ public class StoreController {
             model.addAttribute("stores", storeList);
             return "/store/searchStore";
 
-
     }
-
-    /**
-     * 매장 상세보기
-     */
-
-    /**
-     * 매장이름으로 검색
-     */
 
 }
