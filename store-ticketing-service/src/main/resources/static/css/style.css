@@ -265,4 +265,12 @@ ul, li{margin:0;padding:0;list-style:none}
 .boxJM.int_nameJM { margin:12% 0 2%; }
 .boxJM.int_mobileJM {}
 .boxJM.int_emailJM { margin-top:2%; }
+/* 버튼 */
+.btn_areaJM { margin:30px 0 91px; }
+
+#btnJoinJM {
+    width:100%; padding:21px 0 17px; border:0; cursor:pointer; color:#fff;
+    font-size: 20px; font-weight:400;
+    margin-top:5%; background:#ff9a8d;
+}
 
