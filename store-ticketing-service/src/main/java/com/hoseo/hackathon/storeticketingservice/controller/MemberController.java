@@ -23,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.security.Principal;
@@ -85,6 +86,7 @@ public class MemberController {
                 .deletedDate(null)  //탈퇴일은 가입시 null(재가입시 null 로 바꿔야돼서)
                 .build();
         memberService.createMember(member);
+
         model.addAttribute("message", "가입에 성공하였습니다");
         return "redirect:/main";
     }

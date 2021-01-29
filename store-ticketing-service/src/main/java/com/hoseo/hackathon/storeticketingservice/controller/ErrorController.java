@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -26,7 +27,7 @@ public class ErrorController {
      * Valid 에러
      */
     @ExceptionHandler(BindException.class)
-    public String validate(BindException e, Model model) {
+    public String validate(BindException e, Model model, HttpServletRequest request) {
         log.error(e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
 //        for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -45,7 +46,8 @@ public class ErrorController {
 //                model.addAttribute("error5", fieldError.getDefaultMessage());
 //            }
 //        }
-        return "/joinMember";
+        String referer = request.getHeader("referer");
+        return "redirect:"+referer;
     }
 
     /**
