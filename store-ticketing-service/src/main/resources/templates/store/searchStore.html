@@ -250,12 +250,11 @@
 
             if (keyword) {
                 var stores = new Array();
-
                 stores = [[${stores}]];
 
-                console.log(stores.length);
-
                 var ticket = [[${ticket}]];
+
+                console.log(stores.length);
 
                 console.log(ticket);
 
@@ -276,29 +275,19 @@
 
                         bounds.extend(placePosition);
 
-                        (function (marker, title, latitude, longitude) {
+                        (function (marker, title) {
                             kakao.maps.event.addListener(marker, 'mouseover', function () {
                                 displayInfowindow(marker, title);
                             });
-
-                            /*kakao.maps.event.addListener(marker, 'mouseout', function() {
-                                infowindow.close();
-                            });*/
 
                             //마커 클릭 이벤트, 마커의 위도 경도 나타냄
                             kakao.maps.event.addListener(marker, 'click', function () {
                                 //displayInfowindow_coord(marker);
 
+                                var ticket = [[${ticket}]];
+
                                 //html로 표시될 인포 윈도우의 내용
-
-                                setInfowindow(infowindow,store['name'],store['address'],store['phoneNum'],ticket);
-
-                                /*infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + store['name'] + "<br>" + '</div>' +
-                                    '<div style="padding:5px;font-size:12px;">' + store['address'] + "<br>" + '</div>' +
-                                    '<div style="padding:5px;font-size:12px;">' + store['phoneNum'] + "<br>" + '</div>' +
-                                    '<div th:if = "${ticket == null}">'
-                                    + '<form onsubmit="; return false;"> <button type="submit" class="btn btn-dark">' + "번호표 뽑기" +' </button>' + '</form>' +
-                                    '</div>');*/
+                                setInfowindow(infowindow, store['name'], store['address'], store['phoneNum'], ticket);
                             });
 
                             itemEl.onmouseover = function () {
@@ -312,7 +301,7 @@
                             if (fragment)
                                 fragment.appendChild(itemEl);
 
-                        })(marker, store['name'], store['latitude'], store['longitude']);
+                        })(marker, store['name']);
 
                         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
                         // 불러온 가게 DB의 개수가 0개 일때 재설정 하면 카카오맵이 사라짐
@@ -321,12 +310,11 @@
                 }
             } else {
                 var stores = new Array();
-
                 stores = [[${stores}]];
 
-                console.log(stores.length);
-
                 var ticket = [[${ticket}]];
+
+                console.log(stores.length);
 
                 console.log(ticket);
 
@@ -341,7 +329,7 @@
 
                     bounds.extend(placePosition);
 
-                    (function (marker, title, latitude, longitude) {
+                    (function (marker, title) {
                         kakao.maps.event.addListener(marker, 'mouseover', function () {
                             displayInfowindow(marker, title);
                         });
@@ -352,20 +340,10 @@
 
                         //마커 클릭 이벤트, 마커의 위도 경도 나타냄
                         kakao.maps.event.addListener(marker, 'click', function () {
-                            //displayInfowindow_coord(marker);
 
                             //html로 표시될 인포 윈도우의 내용
+                            setInfowindow(infowindow, store['name'], store['address'], store['phoneNum'], ticket);
 
-                            setInfowindow(infowindow,store['name'],store['address'],store['phoneNum'],ticket);
-
-                            /*infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + store['name'] + "<br>" + '</div>' +
-                                '<div style="padding:5px;font-size:12px;">' + store['address'] + "<br>" + '</div>' +
-                                '<div style="padding:5px;font-size:12px;">' + store['phoneNum'] + "<br>" + '</div>' +
-                                '<div th:if = "${ticket == null}">'
-                                + '<form onsubmit="; return false;"> <button type="submit" class="btn btn-dark">' + "번호표 뽑기" +' </button>' + '</form>' +
-                                '</div>');*/
-
-                            //infowindow.setContent('<div style="padding:5px;font-size:12px;">' + "위도 : " + {{longitude}} + "<br>" + "경도 : " + {{latitude}} + '</div>')
                         });
 
                         itemEl.onmouseover = function () {
@@ -379,7 +357,7 @@
                         if (fragment)
                             fragment.appendChild(itemEl);
 
-                    })(marker, store['name'], store['latitude'], store['longitude']);
+                    })(marker, store['name']);
                 }
             }
         }
@@ -426,18 +404,17 @@
                 itemStr += '  <form onsubmit=" /*번호표페이지로 이동 함수*/ ; return false;">' +
                     '<button type="submit" class="btn btn-dark">' + "번호표뽑기" + '</button>' + '</form>';
             }
-            else
-            {
-                console.log("ticket이 null이 아닐 경우 실행");
-            }
-
-            /*itemStr += '  <span class="tel">' + "위도 : " + longitude + " <br> " + "경도 : " + latitude +'</span>' +
-                    '</div>';*/
 
             el.innerHTML = itemStr;
             el.className = 'item';
 
             return el;
+        }
+
+        function removeAllChildNods(el) {
+            while (el.hasChildNodes()) {
+                el.removeChild(el.lastChild);
+            }
         }
 
         function setInfowindow(infowindow, name, address, phoneNum, ticket)
@@ -447,7 +424,7 @@
                 infowindow.setContent('<div align="center" style="padding:5px;font-size:15px;">' + name + "<br>" + '</div>' +
                     '<div style="padding:5px;font-size:12px;">' + address + "<br>" + '</div>' +
                     '<div style="padding:5px;font-size:12px;">' + phoneNum + "<br>" + '</div>' +
-                    '<form onsubmit="; return false;"><button type="submit" class="btn btn-dark">번호표 뽑기</button></form></div>');
+                    '<div> <form onsubmit="; return false;"> <button type="submit" class="btn btn-dark"> 번호표 뽑기</button> </form> </div>');
             }
             else
             {
@@ -455,14 +432,6 @@
                     '<div style="padding:5px;font-size:12px;">' + address + "<br>" + '</div>' +
                     '<div style="padding:5px;font-size:12px;">' + phoneNum + "<br>" + '</div>');
             }
-        }
-
-        function removeAllChildNods(el) {
-            while (el.hasChildNodes()) {
-                el.removeChild(el.lastChild);
-            }
-
-
         }
     </script>
 </div>
