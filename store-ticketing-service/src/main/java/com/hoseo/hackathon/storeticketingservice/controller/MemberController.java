@@ -42,7 +42,7 @@ public class MemberController {
      */
     @GetMapping("/join")
     public String signUp() {
-        return "/join";
+        return "join";
     }
 
     /**
@@ -50,7 +50,7 @@ public class MemberController {
      */
     @GetMapping("/joinMember")
     public String signUpMemberForm() {
-        return "/joinMember";
+        return "joinMember";
     }
 
     /**
@@ -58,7 +58,7 @@ public class MemberController {
      */
     @GetMapping("/joinStore")
     public String signUpStoreForm() {
-        return "/joinStore";
+        return "joinStore";
     }
 
     /**
@@ -67,7 +67,7 @@ public class MemberController {
     @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
     @GetMapping("/updateMember")
     public String updateMemberForm() {
-        return "/updateMember";
+        return "updateMember";
     }
 
 
@@ -88,7 +88,7 @@ public class MemberController {
         memberService.createMember(member);
 
         model.addAttribute("message", "가입에 성공하였습니다");
-        return "redirect:/main";
+        return "redirect:main";
     }
 
     /**
@@ -97,7 +97,7 @@ public class MemberController {
     @PostMapping("/joinStoreNext")
     public String signUpStoreFormNext(@Valid MemberForm memberForm, Model model) {
         model.addAttribute("memberForm", memberForm);
-        return "/joinStore_next";
+        return "joinStore_next";
     }
 
 
@@ -127,7 +127,7 @@ public class MemberController {
         memberService.createStoreAdmin(member, store);
 
         model.addAttribute("message", "가입에 성공하였습니다");
-        return "redirect:/main";
+        return "redirect:main";
     }
 
     /**
@@ -167,7 +167,7 @@ public class MemberController {
             model.addAttribute("storeAdmin", dto);   //가게 관리자면 member + store => storeAdmin객체 보냄
             return "";
         }
-        return "/error";
+        return "error";
     }
 
 
@@ -194,7 +194,7 @@ public class MemberController {
         }
 
         model.addAttribute("message", "수정 실패하였습니다");
-        return "redirect:/myPage";
+        return "redirect:myPage";
     }
     /**
      * 비밀번호 변경 폼으로
@@ -202,7 +202,7 @@ public class MemberController {
     @PreAuthorize("hasAuthority('USER') or hasAuthority('STORE_ADMIN')")
     @GetMapping("/updatePassword")
     public String updatePasswordForm() {
-        return "/updatePassword";
+        return "updatePassword";
     }
 
     /**
@@ -213,7 +213,7 @@ public class MemberController {
     public String changePassword(Principal principal, @RequestBody @Valid UpdatePasswordForm form, Model model) {
         memberService.changePassword(principal.getName(), form.getCurrentPassword(), form.getNewPassword());
         model.addAttribute("message", "비밀번호가 변경되었습니다");
-        return "redirect:/";
+        return "redirect:";
     }
 
 
@@ -226,7 +226,7 @@ public class MemberController {
         Ticket ticket = storeService.findMyTicket(principal.getName());
         if (ticket == null) {
             model.addAttribute("ticket", null); //null일때 프론트에서 번호표가 없다는 말과함께 매장 찾기 url 던져주면될 듯함
-            return "/myTicket";
+            return "myTicket";
         }
 
         Store store = storeService.findValidStoreById(ticket.getStore().getId());
@@ -241,7 +241,7 @@ public class MemberController {
                 .waitingTime(ticket.getWaitingTime())
                 .build();
         model.addAttribute("ticket", dto);
-        return "/myTicket";
+        return "myTicket";
     }
 
     /**
@@ -253,7 +253,7 @@ public class MemberController {
         storeService.cancelTicket(principal.getName());
         
         model.addAttribute("message", "번호표가 취소되었습니다");
-        return "redirect:/";
+        return "redirect:";
     }
 
     /**

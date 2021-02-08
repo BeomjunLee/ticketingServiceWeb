@@ -67,7 +67,7 @@ public class StoreController {
                 //TODO 보류회원 결정나면 작업
                 .build();
         model.addAttribute("manageStore", dto);
-        return "/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -80,7 +80,7 @@ public class StoreController {
         //보류회원정보
         Page<HoldingMembersDto> holdingMembers = storeService.findHoldMembers(principal.getName(), pageable);
         model.addAttribute("holdingMembers", holdingMembers);
-        return "/store/holdTickets";
+        return "redirect:store/holdTickets";
     }
 
 
@@ -92,7 +92,7 @@ public class StoreController {
     public String checkTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.checkTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "체크되었습니다");
-        return "redirect:/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -103,7 +103,7 @@ public class StoreController {
     public String cancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.cancelTicketByAdmin(principal.getName(), ticket_id);
         model.addAttribute("message", "취소되었습니다");
-        return "redirect:/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -114,7 +114,7 @@ public class StoreController {
     public String holdTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "보류되었습니다");
-        return "redirect:/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -125,7 +125,7 @@ public class StoreController {
     public String holdCheckTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdCheckTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "체크되었습니다");
-        return "redirect:/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -136,7 +136,7 @@ public class StoreController {
     public String holdCancelTicket(@PathVariable("ticket_id")Long ticket_id, Principal principal, Model model) {
         storeService.holdCancelTicket(principal.getName(), ticket_id);
         model.addAttribute("message", "취소되었습니다");
-        return "redirect:/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -147,7 +147,7 @@ public class StoreController {
     public String openTicket(Principal principal, Model model) {
         storeService.openTicket(principal.getName());
         model.addAttribute("message", "번호표가 활성화되었습니다");
-        return "/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -158,7 +158,7 @@ public class StoreController {
     public String closeTicket(Principal principal, Model model) {
         storeService.closeTicket(principal.getName());
         model.addAttribute("message", "번호표가 활성화되었습니다");
-        return "/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -169,7 +169,7 @@ public class StoreController {
     public String sendErrorSystem(Principal principal, Model model) {
         storeService.sendErrorSystem(principal.getName());
         model.addAttribute("message", "오류가 접수되었습니다");
-        return "/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -180,7 +180,7 @@ public class StoreController {
     public String updateNotice(Principal principal, @RequestBody @Valid StoreNoticeForm form, Model model) {
         storeService.updateStoreNotice(principal.getName(), form.getNotice());
         model.addAttribute("message", "수정되었습니다");
-        return "/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
     /**
@@ -191,7 +191,7 @@ public class StoreController {
     public String updateAvgWaitingTime(Principal principal, @RequestBody @Valid AvgTimeForm form, Model model) {
         storeService.updateAvgTime(principal.getName(), form.getAvgWaitingTimeByOne());
         model.addAttribute("message", "수정되었습니다");
-        return "/store/manageStore";
+        return "redirect:store/manageStore";
     }
 
 
@@ -223,7 +223,7 @@ public class StoreController {
             log.info("매장 데이터 개수 : " + String.valueOf(storeList.size()));
 
             model.addAttribute("stores", storeList);
-            return "/store/searchStore";
+            return "redirect:store/searchStore";
 
     }
 

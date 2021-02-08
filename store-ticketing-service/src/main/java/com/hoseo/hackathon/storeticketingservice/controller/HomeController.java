@@ -13,7 +13,7 @@ public class HomeController {
      */
     @GetMapping("/main")
     public String main() {
-        return "/main";
+        return "main";
     }
 
     /**
@@ -21,6 +21,6 @@ public class HomeController {
      */
     @GetMapping("/login")
     public String goLogin(){
-        return "/login";
+        return "login";
     }
 }
