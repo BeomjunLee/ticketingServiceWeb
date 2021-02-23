@@ -3,185 +3,158 @@
 <HEAD>
     <TITLE> New Document </TITLE>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../../static/css/style.css">
-    <script src="../../static/js/jquery-1.12.3.js"></script>
-    <script src="../../static/js/common.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/jquery-1.12.3.js"></script>
+    <script src="/js/common.js"></script>
 </HEAD>
 
 <body>
 
-    <header class="wrap">
-        <h1>
-            <a th:href="@{/main}" target="" title="">
-                <img src="../../static/img/logo.png" alt="logo">
-            </a>
-        </h1>
+    <th:block th:replace="/header"></th:block> <!--헤더 -->
 
-        <ul class="menu01">
-            <li><a href="#" target="" title="">" ABOUT US "</a></li>
-            <li><a href="#" target="" title="">" 기부 사용 방법 "</a></li>
-            <li><a th:href="@{/store/searchStore}" target="" title="">" 가게찾기 "</a></li>
-            <li><a href="#" target="" title="">" 나누다 "</a></li>
-        </ul>
+    <section>
+        <div class="wrap_MIStore">
+            <div class="wrapL_MIStore">
+                <h3> 가게 관리자 정보 </h3>
 
-        <div class="topMenu">
-            <ul class="menu02">
-                <li><a href="#" target="" title=""><span>" 마이페이지 "</span></a>
-                    <ul class="dept01" style="display:none;">
-                        <li class="nop"><a th:href="@{/myPage}" target="" title="">회원정보</a></li>
-                        <li class="nop"><a th:href="@{/myTicket}" target="" title="">번호표</a></li>
-                        <li class="nop"><a th:href="@{/store/manageStore}" target="" title="">관리자메뉴</a></li>
-                    </ul>
-                </li>
-                <li><a th:href="@{/login}" target="" title="" sec:authorize="!isAuthenticated()"><span>" 로그인 "</span></a></li>
-                <li><a th:href="@{/logout}" target="" title="" sec:authorize="isAuthenticated()"><span>" 로그아웃 "</span></a></li>
-            </ul>
-        </div>
+                <div>
+                    <form>
+                        <!-- wrapper -->
+                        <div id="wrapper_M_info">
 
-        <div class="area-dept01"></div>
-    </header>
+                            <!-- content-->
+                            <div id="content_MIStore">
 
-    <div class="wrap_MIStore">
-        <div class="wrapL_MIStore">
-            <h3> 가게 관리자 정보 </h3>
+                                <!-- ID -->
+                                <div>
+                                        <span class="boxJM_MIStore int_id_MIStore">
+                                            <input type="text" id="id" class="int_MIStore" maxlength="20" name="username" placeholder="아이디">
+                                        </span>
+                                    <span class="error_next_box"></span>
+                                </div>
 
-            <div>
-                <form>
-                    <!-- wrapper -->
-                    <div id="wrapper_M_info">
-
-                        <!-- content-->
-                        <div id="content_MIStore">
-
-                            <!-- ID -->
-                            <div>
-                                    <span class="boxJM_MIStore int_id_MIStore">
-                                        <input type="text" id="id" class="int_MIStore" maxlength="20" name="username" placeholder="아이디">
+                                <!-- PW1 -->
+                                <div>
+                                    <span class="boxJM_MIStore int_pass_MIStore">
+                                        <input type="password" id="pswd1" class="int_MIStore" maxlength="20" name="password" placeholder="비밀번호">
+                                        <span id="alertTxt">사용불가</span>
+                                        <img src="m_icon_pass.png" id="pswd1_img1" class="pswdImg">
                                     </span>
-                                <span class="error_next_box"></span>
-                            </div>
-
-                            <!-- PW1 -->
-                            <div>
-                                <span class="boxJM_MIStore int_pass_MIStore">
-                                    <input type="password" id="pswd1" class="int_MIStore" maxlength="20" name="password" placeholder="비밀번호">
-                                    <span id="alertTxt">사용불가</span>
-                                    <img src="m_icon_pass.png" id="pswd1_img1" class="pswdImg">
-                                </span>
-                                <span class="error_next_box"></span>
-                                <span>
-                                    <button class="pswdbtn_MIStore">비밀번호 변경</button>
-                                </span>
-                            </div>
-
-                            <!-- NAME -->
-                            <div>
-                                <!--<h3 class="join_title"><label for="name">이름</label></h3>-->
-                                <span class="boxJM_MIStore int_name_MIStore">
-                                        <input type="text" id="name" class="int_MIStore" maxlength="20" name="name" placeholder="이름">
+                                    <span class="error_next_box"></span>
+                                    <span>
+                                        <button class="pswdbtn_MIStore">비밀번호 변경</button>
                                     </span>
-                                <span class="error_next_box"></span>
-                            </div>
+                                </div>
 
-                            <!-- MOBILE -->
-                            <div>
-                                <!--<h3 class="join_title"><label for="phoneNo">휴대전화</label></h3>-->
-                                <span class="boxJM_MIStore int_mobile_MIStore">
-                                        <input type="tel" id="mobile" class="int_MIStore" maxlength="16" placeholder="전화번호" name="phoneNum">
-                                    </span>
-                                <span class="error_next_box"></span>
-                            </div>
+                                <!-- NAME -->
+                                <div>
+                                    <!--<h3 class="join_title"><label for="name">이름</label></h3>-->
+                                    <span class="boxJM_MIStore int_name_MIStore">
+                                            <input type="text" id="name" class="int_MIStore" maxlength="20" name="name" placeholder="이름">
+                                        </span>
+                                    <span class="error_next_box"></span>
+                                </div>
 
-                            <!-- EMAIL -->
-                            <div>
-                                <!--<h3 class="join_title"><label for="email">본인확인 이메일<span class="optional">(선택)</span></label></h3>-->
-                                <span class="boxJM_MIStore int_email_MIStore">
-                                        <input type="text" id="email" class="int_MIStore" maxlength="100" placeholder="이메일" name="email">
-                                    </span>
-                                <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
+                                <!-- MOBILE -->
+                                <div>
+                                    <!--<h3 class="join_title"><label for="phoneNo">휴대전화</label></h3>-->
+                                    <span class="boxJM_MIStore int_mobile_MIStore">
+                                            <input type="tel" id="mobile" class="int_MIStore" maxlength="16" placeholder="전화번호" name="phoneNum">
+                                        </span>
+                                    <span class="error_next_box"></span>
+                                </div>
+
+                                <!-- EMAIL -->
+                                <div>
+                                    <!--<h3 class="join_title"><label for="email">본인확인 이메일<span class="optional">(선택)</span></label></h3>-->
+                                    <span class="boxJM_MIStore int_email_MIStore">
+                                            <input type="text" id="email" class="int_MIStore" maxlength="100" placeholder="이메일" name="email">
+                                        </span>
+                                    <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
+                                </div>
+
                             </div>
+                            <!-- content-->
 
                         </div>
-                        <!-- content-->
+                        <!-- wrapper -->
+                    </form>
+                    <script src="main.js"></script>
+                </div>
 
-                    </div>
-                    <!-- wrapper -->
-                </form>
-                <script src="main.js"></script>
+                <div class="btn_MIStore">
+                    <button>수정</button>
+                </div>
             </div>
 
-            <div class="btn_MIStore">
-                <button>수정</button>
-            </div>
-        </div>
 
+            <div class="wrapR_MIStore">
+                <h3> 가게 정보 </h3>
 
-        <div class="wrapR_MIStore">
-            <h3> 가게 정보 </h3>
+                <div>
+                    <form>
+                        <!-- wrapper -->
+                        <div id="wrapper_M_info2">
 
-            <div>
-                <form>
-                    <!-- wrapper -->
-                    <div id="wrapper_M_info2">
+                            <!-- content-->
+                            <div id="content_MIStore2">
 
-                        <!-- content-->
-                        <div id="content_MIStore2">
+                                <!-- ID -->
+                                <div>
+                                        <span class="boxJM int_id_M_info">
+                                            <input type="text" id="store_name" class="int" maxlength="20" name="username" placeholder="가게명">
+                                        </span>
+                                    <span class="error_next_box"></span>
+                                </div>
 
-                            <!-- ID -->
-                            <div>
-                                    <span class="boxJM int_id_M_info">
-                                        <input type="text" id="store_name" class="int" maxlength="20" name="username" placeholder="가게명">
+                                <!-- PW1 -->
+                                <div>
+                                    <span class="boxJM int_pass_M_info">
+                                        <input type="password" id="phone_number" class="int" maxlength="20" name="password" placeholder="전화번호">
+                                        <span class="alertTxt">사용불가</span>
+                                        <img src="m_icon_pass.png" id="pswd2_img1" class="pswdImg">
                                     </span>
-                                <span class="error_next_box"></span>
-                            </div>
+                                    <span class="error_next_box"></span>
+                                </div>
 
-                            <!-- PW1 -->
-                            <div>
-                                <span class="boxJM int_pass_M_info">
-                                    <input type="password" id="phone_number" class="int" maxlength="20" name="password" placeholder="전화번호">
-                                    <span class="alertTxt">사용불가</span>
-                                    <img src="m_icon_pass.png" id="pswd2_img1" class="pswdImg">
-                                </span>
-                                <span class="error_next_box"></span>
-                            </div>
+                                <!-- NAME -->
+                                <div>
+                                    <!--<h3 class="join_title"><label for="name">이름</label></h3>-->
+                                    <span class="boxJM int_name_M_info">
+                                            <input type="text" id="address" class="int" maxlength="20" name="name" placeholder="주소">
+                                        </span>
+                                    <span class="error_next_box"></span>
+                                </div>
 
-                            <!-- NAME -->
-                            <div>
-                                <!--<h3 class="join_title"><label for="name">이름</label></h3>-->
-                                <span class="boxJM int_name_M_info">
-                                        <input type="text" id="address" class="int" maxlength="20" name="name" placeholder="주소">
-                                    </span>
-                                <span class="error_next_box"></span>
-                            </div>
+                                <!-- MOBILE -->
+                                <div>
+                                    <!--<h3 class="join_title"><label for="phoneNo">휴대전화</label></h3>-->
+                                    <span class="boxJM int_mobile_M_info">
+                                            <input type="tel" id="number" class="int" maxlength="16" placeholder="사업자등록번호" name="phoneNum">
+                                        </span>
+                                    <span class="error_next_box"></span>
+                                </div>
 
-                            <!-- MOBILE -->
-                            <div>
-                                <!--<h3 class="join_title"><label for="phoneNo">휴대전화</label></h3>-->
-                                <span class="boxJM int_mobile_M_info">
-                                        <input type="tel" id="number" class="int" maxlength="16" placeholder="사업자등록번호" name="phoneNum">
-                                    </span>
-                                <span class="error_next_box"></span>
-                            </div>
+                                <!-- EMAIL -->
+                                <div>
+                                    <!--<h3 class="join_title"><label for="email">본인확인 이메일<span class="optional">(선택)</span></label></h3>-->
+                                    <span class="boxJM int_email_M_info">
+                                            <input type="text" id="join_state" class="int" maxlength="100" placeholder="가입승인상태" name="email">
+                                        </span>
+                                    <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
+                                </div>
 
-                            <!-- EMAIL -->
-                            <div>
-                                <!--<h3 class="join_title"><label for="email">본인확인 이메일<span class="optional">(선택)</span></label></h3>-->
-                                <span class="boxJM int_email_M_info">
-                                        <input type="text" id="join_state" class="int" maxlength="100" placeholder="가입승인상태" name="email">
-                                    </span>
-                                <span class="error_next_box">이메일 주소를 다시 확인해주세요.</span>
                             </div>
+                            <!-- content-->
 
                         </div>
-                        <!-- content-->
-
-                    </div>
-                    <!-- wrapper -->
-                </form>
-                <script src="main.js"></script>
+                        <!-- wrapper -->
+                    </form>
+                    <script src="main.js"></script>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
 
 </body>
