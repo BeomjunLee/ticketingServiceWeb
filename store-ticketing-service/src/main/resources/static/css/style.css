@@ -168,6 +168,14 @@ select {
     color: red;
     display: none;
 }
+.alertTxt {
+    position: absolute;
+    top: 19px;
+    right: 38px;
+    font-size: 12px;
+    color: red;
+    display: none;
+}
 
 /* 버튼 */
 .btn_area { margin:30px 0 91px; }
@@ -333,7 +341,8 @@ ul, li{margin:0;padding:0;list-style:none}
 /* memberInfoStore.html */
 .wrap_MIStore { width:75%; margin:2% auto;}
 .wrapL_MIStore { width:49.9%; float:left; color:#fff; background:#ff9a8d; padding-bottom:50px; }
-.wrapR_MIStore { width:49.9%; float:left; color:#ff9a8d; border:1px solid #faf2f0; box-shadow:0 0 30px 10px #faf2f0; }
+.wrapR_MIStore { width:49.9%; float:left; color:#ff9a8d; border:1px solid #faf2f0; box-shadow:10px 0 25px 0px #faf2f0;
+                 padding-bottom:608px; }
 
 .wrap_MIStore h3 { font-size:18px; padding:15px 0 0 50px; }
 
@@ -372,4 +381,8 @@ ul, li{margin:0;padding:0;list-style:none}
 .btn_MIStore button:last-child { margin:0; }
 
 #wrapper_M_info2 { position: relative; margin-top:7%; clear:both; }
-#content_MIStore2 { position: absolute; top:50px; left: 40%; transform: translate(-50%); width: 100%; }
+#content_MIStore2 { position: absolute; top:50px; left: 50%; transform: translate(-50%); width: 100%; }
+
+.boxJM input { background-color:transparent; }
+.boxJM input::-webkit-input-placeholder { color:#ff9a8d; }
+.boxJM input::-moz-placeholder { color:#ff9a8d; }
