@@ -334,7 +334,7 @@ ul, li{margin:0;padding:0;list-style:none}
 .boxJM.int_email_M_info { width:55%; margin:3% auto; }
 
 .btn_M_info { margin:500px auto 0; width:72.3%; }
-.btn_M_info button { background:#ff9a8d; color:#fff;  padding:10px 110px; margin:0 20px 60px 0; }
+.btn_M_info button { background:#ff9a8d; color:#fff;  padding:10px 110px; margin:0 20px 10px 0; }
 .btn_M_info button:last-child { margin:0; }
 
 
