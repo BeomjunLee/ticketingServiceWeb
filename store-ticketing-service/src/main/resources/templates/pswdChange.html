@@ -3,12 +3,74 @@
 <HEAD>
     <TITLE> New Document </TITLE>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../../static/css/style.css">
-    <script src="../../static/js/jquery-1.12.3.js"></script>
-    <script src="../../static/js/common.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/jquery-1.12.3.js"></script>
+    <script src="/js/common.js"></script>
 </HEAD>
 
 <body>
+
+    <th:block th:replace="/header"></th:block> <!--헤더 -->
+
+    <section>
+        <div class="wrap_psCh">
+            <div class="cont_psCh">
+                <div class="point_M_info">
+                    <p>비밀번호 변경</p>
+                </div>
+
+
+                <div>
+                    <form>
+                        <!-- wrapper -->
+                        <div id="wrapper_M_info">
+
+                            <!-- content-->
+                            <div id="content_psCh">
+
+                                <!-- PW1 -->
+                                <div>
+                                    <span class="boxJM int_id_M_info">
+                                        <input type="text" id="pswd1" class="int" maxlength="20" name="password" placeholder="현재 비밀번호">
+                                    </span>
+                                    <span class="error_next_box"></span>
+                                </div>
+
+                                <!-- PW2 -->
+                                <div>
+                                    <span class="boxJM int_pass_M_info">
+                                        <input type="password" id="pswd2" class="int" maxlength="20" name="new password" placeholder="새로운 비밀번호">
+                                        <span id="alertTxt">사용불가</span>
+                                    </span>
+                                    <span class="error_next_box"></span>
+                                </div>
+
+                                <!-- PW3 -->
+                                <div>
+                                    <span class="boxJM int_name_M_info">
+                                        <input type="text" id="pswd3" class="int" maxlength="20" name="password check" placeholder="새로운 비밀번호 확인">
+                                    </span>
+                                    <span class="error_next_box"></span>
+                                </div>
+
+                            </div>
+                            <!-- content-->
+
+                        </div>
+                        <!-- wrapper -->
+                    </form>
+                    <script src="main.js"></script>
+                </div>
+
+
+                <div class="btn_psCh">
+                    <button>확인</button>
+
+                    <button>취소</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </body>
 </html>

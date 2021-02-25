@@ -386,3 +386,13 @@ ul, li{margin:0;padding:0;list-style:none}
 .boxJM input { background-color:transparent; }
 .boxJM input::-webkit-input-placeholder { color:#ff9a8d; }
 .boxJM input::-moz-placeholder { color:#ff9a8d; }
+
+/* pswdChange.html */
+.wrap_psCh { width:50%; margin:2% auto; color:#ff9a8d; border:1px solid #faf2f0; box-shadow:0 0 30px 10px #faf2f0; }
+.cont_psCh { width:75%; margin:0 auto; }
+
+#content_psCh { position: absolute; top:100px; left: 50%; transform: translate(-50%); width: 100%; }
+
+.btn_psCh  { margin:500px auto 70px; width:72.7%; }
+.btn_psCh button { background:#fff; border:1px solid #ff9a8d; color:#ff9a8d; padding:10px 110px; margin:0 20px 10px 0; }
+.btn_psCh button:last-child { margin:0; }
