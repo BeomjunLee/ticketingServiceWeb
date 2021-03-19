@@ -42,7 +42,6 @@ public class Ticket {
         this.createdDate = createdDate;
         this.status = status;
     }
-    
 
     //==연관관계 편의메서드
     public void setMember(Member member) {

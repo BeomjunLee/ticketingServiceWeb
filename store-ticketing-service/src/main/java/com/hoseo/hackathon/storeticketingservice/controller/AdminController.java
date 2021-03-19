@@ -2,6 +2,7 @@ package com.hoseo.hackathon.storeticketingservice.controller;
 
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
+import com.hoseo.hackathon.storeticketingservice.domain.condition.MemberSearchCondition;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.*;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminMemberDto;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.admin.AdminMemberManageDto;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -228,20 +230,21 @@ public class AdminController {
     /**
      * 관리할 회원 리스트 보기
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/members")
-    public String manageMembers(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+    public ResponseEntity manageMembers(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                                        MemberSearchCondition condition) {
 
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 3);
 
         //회원 리스트
         AdminMemberManageDto dto = AdminMemberManageDto.builder()
                 .totalMemberCount(adminService.totalMemberCount())
                 .currentUsingServiceCount(adminService.currentUsingServiceCount())
-                .memberList(adminService.findMembers(pageable))
+                .memberList(adminService.findMembers(condition, pageable))
                 .build();
-        model.addAttribute("memberList", dto);
-        return "";
+        model.addAttribute("manageMemberList", dto);
+        return ResponseEntity.ok(dto);
     }
 
     /**

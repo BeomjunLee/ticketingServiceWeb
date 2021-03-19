@@ -16,7 +16,7 @@ spring:
   #JPA
   jpa:
     hibernate:
-      ddl-auto: none #테이블 자동 생성
+      ddl-auto: create #테이블 자동 생성
     properties:
       hibernate:
         #show_sql: true   #운영할 때는 system.out로 sql를 보여주기때문에 쓰지 말아야한다

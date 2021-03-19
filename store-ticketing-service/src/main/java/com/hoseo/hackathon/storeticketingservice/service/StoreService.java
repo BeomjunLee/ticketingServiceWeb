@@ -43,9 +43,11 @@ public class StoreService {
 
         if(store.getStoreStatus().equals(StoreStatus.INVALID) || store.getStoreStatus().equals(StoreStatus.DELETE)){//승인되지 않은 매장 체크
             throw new NotAuthorizedStoreException("승인 되지 않은 매장입니다");
-        }else if (store.getStoreTicketStatus().equals(StoreTicketStatus.CLOSE)) {  //번호표 발급 활성화 상태 체크
+        }
+        if (store.getStoreTicketStatus().equals(StoreTicketStatus.CLOSE)) {  //번호표 발급 활성화 상태 체크
             throw new StoreTicketIsCloseException("번호표 발급이 허용되지 않았습니다");
-        }else if (ticketRepository.countByMemberUsernameAndStatus(member.getUsername(), TicketStatus.VALID) > 0
+        }
+        if (ticketRepository.countByMemberUsernameAndStatus(member.getUsername(), TicketStatus.VALID) > 0
                 ||
             ticketRepository.countByMemberUsernameAndStatus(member.getUsername(), TicketStatus.HOLD) > 0) { //번호표 중복 뽑기 체크
             throw new DuplicateTicketingException("이미 번호표를 가지고 있습니다");
@@ -59,8 +61,8 @@ public class StoreService {
                 store.getAvgWaitingTimeByOne() * (totalWaitingCount + 1),       //대기시간
                 LocalDateTime.now(),                                                      //발급시간
                 TicketStatus.VALID);                                                     //번호표 상태
-        ticket.setStore(store);
         ticket.setMember(member);   //연관관계 세팅
+        ticket.setStore(store);
 
         store.changeStoreByTicketing(totalWaitingCount);   //Store 갱신
         return ticketRepository.save(ticket);
@@ -74,7 +76,8 @@ public class StoreService {
                 .orElseThrow(() -> new NotFoundStoreException("관리자의 아이디로 등록된 매장을 찾을수 없습니다"));
         if(store.getStoreStatus().equals(StoreStatus.INVALID) || store.getStoreStatus().equals(StoreStatus.DELETE)){//승인되지 않은 매장 체크
             throw new NotAuthorizedStoreException("승인 되지 않은 매장입니다");
-        }else if (store.getStoreTicketStatus().equals(StoreTicketStatus.OPEN)) {
+        }
+        if (store.getStoreTicketStatus().equals(StoreTicketStatus.OPEN)) {
             throw new IsAlreadyCompleteException("이미 활성화 되어있습니다");
         }
         store.changeStoreTicketStatus(StoreTicketStatus.OPEN);
@@ -88,7 +91,8 @@ public class StoreService {
                 .orElseThrow(() -> new NotFoundStoreException("관리자의 아이디로 등록된 매장을 찾을수 없습니다"));
         if(store.getStoreStatus().equals(StoreStatus.INVALID) || store.getStoreStatus().equals(StoreStatus.DELETE)){//승인되지 않은 매장 체크
             throw new NotAuthorizedStoreException("승인 되지 않은 매장입니다");
-        }else if (store.getStoreTicketStatus().equals(StoreTicketStatus.CLOSE)) {
+        }
+        if (store.getStoreTicketStatus().equals(StoreTicketStatus.CLOSE)) {
             throw new IsAlreadyCompleteException("이미 비활성화 되어있습니다");
         }
         store.changeStoreTicketStatus(StoreTicketStatus.CLOSE);

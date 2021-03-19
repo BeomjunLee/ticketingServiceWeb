@@ -3,6 +3,7 @@ package com.hoseo.hackathon.storeticketingservice.service;
 import com.hoseo.hackathon.storeticketingservice.domain.Member;
 import com.hoseo.hackathon.storeticketingservice.domain.Store;
 import com.hoseo.hackathon.storeticketingservice.domain.Ticket;
+import com.hoseo.hackathon.storeticketingservice.domain.condition.MemberSearchCondition;
 import com.hoseo.hackathon.storeticketingservice.domain.dto.*;
 import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateMemberForm;
 import com.hoseo.hackathon.storeticketingservice.domain.form.AdminUpdateStoreAdminForm;
@@ -13,6 +14,7 @@ import com.hoseo.hackathon.storeticketingservice.exception.*;
 import com.hoseo.hackathon.storeticketingservice.repository.MemberRepository;
 import com.hoseo.hackathon.storeticketingservice.repository.StoreRepository;
 import com.hoseo.hackathon.storeticketingservice.repository.TicketRepository;
+import com.hoseo.hackathon.storeticketingservice.repository.custom.MemberRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,7 @@ public class AdminService {
     private final TicketRepository ticketRepository;
     private final StoreRepository storeRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MemberRepositoryCustom memberRepositoryCustom;
 
 //===============================================가게 관리=============================================
 
@@ -350,16 +353,8 @@ public class AdminService {
     /**
      * 회원 리스트 보기
      */
-    public Page<MemberListDto> findMembers(Pageable pageable) {
-        return memberRepository.findAllByStatus(pageable, true).map(member -> MemberListDto.builder()
-                    .ticket_id(ticketRepository.findTicketIdJoinMemberId(member.getId()).orElse(null))
-                    .member_id(member.getId())
-                    .username(member.getUsername())
-                    .name(member.getName())
-                    .phoneNum(member.getPhoneNum())
-                    .email(member.getEmail())
-                    .createdDate(member.getCreatedDate())
-                    .build());
+    public Page<MemberListDto> findMembers(MemberSearchCondition condition, Pageable pageable) {
+        return memberRepositoryCustom.search(condition, pageable);
     }
 
     /**
